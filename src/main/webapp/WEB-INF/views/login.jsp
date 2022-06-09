@@ -4,7 +4,7 @@
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>로그인</title>
+    <title>이오나이저 모니터링 시스템 | 로그인</title>
     <style>
 
     body{

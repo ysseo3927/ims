@@ -12,7 +12,7 @@
 	<artifactId>ims</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>ionizer</name>
+	<name>ims</name>
 	<description>inoizer monitoring system</description>
 	<properties>
 		<java.version>11</java.version>
