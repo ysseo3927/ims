@@ -12,7 +12,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.httpBasic().and().authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/main").permitAll()
+                .antMatchers("/").permitAll()
                 .antMatchers("/index").permitAll()
                 //.anyRequest().authenticated()
                 .and().logout().permitAll()
