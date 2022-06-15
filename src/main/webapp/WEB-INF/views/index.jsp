@@ -70,7 +70,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#"">
+                <a class="nav-link collapsed" href="#">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>통계관리</span>
                 </a>
@@ -442,12 +442,12 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">노선별 실시간 통합공기질(IAQ)</h6>
                                     <div class="dropdown no-arrow">
 
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -468,26 +468,26 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myChart"></canvas>
+                                        <canvas id="all-line-inter-iaq-chart" ></canvas>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Pie Chart -->
+                        <!--
                         <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
                                     <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLinkz"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
+                                            aria-labelledby="dropdownMenuLinkz">
                                             <div class="dropdown-header">Dropdown Header:</div>
                                             <a class="dropdown-item" href="#">Action</a>
                                             <a class="dropdown-item" href="#">Another action</a>
@@ -496,7 +496,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Card Body -->
+
                                 <div class="card-body">
                                     <div class="chart-pie pt-4 pb-2">
                                         <canvas id="myPieChart"></canvas>
@@ -515,8 +515,8 @@
                                 </div>
                             </div>
                         </div>
+                        -->
                     </div>
-
                     <!-- Content Row -->
                     <div class="row">
 
@@ -738,40 +738,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     <script>
-        var ctx = document.getElementById('myChart');
-        var myChart = new Chart(ctx, {
+        new Chart(document.getElementById("all-line-inter-iaq-chart"), {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"],
+                datasets: [
+                    {
+                        label: "노선",
+                        backgroundColor: ["#0052a4", "#33a23d","#fe5b10","#32a1c8","#8b50a4","#c55c1d","#677718","#f14c82","#aa9872","#b0ce18","#6789ca"],
+                        data: [100,200,300,250,150,100,200,300,250,150,300]
+                    }
+                ]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Predicted world population (millions) in 2050'
                 }
             }
         });
