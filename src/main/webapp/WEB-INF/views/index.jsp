@@ -22,6 +22,137 @@
     <!-- Custom styles for this template-->
     <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        .chart-gauge {}
+        .chart-first {fill:#ea4335}
+        .chart-second {fill:#ffa800}
+        .chart-third {fill:#fbd505}
+        .chart-forth {fill: #34a853}
+        .needle,.needle-center {fill:#464A4F}
+        .form-check {
+            display: block;
+            min-height: 1.5rem;
+            padding-left: 1.5em;
+            margin-bottom: 0.125rem;
+        }
+        .form-check .form-check-input {
+            float: left;
+            margin-left: -1.5em;
+        }
+
+        .form-check-reverse {
+            padding-right: 1.5em;
+            padding-left: 0;
+            text-align: right;
+        }
+        .form-check-reverse .form-check-input {
+            float: right;
+            margin-right: -1.5em;
+            margin-left: 0;
+        }
+
+        .form-check-input {
+            width: 1em;
+            height: 1em;
+            margin-top: 0.25em;
+            vertical-align: top;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .form-check-input[type=checkbox] {
+            border-radius: 0.25em;
+        }
+        .form-check-input[type=radio] {
+            border-radius: 50%;
+        }
+        .form-check-input:active {
+            filter: brightness(90%);
+        }
+        .form-check-input:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .form-check-input:checked[type=checkbox] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+        }
+        .form-check-input:checked[type=radio] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+        }
+        .form-check-input[type=checkbox]:indeterminate {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
+        }
+        .form-check-input:disabled {
+            pointer-events: none;
+            filter: none;
+            opacity: 0.5;
+        }
+        .form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
+            cursor: default;
+            opacity: 0.5;
+            padding-top:20px;
+        }
+        .form-check-label{
+            padding-top:5px;
+            padding-left:10px;
+        }
+        .form-switch {
+            padding-left: 60.5em;
+        }
+        .form-switch .form-check-input {
+            width: 2em;
+            margin-left: -2.5em;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+            background-position: left center;
+            border-radius: 2em;
+            transition: background-position 0.15s ease-in-out;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .form-switch .form-check-input {
+                transition: none;
+            }
+        }
+        .form-switch .form-check-input:focus {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2386b7fe'/%3e%3c/svg%3e");
+        }
+        .form-switch .form-check-input:checked {
+            background-position: right center;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+        }
+        .form-switch.form-check-reverse {
+            padding-right: 2.5em;
+            padding-left: 0;
+        }
+        .form-switch.form-check-reverse .form-check-input {
+            margin-right: -2.5em;
+            margin-left: 0;
+        }
+
+        .form-switch.form-switch-md {
+            margin-bottom: 1rem; /* JUST FOR STYLING PURPOSE */
+        }
+
+        .form-switch.form-switch-md .form-check-input {
+            height: 1.5rem;
+            width: calc(2rem + 0.75rem);
+            border-radius: 3rem;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -346,9 +477,163 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h5 mb-0 text-gray-800">대기질 실시간 모니터링 현황</h1>
+                        <div class="form-check form-switch form-switch-md">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신 ON/OFF 토글</label>
+                        </div>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
                     </div>
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-3 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">현재 전노선 평균 통합대기질 지수(IAQ)</h6>
+                                    <div class="dropdown no-arrow">
+
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink3"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                             aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <!-- <canvas id="all-line-now-inter-iaq-chart" style="width:250px;height:250px; -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></canvas>-->
+                                        <div style="text-align:center">
+                                            <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="280px"; height="50px"; >
+                                        </div>
+                                        <div class="all-line-now-inter-iaq-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">노선별 실시간 통합공기질 지수(IAQ)</h6>
+                                    <div class="dropdown no-arrow">
+
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="all-line-inter-iaq-chart" style="width:450px;height:250px;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-5 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">시간대별 전노선 통합대기질 평균 지수(IAQ)</h6>
+                                    <div class="dropdown no-arrow">
+
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2"
+                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                             aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="all-line-timeflow-inter-iaq-chart" style="width:600px;height:250px"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pie Chart -->
+                        <!--
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLinkz"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLinkz">
+                                            <div class="dropdown-header">Dropdown Header:</div>
+                                            <a class="dropdown-item" href="#">Action</a>
+                                            <a class="dropdown-item" href="#">Another action</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">Something else here</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> Direct
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Social
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> Referral
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+
 
                     <!-- Content Row -->
                     <div class="row">
@@ -404,8 +689,8 @@
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                             style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                             aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -439,84 +724,6 @@
 
                     <!-- Content Row -->
 
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">노선별 실시간 통합공기질(IAQ)</h6>
-                                    <div class="dropdown no-arrow">
-
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="all-line-inter-iaq-chart" ></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pie Chart -->
-                        <!--
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLinkz"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLinkz">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-                    </div>
                     <!-- Content Row -->
                     <div class="row">
 
@@ -735,9 +942,16 @@
     <script src="/resources/js/demo/chart-pie-demo.js"></script>
 
     <!-- 차트 -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <!-- d3 차트 게이지 -->
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
 
     <script>
+
+        Chart.register(ChartDataLabels);
+
         new Chart(document.getElementById("all-line-inter-iaq-chart"), {
             type: 'bar',
             data: {
@@ -745,20 +959,319 @@
                 datasets: [
                     {
                         label: "노선",
-                        backgroundColor: ["#0052a4", "#33a23d","#fe5b10","#32a1c8","#8b50a4","#c55c1d","#677718","#f14c82","#aa9872","#b0ce18","#6789ca"],
-                        data: [100,200,300,250,150,100,200,300,250,150,300]
+                        backgroundColor: ["#92d14f","#00af50","#92d14f","#ffc000","#ffff01","#00af50","#ffff01","#c00000","#92d14f","#00af50","#00af50"],
+                        data: [235,270,210,118,140,250,150,50,190,250,220]
                     }
                 ]
             },
             options: {
-                legend: { display: false },
-                title: {
+                legend: {
                     display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
                     text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                        anchor:'end',
+                        align:'start',
+                        color: 'black',
+                        backgroundColor: 'white',
+                        borderColor:'black',
+                        borderWidth:2,
+                        borderRadius:6,
+                        font: {
+                            weight: 'bold',
+                            lineHeight: 1.0
+                        },
+                        padding :{
+                            bottom : '0'
+                        }
+                }
                 }
             }
         });
 
+        new Chart(document.getElementById("all-line-timeflow-inter-iaq-chart"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230]
+                }, {
+                    type: 'line',
+                    label: 'Line Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230],
+                }],
+                labels: ["05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                        anchor:'end',
+                        align:'start',
+                        color: 'black',
+                        backgroundColor: 'white',
+                        borderColor:'black',
+                        borderWidth:2,
+                        borderRadius:6,
+                        font: {
+                            weight: 'bold',
+                            lineHeight: 1.0
+                        },
+                        padding :{
+                            bottom : '0'
+                        }
+                    }
+                }
+            }
+        });
+
+        /*---------------------
+        // D3.js Gauge Chart //
+        ---------------------*/
+        // Data which need to be fetched
+        var name = "350";
+        var value = 200;    // My Desired Value To Show
+        var gaugeMaxValue = 300;
+
+        // Data of calculation
+        var percentValue = value / gaugeMaxValue;
+        var needleClient;
+        (function () {
+            var barWidth, chart, chartInset, degToRad, repaintGauge, height, margin, numSections, padRad, percToDeg, percToRad, percent, radius, sectionIndx, svg, totalPercent, width, recalcPointerPos;
+
+            percent = percentValue;
+
+            numSections = 1;
+            sectionPerc = 1 / numSections / 2;
+            padRad = 0.025;
+            chartInset = 10;
+
+            // Orientation of Gauge:
+            totalPercent = .75;
+
+            el = d3.select('.all-line-now-inter-iaq-chart');
+
+            margin = {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
+            };
+
+            width = el[0][0].offsetWidth - margin.left - margin.right;
+            height = width;
+            radius = Math.min(width, height) / 2;
+            barWidth = 20 * width / 300;
+
+            // Utility methods
+            percToDeg = function (perc) {
+                return perc * 360;
+            };
+
+            percToRad = function (perc) {
+                return degToRad(percToDeg(perc));
+            };
+
+            degToRad = function (deg) {
+                return deg * Math.PI / 180;
+            };
+
+            // Create SVG element
+            svg = el.append('svg').attr('width', width + margin.left + margin.right).attr('height', height / 1.5 + margin.top + margin.bottom);		// height/1.5 To Remove Extra Bottom Space
+
+            // Add layer for the panel
+            chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
+
+            chart.append('path').attr('class', "arc chart-first");
+            chart.append('path').attr('class', "arc chart-second");
+            chart.append('path').attr('class', "arc chart-third");
+            chart.append('path').attr('class', "arc chart-forth");
+
+            arc4 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+            arc3 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+            arc2 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+            arc1 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+
+            repaintGauge = function () {
+                perc = 0.5;
+                var next_start = totalPercent;
+                arcStartRad = percToRad(next_start);
+                arcEndRad = arcStartRad + percToRad(perc / 4);
+                next_start += perc / 4;
+
+                arc1.startAngle(arcStartRad).endAngle(arcEndRad);
+
+                arcStartRad = percToRad(next_start);
+                arcEndRad = arcStartRad + percToRad(perc / 4);
+                next_start += perc / 4;
+
+                arc2.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
+
+                arcStartRad = percToRad(next_start);
+                arcEndRad = arcStartRad + percToRad(perc / 4);
+                next_start += perc / 4;
+
+                arc3.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
+
+                arcStartRad = percToRad(next_start);
+                arcEndRad = arcStartRad + percToRad(perc / 4);
+
+                arc4.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
+
+                chart.select(".chart-first").attr('d', arc1);
+                chart.select(".chart-second").attr('d', arc2);
+                chart.select(".chart-third").attr('d', arc3);
+                chart.select(".chart-forth").attr('d', arc4);
+            }
+
+            var Needle = (function () {
+
+                //Helper function that returns the `d` value for moving the needle
+                var recalcPointerPos = function (perc) {
+                    var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
+                    thetaRad = percToRad(perc / 2);
+                    centerX = 0;
+                    centerY = 0;
+                    topX = centerX - this.len * Math.cos(thetaRad);
+                    topY = centerY - this.len * Math.sin(thetaRad);
+                    leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
+                    leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
+                    rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
+                    rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
+                    return "M " + leftX + " " + leftY + " L " + topX + " " + topY + " L " + rightX + " " + rightY;
+                };
+
+                function Needle(el) {
+                    this.el = el;
+                    this.len = width / 2.5;
+                    this.radius = this.len / 20;
+                }
+
+                Needle.prototype.render = function () {
+                    this.el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
+                    return this.el.append('path').attr('class', 'needle').attr('id', 'client-needle').attr('d', recalcPointerPos.call(this, 0));
+                };
+
+                Needle.prototype.moveTo = function (perc) {
+                    var self,
+                        oldValue = this.perc || 0;
+                    this.perc = perc;
+                    self = this;
+
+                    // Reset pointer position
+                    this.el.transition().delay(100).ease('quad').duration(180).select('.needle').tween('reset-progress', function () {
+                        return function (percentOfPercent) {
+                            var progress = (1 - percentOfPercent) * oldValue;
+                            repaintGauge(progress);
+                            return d3.select(this).attr('d', recalcPointerPos.call(self, progress));
+                        };
+                    });
+
+                    this.el.transition().delay(100).ease('bounce').duration(1200).select('.needle').tween('progress', function () {
+                        return function (percentOfPercent) {
+                            var progress = percentOfPercent * perc;
+
+                            repaintGauge(progress);
+                            return d3.select(this).attr('d', recalcPointerPos.call(self, progress));
+                        };
+                    });
+
+                };
+
+                return Needle;
+
+            })();
+
+            var dataset = [{
+                metric: name,
+                value: value
+            }]
+
+            var texts = svg.selectAll("text")
+                .data(dataset)
+                .enter();
+
+            texts.append("text")
+                .text(function () {
+                    return dataset[0].metric;
+                })
+                .attr('id', "Name")
+                .attr('text-align', "center")
+                .attr('transform', "translate(145, " + ((height + margin.top) / 1.6) + ")")
+                .attr("font-family", "'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕'")
+                //.attr("font-weight", "bold")
+                .attr("font-size", 25)
+                .style("fill", "#000000");
+
+
+            var trX = 180 - 210 * Math.cos(percToRad(percent / 2));
+            var trY = 195 - 210 * Math.sin(percToRad(percent / 2));
+            // (180, 195) are the coordinates of the center of the gauge.
+
+            displayValue = function () {
+                texts.append("text")
+                    .text(function () {
+                        return dataset[0].value;
+                    })
+                    .attr('id', "Value")
+                    .attr('transform', "translate(" + trX + ", " + trY + ")")
+                    .attr("font-size", 18)
+                    .style("fill", '#000000');
+            }
+
+            texts.append("text")
+                .text(function () {
+                    return 0;
+                })
+                .attr('id', 'scale0')
+                .attr('transform', "translate(" + ((width + margin.left) / 100) + ", " + ((height + margin.top) / 2) + ")")
+                .attr("font-size", 15)
+                .style("fill", "#000000");
+
+            texts.append("text")
+                .text(function () {
+                    return gaugeMaxValue / 2;
+                })
+                .attr('id', 'scale10')
+                .attr('transform', "translate(" + ((width + margin.left) / 2.15) + ", " + ((height + margin.top) / 30) + ")")
+                .attr("font-size", 15)
+                .style("fill", "#000000");
+
+
+            texts.append("text")
+                .text(function () {
+                    return gaugeMaxValue;
+                })
+                .attr('id', 'scale20')
+                .attr('transform', "translate(" + ((width + margin.left) / 1.03) + ", " + ((height + margin.top) / 2) + ")")
+                .attr("font-size", 15)
+                .style("fill", "#000000");
+
+
+            needle = new Needle(chart);
+            needle.render();
+            needle.moveTo(percent);
+
+            setTimeout(displayValue, 1350);
+
+        })();
     </script>
 </body>
 
