@@ -112,7 +112,7 @@
             padding-left:10px;
         }
         .form-switch {
-            padding-left: 60.5em;
+            padding-left: 57.5em;
         }
         .form-switch .form-check-input {
             width: 2em;
@@ -144,7 +144,7 @@
         }
 
         .form-switch.form-switch-md {
-            margin-bottom: 1rem; /* JUST FOR STYLING PURPOSE */
+            /* margin-bottom: 1rem; */
         }
 
         .form-switch.form-switch-md .form-check-input {
@@ -186,7 +186,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="#" onclick="goMonitoring()">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>모니터링</span>
                 </a>
@@ -475,8 +475,8 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h5 mb-0 text-gray-800">대기질 실시간 모니터링 현황</h1>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-1">
+                        <h1 class="h4 mb-0" style="color:black;">대기질 실시간 모니터링 현황</h1>
                         <div class="form-check form-switch form-switch-md">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
                             <label class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신 ON/OFF 토글</label>
@@ -484,401 +484,764 @@
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
                     </div>
+                    <hr>
+                    <!-- 네비게이션 시작 -->
+                    <!--
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#line-all">전체 노선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-1">1호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-2">2호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-3">3호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-4">4호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-5">5호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-6">6호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-7">7호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-8">8호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-9">9호선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-silim">신림선</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#line-wooi">우이신설선</a>
+                        </li>
+                    </ul>
 
-                    <div class="row">
+                    <hr>
 
-                        <!-- Area Chart -->
-                        <div class="col-xl-3 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">현재 전노선 평균 통합대기질 지수(IAQ)</h6>
-                                    <div class="dropdown no-arrow">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="line-all">
 
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink3"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
+                            -->
+                            <!-- top -->
+                            <div class="row">
 
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <!-- <canvas id="all-line-now-inter-iaq-chart" style="width:250px;height:250px; -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></canvas>-->
-                                        <div style="text-align:center">
-                                            <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="280px"; height="50px"; >
-                                        </div>
-                                        <div class="all-line-now-inter-iaq-chart"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary ">전체 노선 평균 통합 공기질 지수</h6>
+                                            <div class="dropdown no-arrow">
 
-                        <!-- Area Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">노선별 실시간 통합공기질 지수(IAQ)</h6>
-                                    <div class="dropdown no-arrow">
-
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="all-line-inter-iaq-chart" style="width:450px;height:250px;"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-5 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">시간대별 전노선 통합대기질 평균 지수(IAQ)</h6>
-                                    <div class="dropdown no-arrow">
-
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="all-line-timeflow-inter-iaq-chart" style="width:600px;height:250px"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pie Chart -->
-                        <!--
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLinkz"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLinkz">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        -->
-                    </div>
-
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                Earnings (Monthly)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Earnings (Annual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink1">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
                                                 </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                             style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                             aria-valuemax="100"></div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area">
+                                                <!-- <canvas id="all-line-now-inter-iaq-chart" style="width:250px;height:250px; -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></canvas>-->
+                                                <div style="text-align:center">
+                                                    <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="280px"; height="50px"; >
+                                                </div>
+                                                <div class="top-chart-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-4 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">노선별 평균 통합 공기질 지수</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink2">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area">
+                                                <canvas id="top-chart-2" style="width:450px;height:250px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-5 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">시간대별 전체 노선 평균 통합 공기질 지수</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink3"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink3">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area">
+                                                <canvas id="top-chart-3" style="width:600px;height:250px"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pie Chart -->
+                                <!--
+                                <div class="col-xl-4 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <div
+                                            class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                            <div class="dropdown no-arrow">
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLinkz"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                    aria-labelledby="dropdownMenuLinkz">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="chart-pie pt-4 pb-2">
+                                                <canvas id="myPieChart"></canvas>
+                                            </div>
+                                            <div class="mt-4 text-center small">
+                                                <span class="mr-2">
+                                                    <i class="fas fa-circle text-primary"></i> Direct
+                                                </span>
+                                                <span class="mr-2">
+                                                    <i class="fas fa-circle text-success"></i> Social
+                                                </span>
+                                                <span class="mr-2">
+                                                    <i class="fas fa-circle text-info"></i> Referral
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+                            </div>
+
+                            <!-- middle -->
+                            <div class="row">
+
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">통합 공기질 지수</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink4"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink4">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="middle-chart-1" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">미세먼지 농도 (GP10 / ㎍/㎥) </h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink5"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink5">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="middle-chart-2" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">초미세먼지 농도 (GP2.5 / ㎍/㎥)</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink6"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink6">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="middle-chart-3" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">극초미세먼지 농도 (GP1.0 / ㎍/㎥)</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink7"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink7">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="middle-chart-4" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- bottom -->
+                            <div class="row">
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">TVOC (ppm)</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink8"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink8">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="bottom-chart-1" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">이산화탄소 (ppm)</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink9"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink9">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="bottom-chart-2" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">온도 (℃)</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink10"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink10">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="bottom-chart-3" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-3 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">습도 (%RH)</h6>
+                                            <div class="dropdown no-arrow">
+
+                                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink11"
+                                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                     aria-labelledby="dropdownMenuLink11">
+                                                    <div class="dropdown-header">Dropdown Header:</div>
+                                                    <a class="dropdown-item" href="#">Action</a>
+                                                    <a class="dropdown-item" href="#">Another action</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Something else here</a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" style="height:200px";>
+                                                <canvas id="bottom-chart-4" style="width:330px;height:200px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!-- Content Row -->
+                            <div class="row">
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                        Earnings (Monthly)</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                        Earnings (Annual)</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-info shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar"
+                                                                     style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                                     aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Pending Requests Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                        Pending Requests</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Requests</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            <!-- Content Row -->
 
-                    <!-- Content Row -->
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-                        <!-- Content Column -->
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Color System -->
+                            <!-- Content Row -->
                             <div class="row">
+
+                                <!-- Content Column -->
                                 <div class="col-lg-6 mb-4">
-                                    <div class="card bg-primary text-white shadow">
+
+                                    <!-- Project Card Example -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                                        </div>
                                         <div class="card-body">
-                                            Primary
-                                            <div class="text-white-50 small">#4e73df</div>
+                                            <h4 class="small font-weight-bold">Server Migration <span
+                                                    class="float-right">20%</span></h4>
+                                            <div class="progress mb-4">
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                                     aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <h4 class="small font-weight-bold">Sales Tracking <span
+                                                    class="float-right">40%</span></h4>
+                                            <div class="progress mb-4">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
+                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <h4 class="small font-weight-bold">Customer Database <span
+                                                    class="float-right">60%</span></h4>
+                                            <div class="progress mb-4">
+                                                <div class="progress-bar" role="progressbar" style="width: 60%"
+                                                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <h4 class="small font-weight-bold">Payout Details <span
+                                                    class="float-right">80%</span></h4>
+                                            <div class="progress mb-4">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
+                                                     aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <h4 class="small font-weight-bold">Account Setup <span
+                                                    class="float-right">Complete!</span></h4>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                                                     aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
                                         </div>
                                     </div>
+
+                                    <!-- Color System -->
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-primary text-white shadow">
+                                                <div class="card-body">
+                                                    Primary
+                                                    <div class="text-white-50 small">#4e73df</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-success text-white shadow">
+                                                <div class="card-body">
+                                                    Success
+                                                    <div class="text-white-50 small">#1cc88a</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-info text-white shadow">
+                                                <div class="card-body">
+                                                    Info
+                                                    <div class="text-white-50 small">#36b9cc</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-warning text-white shadow">
+                                                <div class="card-body">
+                                                    Warning
+                                                    <div class="text-white-50 small">#f6c23e</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-danger text-white shadow">
+                                                <div class="card-body">
+                                                    Danger
+                                                    <div class="text-white-50 small">#e74a3b</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-secondary text-white shadow">
+                                                <div class="card-body">
+                                                    Secondary
+                                                    <div class="text-white-50 small">#858796</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-light text-black shadow">
+                                                <div class="card-body">
+                                                    Light
+                                                    <div class="text-black-50 small">#f8f9fc</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <div class="card bg-dark text-white shadow">
+                                                <div class="card-body">
+                                                    Dark
+                                                    <div class="text-white-50 small">#5a5c69</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
+
                                 <div class="col-lg-6 mb-4">
-                                    <div class="card bg-success text-white shadow">
+
+                                    <!-- Illustrations -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
+                                        </div>
                                         <div class="card-body">
-                                            Success
-                                            <div class="text-white-50 small">#1cc88a</div>
+                                            <div class="text-center">
+                                                <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
+                                                     src="/resources/img/undraw_posting_photo.svg" alt="...">
+                                            </div>
+                                            <p>Add some quality, svg illustrations to your project courtesy of <a
+                                                    target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
+                                                constantly updated collection of beautiful svg images that you can use
+                                                completely free and without attribution!</p>
+                                            <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
+                                                unDraw &rarr;</a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-info text-white shadow">
+
+                                    <!-- Approach -->
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
+                                        </div>
                                         <div class="card-body">
-                                            Info
-                                            <div class="text-white-50 small">#36b9cc</div>
+                                            <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
+                                                CSS bloat and poor page performance. Custom CSS classes are used to create
+                                                custom components and custom utility classes.</p>
+                                            <p class="mb-0">Before working with this theme, you should become familiar with the
+                                                Bootstrap framework, especially the utility classes.</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-warning text-white shadow">
-                                        <div class="card-body">
-                                            Warning
-                                            <div class="text-white-50 small">#f6c23e</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-danger text-white shadow">
-                                        <div class="card-body">
-                                            Danger
-                                            <div class="text-white-50 small">#e74a3b</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-secondary text-white shadow">
-                                        <div class="card-body">
-                                            Secondary
-                                            <div class="text-white-50 small">#858796</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-light text-black shadow">
-                                        <div class="card-body">
-                                            Light
-                                            <div class="text-black-50 small">#f8f9fc</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card bg-dark text-white shadow">
-                                        <div class="card-body">
-                                            Dark
-                                            <div class="text-white-50 small">#5a5c69</div>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
 
+                    <!--
                         </div>
 
-                        <div class="col-lg-6 mb-4">
-
-                            <!-- Illustrations -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-center">
-                                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
-                                            src="/resources/img/undraw_posting_photo.svg" alt="...">
-                                    </div>
-                                    <p>Add some quality, svg illustrations to your project courtesy of <a
-                                            target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
-                                        constantly updated collection of beautiful svg images that you can use
-                                        completely free and without attribution!</p>
-                                    <a target="_blank" rel="nofollow" href="https://undraw.co/">Browse Illustrations on
-                                        unDraw &rarr;</a>
-                                </div>
-                            </div>
-
-                            <!-- Approach -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                                        custom components and custom utility classes.</p>
-                                    <p class="mb-0">Before working with this theme, you should become familiar with the
-                                        Bootstrap framework, especially the utility classes.</p>
-                                </div>
-                            </div>
-
+                    </div>
+                        <div class="tab-pane fade" id="line-1">
+                            <p>Nunc vitae turpis id nibh sodales commodo et non augue. Proin fringilla ex nunc. Integer tincidunt risus ut facilisis tristique.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-2">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-3">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-4">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-5">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-6">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-7">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-8">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-9">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-silim">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
+                        </div>
+                        <div class="tab-pane fade" id="=line-wooi">
+                            <p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque commodo consectetur faucibus. Aenean eget ultricies justo.</p>
                         </div>
                     </div>
-
-                </div>
-                <!-- /.container-fluid -->
+                    -->
+                    <!-- 네비게이션 종료 -->
 
             </div>
             <!-- End of Main Content -->
@@ -924,6 +1287,7 @@
         </div>
     </div>
 
+    </div>
     <!-- Bootstrap core JavaScript-->
     <script src="/resources/vendor/jquery/jquery.min.js"></script>
     <script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -937,10 +1301,6 @@
     <!-- Page level plugins -->
     <script src="/resources/vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="/resources/js/demo/chart-area-demo.js"></script>
-    <script src="/resources/js/demo/chart-pie-demo.js"></script>
-
     <!-- 차트 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0/dist/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -949,98 +1309,21 @@
     <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
 
     <script>
+        function goMonitoring(){
 
-        Chart.register(ChartDataLabels);
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/monitoring");
+            document.body.appendChild(form);
+            form.submit();
 
-        new Chart(document.getElementById("all-line-inter-iaq-chart"), {
-            type: 'bar',
-            data: {
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"],
-                datasets: [
-                    {
-                        label: "노선",
-                        backgroundColor: ["#92d14f","#00af50","#92d14f","#ffc000","#ffff01","#00af50","#ffff01","#c00000","#92d14f","#00af50","#00af50"],
-                        data: [235,270,210,118,140,250,150,50,190,250,220]
-                    }
-                ]
-            },
-            options: {
-                legend: {
-                    display: true,
-                    position: "bottom",
-                    align: "center"
-                },
-                title: {
-                    display: false,
-                    text: 'Predicted world population (millions) in 2050'
-                },
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        anchor:'end',
-                        align:'start',
-                        color: 'black',
-                        backgroundColor: 'white',
-                        borderColor:'black',
-                        borderWidth:2,
-                        borderRadius:6,
-                        font: {
-                            weight: 'bold',
-                            lineHeight: 1.0
-                        },
-                        padding :{
-                            bottom : '0'
-                        }
-                }
-                }
-            }
-        });
+        }
 
-        new Chart(document.getElementById("all-line-timeflow-inter-iaq-chart"), {
-            type: 'bar',
-            data: {
-                datasets: [{
-                    type: 'bar',
-                    label: 'Bar Dataset',
-                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230]
-                }, {
-                    type: 'line',
-                    label: 'Line Dataset',
-                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230],
-                }],
-                labels: ["05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
-            },
-            options: {
-                legend: {
-                    display: true,
-                    position: "bottom",
-                    align: "center"
-                },
-                title: {
-                    display: false,
-                    text: 'Predicted world population (millions) in 2050'
-                },
-                responsive: false,
-                plugins: {
-                    datalabels: {
-                        anchor:'end',
-                        align:'start',
-                        color: 'black',
-                        backgroundColor: 'white',
-                        borderColor:'black',
-                        borderWidth:2,
-                        borderRadius:6,
-                        font: {
-                            weight: 'bold',
-                            lineHeight: 1.0
-                        },
-                        padding :{
-                            bottom : '0'
-                        }
-                    }
-                }
-            }
-        });
+    </script>
+
+    <script>
+
 
         /*---------------------
         // D3.js Gauge Chart //
@@ -1066,7 +1349,7 @@
             // Orientation of Gauge:
             totalPercent = .75;
 
-            el = d3.select('.all-line-now-inter-iaq-chart');
+            el = d3.select('.top-chart-1');
 
             margin = {
                 top: 20,
@@ -1272,7 +1555,329 @@
             setTimeout(displayValue, 1350);
 
         })();
-    </script>
-</body>
 
+        Chart.register(ChartDataLabels);
+
+        new Chart(document.getElementById("top-chart-2"), {
+            type: 'bar',
+            data: {
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"],
+                datasets: [
+                    {
+                        label: "노선",
+                        /* backgroundColor: ["#92d14f","#00af50","#92d14f","#ffc000","#ffff01","#00af50","#ffff01","#c00000","#92d14f","#00af50","#00af50"], */
+                        data: [235,270,210,118,140,250,150,50,190,250,220]
+                    }
+                ]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                        anchor:'end',
+                        align:'start',
+                        color: 'black',
+                        backgroundColor: 'white',
+                        borderColor:'black',
+                        borderWidth:2,
+                        borderRadius:6,
+                        font: {
+                            weight: 'bold',
+                            lineHeight: 1.0
+                        },
+                        padding :{
+                            bottom : '0'
+                        }
+                }
+                }
+            }
+        });
+
+        new Chart(document.getElementById("top-chart-3"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230]
+                }, {
+                    type: 'line',
+                    label: 'Line Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230],
+                }],
+                labels: ["05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                        anchor:'end',
+                        align:'start',
+                        color: 'black',
+                        backgroundColor: 'white',
+                        borderColor:'black',
+                        borderWidth:2,
+                        borderRadius:6,
+                        font: {
+                            weight: 'bold',
+                            lineHeight: 1.0
+                        },
+                        padding :{
+                            bottom : '0'
+                        }
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("middle-chart-1"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("middle-chart-2"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("middle-chart-3"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("middle-chart-4"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("bottom-chart-1"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("bottom-chart-2"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                    datalabels: {
+                    }
+                }
+            }
+        });
+
+
+        new Chart(document.getElementById("bottom-chart-3"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+                }
+            }
+        });
+
+
+
+        new Chart(document.getElementById("bottom-chart-4"), {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    type: 'bar',
+                    label: 'Bar Dataset',
+                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                }],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    align: "center"
+                },
+                title: {
+                    display: false,
+                    text: 'Predicted world population (millions) in 2050'
+                },
+                responsive: false,
+                plugins: {
+
+                }
+            }
+        });
+    </script>
+
+</body>
 </html>
