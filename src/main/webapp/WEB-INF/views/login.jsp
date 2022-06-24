@@ -107,7 +107,7 @@
             var form = document.createElement("form");
             var formData = $('form').serialize();
             form.setAttribute("method", "POST");
-            form.setAttribute("action", "/");
+            form.setAttribute("action", "/index");
             document.body.appendChild(form);
             form.submit();
 
