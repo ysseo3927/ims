@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-//@Configuration    우선 db없이 실행
+@Configuration
 public class QuerydslConfig {
 
     @PersistenceContext
