@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class ImsApplication {
 
 	public static void main(String[] args) {
-		//
+		//1
 		SpringApplication.run(ImsApplication.class, args);
 	}
 
