@@ -54,12 +54,44 @@
 
     <script>
 
+        /* 상단 우측 시계 */
+        function showClock() {
+            var currentDate=new Date();
+            var divClock=document.getElementById("clock");
+            var month = currentDate.getMonth()+1;
+            var date = currentDate.getDate();
+            var hours = currentDate.getHours();
+            var minutes = currentDate.getMinutes();
+            var seconds = currentDate.getSeconds();
+
+            if(currentDate.getMonth()+1 < 10){
+                month = "0" + (currentDate.getMonth()+1);
+            }
+            if(currentDate.getDate() < 10){
+                date = "0" + (currentDate.getDate());
+            }
+            if(currentDate.getHours() < 10){
+                hours = "0" + (currentDate.getHours());
+            }
+            if(currentDate.getMinutes() < 10){
+                minutes = "0" + currentDate.getMinutes();
+            }
+            if(currentDate.getSeconds() < 10){
+                seconds = "0" + currentDate.getSeconds();
+            }
+            var msg = currentDate.getFullYear() + "-" + month + "-" + date + " " +  hours + ":" + minutes + ":" + seconds;
+
+            divClock.innerText=msg;
+
+            setTimeout(showClock,1000);
+        }
+
         function goIndex(){
 
             var form = document.createElement("form");
             var formData = $('form').serialize();
             form.setAttribute("method", "POST");
-            form.setAttribute("action", "/");
+            form.setAttribute("action", "/index");
             document.body.appendChild(form);
             form.submit();
 
@@ -108,8 +140,14 @@
 
 </head>
 
-<body id="page-top">
-
+<body id="page-top" onload="showClock();">
+<%
+    response.setHeader("Cache-Control","no-store");
+    response.setHeader("Pragma","no-cache");
+    response.setDateHeader("Expires",0);
+    if (request.getProtocol().equals("HTTP/1.1"))
+        response.setHeader("Cache-Control", "no-cache");
+%>
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -120,8 +158,8 @@
 
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.jsp">
-            <img class="sidebar-card-illustration mb-2" style="padding-left:265px;padding-top:15px;" src="/resources/img/logo.png" alt="...">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center"  href="#" onclick="goIndex()">
+            <img class="sidebar-card-illustration mb-2" style="padding-left:265px;padding-top:15px;" src="/resources/img/logo.png" alt="서울 지하철 이오나이저 모니터링 시스템">
             <div class="sidebar-brand-text mx-3"></div>
         </a>
 
@@ -393,9 +431,9 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-white large">2022-06-15 월요일 11:20:35</span>
+                            <b><div id="clock" class="mr-2 d-none d-lg-inline text-white large"></div></b>
                             <div class="topbar-divider d-none d-sm-block"></div>
-                            <span class="mr-2 d-none d-lg-inline text-white large">　홍길동 | 관리자</span>
+                            <span class="mr-2 d-none d-lg-inline text-white large">　<b>${member.memberId}</b> 님 접속 | ${member.nickname}</span>
                             <img class="img-profile rounded-circle"
                                  src="/resources/img/undraw_profile.svg">
                         </a>

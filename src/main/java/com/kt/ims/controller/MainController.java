@@ -10,11 +10,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
-    @GetMapping("/")
-    public String login() {
-        return "login";
-    }
-
 
     @PostMapping("/index")
     public String getMain(Model model, HttpServletRequest servletRequest, HttpSession httpSession) {

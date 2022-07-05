@@ -25,7 +25,13 @@
 </head>
 
 <body class="bg-gradient-primary">
-
+<%
+    response.setHeader("Cache-Control","no-store");
+    response.setHeader("Pragma","no-cache");
+    response.setDateHeader("Expires",0);
+    if (request.getProtocol().equals("HTTP/1.1"))
+        response.setHeader("Cache-Control", "no-cache");
+%>
     <div class="container">
 
         <!-- Outer Row -->
@@ -46,13 +52,12 @@
                                     </div>
                                     <form class="user">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="아이디">
+                                            <input type="text" class="form-control form-control-user"
+                                                id="id" placeholder="아이디">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="비밀번호">
+                                                id="password" placeholder="비밀번호">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -102,7 +107,63 @@
     <!-- Custom scripts for all pages-->
     <script src="/resources/js/sb-admin-2.min.js"></script>
     <script>
-        function login(){
+
+
+        $(document).ready(function(){
+            $('input[name="id"]').focus();
+        });
+
+        $(document).keyup(function(e) {
+            // focus 되고 enter눌렀을 경우
+            if ($("#password").is(":focus") && e.key == "Enter") {
+                login();
+            }
+        });
+
+        function login() {
+
+            var id = $("#id").val();
+            var password = $("#password").val();
+            if(id.trim() == ""){
+                alert("아이디 입력해주세요");
+                return;
+            }
+
+            if(password.trim() == ""){
+                alert("비밀번호를 입력해주세요");
+                return;
+            }
+            var sendData = {"id":id,"password":password}
+
+            $.ajax({
+                url:'/login/check',
+                method : 'POST',
+                data: JSON.stringify(sendData),
+                contentType : 'application/json; charset=UTF-8',
+                dataType : 'text',
+                success :function(result){
+                    var obj = JSON.parse(result);
+                    var resultValue = obj.result;
+
+                    if(resultValue =="success"){
+                        callback(result);
+
+                    }else{
+                        alert("아이디 또는 비밀번호를 확인해주세요");
+                        $('input[name="id"]').focus();
+                        return;
+                    }
+                },
+                error:function(error){
+                    alert("오류가 발생했습니다 : "+error);
+                    $('input[name="id"]').focus();
+                    return;
+                }
+
+            })
+        }
+
+        function callback(result) {
 
             var form = document.createElement("form");
             var formData = $('form').serialize();
@@ -110,7 +171,6 @@
             form.setAttribute("action", "/index");
             document.body.appendChild(form);
             form.submit();
-
         }
 
     </script>
