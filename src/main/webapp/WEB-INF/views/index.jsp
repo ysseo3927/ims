@@ -112,7 +112,7 @@
             padding-left:10px;
         }
         .form-switch {
-            padding-left: 57.5em;
+            padding-left: 48.5em;
         }
         .form-switch .form-check-input {
             width: 2em;
@@ -206,7 +206,7 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#" onclick="goIndex()">
-                <img class="sidebar-card-illustration mb-2" style="padding-left:265px;padding-top:15px;" src="/resources/img/logo.png" alt="서울 지하철 이오나이저 모니터링 시스템">
+                <img class="sidebar-card-illustration mb-2" style="padding-left:265px;padding-top:5px;" src="/resources/img/logo.png" alt="서울 지하철 이오나이저 모니터링 시스템">
                 <div class="sidebar-brand-text mx-3"></div>
             </a>
 
@@ -236,18 +236,22 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="#" onclick="goLog()">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>환경센서 로그</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="#" onclick="goStat()">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>통계관리</span>
                 </a>
             </li>
+
+            <c:set var="memberId" value="${member.memberId}" />
+
+            <c:if test="${memberId eq 'admin'}">
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -259,40 +263,27 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>설정</span>
                 </a>
-                <!--
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.jsp">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-                -->
             </li>
+            </c:if>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
+
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
-                <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
             <!-- Sidebar Message -->
             <div class="sidebar-card d-none d-lg-flex">
-                <img class="sidebar-card-illustration mb-2" src="/resources/img/undraw_rocket.svg" alt="...">
-                <p class="text-center mb-2"><strong>IMS</strong>는 서울지하철의 미세먼지,이산화탄소 등 대기질 상태 현황 정보를 실시간으로 제공합니다.</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+                <img class="sidebar-card-illustration mb-2" src="/resources/img/subway_icon.png" width="50px" height="50px" alt="...">
+                <p class="text-center mb-2">이 시스템은 서울 지하철의 미세먼지, 온/습도, 이산화탄소 등 대기질 상태 현황 정보를 실시간으로 제공합니다.</p>
+                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro"><i class="fas fa-download"></i>매뉴얼 다운로드</a>
             </div>
 
         </ul>
@@ -525,6 +516,8 @@
                         </div>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
+                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 스크린샷 저장</a>
                     </div>
                     <hr>
                     <!-- 네비게이션 시작 -->
@@ -583,7 +576,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary ">전체 노선 평균 통합 공기질 지수</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">전체 노선 평균 통합 공기질 지수</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1"
@@ -620,7 +613,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">노선별 평균 통합 공기질 지수</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">노선별 평균 통합 공기질 지수</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink2"
@@ -653,7 +646,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">시간대별 전체 노선 평균 통합 공기질 지수</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">시간대별 전체 노선 평균 통합 공기질 지수</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink3"
@@ -734,7 +727,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">통합 공기질 지수</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">통합 공기질 지수</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink4"
@@ -767,7 +760,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">미세먼지 농도 (GP10 / ㎍/㎥) </h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">미세먼지 농도 (GP10 / ㎍/㎥) </h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink5"
@@ -800,7 +793,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">초미세먼지 농도 (GP2.5 / ㎍/㎥)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">초미세먼지 농도 (GP2.5 / ㎍/㎥)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink6"
@@ -834,7 +827,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">극초미세먼지 농도 (GP1.0 / ㎍/㎥)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">극초미세먼지 농도 (GP1.0 / ㎍/㎥)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink7"
@@ -872,7 +865,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">TVOC (ppm)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">TVOC (ppm)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink8"
@@ -905,7 +898,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">이산화탄소 (ppm)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">이산화탄소 (ppm)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink9"
@@ -938,7 +931,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">온도 (℃)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">온도 (℃)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink10"
@@ -972,7 +965,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">습도 (%RH)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">습도 (%RH)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink11"
@@ -1083,7 +1076,7 @@
                 <div class="modal-body">로그아웃하시겠습니까?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="login.jsp">로그아웃</a>
+                    <a class="btn btn-primary" href="#" onclick="goLogin()">로그아웃</a>
                 </div>
             </div>
         </div>
@@ -1112,6 +1105,17 @@
 
     <script>
 
+        function goLogin(){
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "GET");
+            form.setAttribute("action", "/");
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
         function goIndex(){
 
             var form = document.createElement("form");
@@ -1134,6 +1138,41 @@
 
         }
 
+
+        function goLog(){
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/log");
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
+
+        function goStat(){
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/stat");
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
+
+        function goConfig(){
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/config");
+            document.body.appendChild(form);
+            form.submit();
+
+        }
     </script>
 
     <script>
@@ -1379,7 +1418,7 @@
                 datasets: [
                     {
                         label: "노선",
-                        /* backgroundColor: ["#92d14f","#00af50","#92d14f","#ffc000","#ffff01","#00af50","#ffff01","#c00000","#92d14f","#00af50","#00af50"], */
+                        backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                         data: [235,270,210,118,140,250,150,50,190,250,220]
                     }
                 ]
@@ -1402,8 +1441,8 @@
                         color: 'black',
                         backgroundColor: 'white',
                         borderColor:'black',
-                        borderWidth:2,
-                        borderRadius:6,
+                        borderWidth:1,
+                        borderRadius:5,
                         font: {
                             weight: 'bold',
                             lineHeight: 1.0
@@ -1411,7 +1450,7 @@
                         padding :{
                             bottom : '0'
                         }
-                }
+                    }
                 }
             }
         });
@@ -1421,12 +1460,9 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,200,140,230]
-                }, {
-                    type: 'line',
-                    label: 'Line Dataset',
-                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230],
                 }],
                 labels: ["05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
             },
@@ -1448,8 +1484,8 @@
                         color: 'black',
                         backgroundColor: 'white',
                         borderColor:'black',
-                        borderWidth:2,
-                        borderRadius:6,
+                        borderWidth:1,
+                        borderRadius:5,
                         font: {
                             weight: 'bold',
                             lineHeight: 1.0
@@ -1468,7 +1504,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1486,6 +1523,7 @@
                 responsive: false,
                 plugins: {
                     datalabels: {
+                        color: 'white'
                     }
                 }
             }
@@ -1497,7 +1535,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1515,6 +1554,7 @@
                 responsive: false,
                 plugins: {
                     datalabels: {
+                        color: 'white'
                     }
                 }
             }
@@ -1526,7 +1566,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1544,6 +1585,7 @@
                 responsive: false,
                 plugins: {
                     datalabels: {
+                        color: 'white'
                     }
                 }
             }
@@ -1555,7 +1597,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1573,6 +1616,7 @@
                 responsive: false,
                 plugins: {
                     datalabels: {
+                        color: 'white'
                     }
                 }
             }
@@ -1584,7 +1628,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1602,6 +1647,7 @@
                 responsive: false,
                 plugins: {
                     datalabels: {
+                        color: 'white'
                     }
                 }
             }
@@ -1613,7 +1659,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1631,6 +1678,7 @@
                 responsive: false,
                 plugins: {
                     datalabels: {
+                        color: 'white'
                     }
                 }
             }
@@ -1642,7 +1690,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1659,6 +1708,9 @@
                 },
                 responsive: false,
                 plugins: {
+                    datalabels: {
+                        color: 'white'
+                    }
                 }
             }
         });
@@ -1670,7 +1722,8 @@
             data: {
                 datasets: [{
                     type: 'bar',
-                    label: 'Bar Dataset',
+                    label: '노선',
+                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
                     data: [235,270,210,118,140,250,150,50,190,250,220]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
@@ -1687,7 +1740,9 @@
                 },
                 responsive: false,
                 plugins: {
-
+                    datalabels: {
+                        color: 'white'
+                    }
                 }
             }
         });

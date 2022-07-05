@@ -125,7 +125,7 @@
             var id = $("#id").val();
             var password = $("#password").val();
             if(id.trim() == ""){
-                alert("아이디 입력해주세요");
+                alert("아이디를 입력해주세요");
                 return;
             }
 

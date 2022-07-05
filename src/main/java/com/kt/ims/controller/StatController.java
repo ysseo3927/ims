@@ -9,16 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class MonitoringController {
+public class StatController {
 
-    @PostMapping("/monitoring")
-    public String getMonitoring(Model model, HttpServletRequest servletRequest, HttpSession httpSession) {
+    @PostMapping("/stat")
+    public String getMain(Model model, HttpServletRequest servletRequest, HttpSession httpSession) {
         ImsMember member = (ImsMember)httpSession.getAttribute("member");
 
         if(member == null){
             return "login";
         }
 
-        return "monitoring";
+        return "stat";
     }
+
 }

@@ -237,7 +237,7 @@
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <li class="nav-item">
             <a class="nav-link" href="#" onclick="goMonitoring()">
                 <i class="fas fa-fw fa-cog"></i>
                 <span>모니터링</span>
@@ -245,7 +245,7 @@
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
+        <li class="nav-item active">
             <a class="nav-link" href="#" onclick="goLog()">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>환경센서 로그</span>
@@ -519,7 +519,7 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h4 mb-0" style="color:#000">실시간 단말 모니터링</h1>
+                <h1 class="h4 mb-0" style="color:#000">환경 센서 로그</h1>
                 <hr>
                 <!--
                 <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
@@ -529,7 +529,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">단말 수신 데이터</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">환경 센서 로그 데이터</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" style="overflow-x:visible">

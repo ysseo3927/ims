@@ -44,7 +44,7 @@ public class LoginController {
 
             HttpSession session = httpServletRequest.getSession();
 
-            session.setMaxInactiveInterval(1800);
+            session.setMaxInactiveInterval(600);
             session.setAttribute("member", member);
 
         }else{
