@@ -43,7 +43,7 @@
 
     <script>
         const columnDefs = [
-            { field: "No", sortable: false, colSpan: params => params.data.No === "전노선 실시간 평균 값" ? 10 : 0, cellClass: "grid-cell-centered-and-bold"},
+            { field: "No", sortable: false, colSpan: params => params.data.No === "전 노선 실시간 평균 값" ? 10 : 0, cellClass: "grid-cell-centered-and-bold"},
             { field: "노선명" , sortable: true},
             { field: "차량번호" , sortable: true},
             { field: "객차번호" , sortable: true},
@@ -115,7 +115,7 @@
 
             gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
 
-            gridOptions.api.setPinnedTopRowData([{ No: "전노선 실시간 평균 값", 노선명: "9호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""}]);
+            gridOptions.api.setPinnedTopRowData([{ No: "전 노선 실시간 평균 값", 노선명: "9호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""}]);
 
         });
 
@@ -152,7 +152,7 @@
 
                 $("#myGrid").css("height","780px");
                 $('.sidebar .collapse').collapse('hide');
-                $("#controlView").text("-화면 축소");
+                $("#controlView").text("- 화면 축소");
 
                 var div = document.getElementById('sideDiscription');
                 div.style.visibility = "hidden";
@@ -316,7 +316,7 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item active">
             <a class="nav-link" href="#" onclick="goMonitoring()">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-laptop"></i>
                 <span>모니터링</span>
             </a>
         </li>
@@ -331,7 +331,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
-                <i class="fas fa-fw fa-wrench"></i>
+                <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
@@ -352,11 +352,10 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
+                <i class="fas fa-fw fa-cog"></i>
                 <span>설정</span>
             </a>
         </li>
-
         </c:if>
 
         <!-- Divider -->
@@ -495,7 +494,7 @@
                                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                             class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
                                     <a id="controlView" href="#" onclick="addBottomGridArea()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                            class="fas fa-sm text-white-50"></i>+화면 확장</a>
+                                            class="fas fa-sm text-white-50"></i>+ 화면 확장</a>
                                 </div>
                             </div>
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>

@@ -239,7 +239,7 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link" href="#" onclick="goMonitoring()">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-laptop"></i>
                 <span>모니터링</span>
             </a>
         </li>
@@ -254,7 +254,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
-                <i class="fas fa-fw fa-wrench"></i>
+                <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
@@ -275,7 +275,7 @@
         <li class="nav-item active">
             <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-folder"></i>
+                <i class="fas fa-fw fa-cog"></i>
                 <span>설정</span>
             </a>
         </li>
@@ -522,8 +522,25 @@
                 <h1 class="h4 mb-0" style="color:#000">설정</h1>
                 <hr>
 
-                <!-- 관리자 설정 페이지 컨텐츠 삽입 부분 -->
 
+                <!-- 관리자 설정 페이지 컨텐츠 삽입 부분 -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" aria-current="page" href="#account">계정 설정</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#system">시스템 설정</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="account">
+                        계정 설정입니다.
+                    </div>
+                    <div class="tab-pane fade" id="system">
+                        시스템 설정입니다.
+                    </div>
+                </div>
+                <!-- 관리자 설정 페이지 컨텐츠 삽입 완료 -->
             </div>
             <!-- /.container-fluid -->
 

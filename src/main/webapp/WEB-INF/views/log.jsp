@@ -321,7 +321,7 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
             <a class="nav-link" href="#" onclick="goMonitoring()">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-laptop"></i>
                 <span>모니터링</span>
             </a>
         </li>
@@ -336,7 +336,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
-                <i class="fas fa-fw fa-wrench"></i>
+                <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
@@ -357,11 +357,10 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>설정</span>
                 </a>
             </li>
-
         </c:if>
 
         <!-- Divider -->
