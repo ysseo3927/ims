@@ -481,11 +481,15 @@
                                     <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
                                     LTE#
                                     <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
-                                </div>
-                                <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
-                                    일시　
+                                    일시
                                     <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                     ~
+                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                </div>
+                                <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
+                                    차량번호
+                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                    객차번호
                                     <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                     한 페이지 당 데이터 수
                                     <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
