@@ -317,14 +317,14 @@
                 <span>환경센서 로그</span>
             </a>
         </li>
-
+<!--
         <li class="nav-item active">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
                 <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
-
+-->
         <c:set var="memberId" value="${member.memberId}" />
 
         <c:if test="${memberId eq 'admin'}">

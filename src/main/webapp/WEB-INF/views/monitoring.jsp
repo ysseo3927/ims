@@ -28,6 +28,140 @@
             font-weight: bold;
         }
     </style>
+
+
+    <style>
+        .chart-gauge {}
+        .chart-first {fill:#ea4335}
+        .chart-second {fill:#ffa800}
+        .chart-third {fill:#fbd505}
+        .chart-forth {fill: #34a853}
+        .needle,.needle-center {fill:#464A4F}
+        .form-check {
+            display: block;
+            min-height: 1.5rem;
+            padding-left: 1.5em;
+            margin-bottom: 0.125rem;
+        }
+        .form-check .form-check-input {
+            float: left;
+            margin-left: -1.5em;
+        }
+
+        .form-check-reverse {
+            padding-right: 1.5em;
+            padding-left: 0;
+            text-align: right;
+        }
+        .form-check-reverse .form-check-input {
+            float: right;
+            margin-right: -1.5em;
+            margin-left: 0;
+        }
+
+        .form-check-input {
+            width: 1em;
+            height: 1em;
+            margin-top: 0.25em;
+            vertical-align: top;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            border: 1px solid rgba(0, 0, 0, 0.25);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .form-check-input[type=checkbox] {
+            border-radius: 0.25em;
+        }
+        .form-check-input[type=radio] {
+            border-radius: 50%;
+        }
+        .form-check-input:active {
+            filter: brightness(90%);
+        }
+        .form-check-input:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .form-check-input:checked {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .form-check-input:checked[type=checkbox] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+        }
+        .form-check-input:checked[type=radio] {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+        }
+        .form-check-input[type=checkbox]:indeterminate {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
+        }
+        .form-check-input:disabled {
+            pointer-events: none;
+            filter: none;
+            opacity: 0.5;
+        }
+        .form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
+            cursor: default;
+            opacity: 0.5;
+            padding-top:20px;
+        }
+        .form-check-label{
+            padding-top:5px;
+            padding-left:10px;
+        }
+        .form-switch {
+            padding-left: 48.5em;
+        }
+        .form-switch .form-check-input {
+            width: 2em;
+            margin-left: -2.5em;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+            background-position: left center;
+            border-radius: 2em;
+            transition: background-position 0.15s ease-in-out;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .form-switch .form-check-input {
+                transition: none;
+            }
+        }
+        .form-switch .form-check-input:focus {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%2386b7fe'/%3e%3c/svg%3e");
+        }
+        .form-switch .form-check-input:checked {
+            background-position: right center;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+        }
+        .form-switch.form-check-reverse {
+            padding-right: 2.5em;
+            padding-left: 0;
+        }
+        .form-switch.form-check-reverse .form-check-input {
+            margin-right: -2.5em;
+            margin-left: 0;
+        }
+
+        .form-switch.form-switch-md {
+            /* margin-bottom: 1rem; */
+        }
+
+        .form-switch.form-switch-md .form-check-input {
+            height: 1.5rem;
+            width: calc(2rem + 0.75rem);
+            border-radius: 3rem;
+        }
+    </style>
+
     <!-- Bootstrap core JavaScript-->
     <script src="/resources/vendor/jquery/jquery.min.js"></script>
     <script src="/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -89,6 +223,17 @@
         ];
 
         // let the grid know which columns and what data to use
+
+
+
+        screen.width        // 화면(모니터 해상도)의 너비
+        screen.availWidth  // 모니터 화면의 작업 표시줄을 제외한 너비
+
+        screen.height      // 화면(모니터 해상도)의 높이
+        screen.availHeight // 모니터 화면의 작업 표시줄을 제외한 높이
+
+        //alert(screen.width);
+
         const gridOptions = {
             columnDefs: columnDefs,
             rowData: rowData,
@@ -98,7 +243,8 @@
             },
             sortable: true,
             pagination: true,
-            paginationPageSize: 100
+            paginationPageSize: 100,
+            //rowHeight: 20
             //paginationAutoPageSize: true
         };
 
@@ -328,14 +474,14 @@
                 <span>환경센서 로그</span>
             </a>
         </li>
-
+<!--
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
                 <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
-
+-->
 
         <c:set var="memberId" value="${member.memberId}" />
 
@@ -465,7 +611,11 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">단말 수신 데이터 현황</h6>
+                        <div style="float:left"><h6 class="m-0 font-weight-bold text-primary">단말 수신 데이터 현황</h6></div>
+                         <div style="padding-left:0px;float:right;display:inline-block" class="form-check form-switch form-switch-md">
+                            <label style="margin-right:40px;color:#5D5D5D;font-weight:bold" class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신(30초)　</label>
+                            <input style="margin-right:40px;" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" style="overflow-x:visible">

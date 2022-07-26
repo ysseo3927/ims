@@ -243,14 +243,14 @@
                     <span>환경센서 로그</span>
                 </a>
             </li>
-
+<!--
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" onclick="goStat()">
                     <i class="fas fa-fw fa-database"></i>
                     <span>통계관리</span>
                 </a>
             </li>
-
+-->
 
             <c:set var="memberId" value="${member.memberId}" />
 
@@ -513,12 +513,20 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-1" style="width:100%">
                         <div style="float:left;"><h1 class="h4 mb-0" style="color:black;">대기질 실시간 모니터링 현황</h1></div>
                         <div style="padding-left:0px;float:right;display:inline-block;" class="form-check form-switch form-switch-md">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                            <label class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신 ON/OFF 토글</label>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
-                            <a id="screenshot" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                    class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 스크린샷 저장</a>
+                            <label style="margin-right:40px;color:#5D5D5D;font-weight:bold" class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신 : </label>
+                            <input style="margin-right:40px;" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+
+                            <label class="form-check-label" style="color:#5D5D5D;font-weight:bold">집계 평균 시간 : </label>
+
+                            <label class="form-check-label" style="padding-left:0px;color:#5D5D5D;font-weight:bold" for="avg1hour">1시간</label>
+                            <input class="" type="radio" id="avg1hour" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" checked>
+                            <label class="form-check-label" style="color:#5D5D5D;padding-left:0px;font-weight:bold" for="avg24hour">24시간</label>
+                            <input class="" type="radio" id="avg24hour" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" >
+
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
+                            <a id="screenshot" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 스크린샷 저장</a>
                         </div>
                     </div>
                     <hr>
@@ -1453,7 +1461,8 @@
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"],
                 datasets: [
                     {
-                        backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                        backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
+
                         data: [235,270,210,118,140,250,150,50]
                     }
                 ]
@@ -1498,9 +1507,10 @@
                     type: 'line',
                     label: '노선',
                     barThickness: 5,
-                    backgroundColor: ["#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4"],
-                    borderColor: 'rgb(255, 95, 129)',
-                    data: [255,235,270,210,118,140,250,150,50,190,250,200,140,230,180,200,210,190,230,185,210]
+                    backgroundColor: 'rgb(0,82,164,0.3)',
+                    fill: true,
+                    borderColor: '#0052A4',
+                    data: [255,235,270,210,118,140,250,150,120,190,250,200,140,230,180,200,210,190,230,185,210]
                 }],
                 labels: ["04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00","18:00","19:00","20:00","21:00","22:00","23:00","24:00"]
             },
@@ -1554,7 +1564,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1596,7 +1606,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1638,7 +1648,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1680,7 +1690,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1722,7 +1732,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1764,7 +1774,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1806,7 +1816,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
@@ -1849,7 +1859,7 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
                     data: [235,270,210,118,140,250,150,50]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]

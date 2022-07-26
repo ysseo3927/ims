@@ -276,6 +276,13 @@
 
         }
 
+        function viewChart(){
+              var url = "/임시팝업";
+              var name = "그래프";
+              var option = "width = 900, height = 600, top = 300, left = 500, location = no"
+              window.open(url, name, option);
+        }
+
     </script>
 
 </head>
@@ -333,14 +340,14 @@
                 <span>환경센서 로그</span>
             </a>
         </li>
-
+<!--
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
                 <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
-
+-->
 
         <c:set var="memberId" value="${member.memberId}" />
 
@@ -481,16 +488,34 @@
                                     <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
                                     LTE#
                                     <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
-                                    일시
+                                    <!-- 일시
                                     <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                     ~
                                     <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                </div>
-                                <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
+                                    -->
+                                    노선명
+                                    <select type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                        <option value="ALL" selected>전체</option>
+                                        <option value="1">1호선</option>
+                                        <option value="2">2호선</option>
+                                        <option value="3">3호선</option>
+                                        <option value="4">4호선</option>
+                                        <option value="5">5호선</option>
+                                        <option value="6">6호선</option>
+                                        <option value="7">7호선</option>
+                                        <option value="8">8호선</option>
+                                    </select>
                                     차량번호
                                     <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                     객차번호
                                     <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                </div>
+                                <div style="padding-left:3px;padding-right:15px;padding-bottom:15px;">
+                                    　ION 상태
+                                    <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOn" checked></input>
+                                    <label for="ionStatusOn">ON</label>
+                                    <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOff"></input>
+                                    <label for="ionStatusOff" style="margin-right:15px;">OFF</label>
                                     한 페이지 당 데이터 수
                                     <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
                                         <option value="10">10</option>
@@ -506,6 +531,8 @@
                                             class="fas fa-sm text-white-50"></i>+화면 확장</a>
                                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                                             class="fas fa-download fa-sm text-white-50"></i> CSV파일 다운로드</a>
+                                    <a href="#" onclick="viewChart();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
+                                            class="fas fa-sm fa-file text-white-50"></i> 그래프 보기</a>
                                 </div>
                             </div>
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>

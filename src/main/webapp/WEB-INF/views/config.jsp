@@ -155,6 +155,14 @@
 
         }
 
+
+        function registUserPopup(){
+              var url = "/임시팝업";
+              var name = "회원등록";
+              var option = "width = 900, height = 600, top = 300, left = 500, location = no"
+              window.open(url, name, option);
+        }
+
     </script>
 
     <!-- ag grid -->
@@ -162,37 +170,31 @@
 
     <script>
         const columnDefs = [
-            { field: "No", sortable: false, colSpan: params => params.data.No === "전 노선 실시간 평균 값" ? 8 : (params.data.No === "계" ? 2 : 0), cellClass: "grid-cell-centered-and-bold"},
-            { field: "노선명" , sortable: true},
-            { field: "편성수" , sortable: true},
-            { field: "객차수" , sortable: true},
-            { field: "ION_M수" , sortable: true},
-            { field: "ION_S수" , sortable: true},
-            { field: "시스템_ON_OFF" , sortable: true},
-            { field: "ION_ON_OFF" , sortable: true},
-            { field: "공기질" , sortable: true},
-            { field: "미세먼지" , sortable: true},
-            { field: "초미세먼지" , sortable: true},
-            { field: "극초미세먼지" , sortable: true},
-            { field: "TVOC" , sortable: true},
-            { field: "이산화탄소" , sortable: true},
-            { field: "온도" , sortable: true},
-            { field: "습도" , sortable: true},
-            { field: "비고" , sortable: false}
+            { field: "No", sortable: true},
+            { field: "아이디" , sortable: true},
+            { field: "닉네임" , sortable: true},
+            { field: "이메일" , sortable: true},
+            { field: "등록일시" , sortable: true},
+            { field: "최종방문일시" , sortable: true},
+            { field: "휴면일시" , sortable: true},
+            { field: "탈퇴일시" , sortable: true},
+            { field: "비고" , sortable: true},
+            { field: "패스워드초기화" , sortable: true},
+            { field: "회원삭제" , sortable: true}
         ];
 
         // specify the data
         const rowData = [
-            { No: "1", 노선명: "1호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "2", 노선명: "2호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "3", 노선명: "3호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "4", 노선명: "4호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "5", 노선명: "5호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "6", 노선명: "6호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "7", 노선명: "7호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "8", 노선명: "8호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "9", 노선명: "신림선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
-            { No: "10", 노선명: "우이신설선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "1", 아이디: "admin", 닉네임: "관리자", 이메일:"ims_admin@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"관리자", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-01", 닉네임: "일반유저01", 이메일:"ims_user01@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-02", 닉네임: "일반유저02", 이메일:"ims_user02@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-03", 닉네임: "일반유저03", 이메일:"ims_user03@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-04", 닉네임: "일반유저04", 이메일:"ims_user04@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-05", 닉네임: "일반유저05", 이메일:"ims_user05@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-06", 닉네임: "일반유저06", 이메일:"ims_user06@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-07", 닉네임: "일반유저07", 이메일:"ims_user07@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-08", 닉네임: "일반유저08", 이메일:"ims_user08@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
+            { No: "1", 아이디: "ims-test-09", 닉네임: "일반유저09", 이메일:"ims_user09@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""}
         ];
 
         // let the grid know which columns and what data to use
@@ -221,9 +223,6 @@
             });
 
             gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
-
-            gridOptions.api.setPinnedTopRowData([{ No: "전 노선 실시간 평균 값", 노선명: "", 편성수: "", 객차수:"", ION_M수: "", ION_S수: "", 시스템_ON_OFF:"", ION_ON_OFF:"", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""}]);
-            gridOptions.api.setPinnedBottomRowData([{ No: "계", 노선명: "", 편성수: "555", 객차수:"3700", ION_M수: "7400", ION_S수: "51800", 시스템_ON_OFF:"", ION_ON_OFF:"", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""}]);
 
         });
 
@@ -284,14 +283,14 @@
                 <span>환경센서 로그</span>
             </a>
         </li>
-
+<!--
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" onclick="goStat()">
                 <i class="fas fa-fw fa-database"></i>
                 <span>통계관리</span>
             </a>
         </li>
-
+-->
 
         <c:set var="memberId" value="${member.memberId}" />
 
@@ -571,14 +570,12 @@
                             <!-- 테이블 위치 -->
                             <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
                                 <div style="padding:15px;">
-                                    IMEI　
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
-                                    LTE#
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
-                                    일시
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                    ~
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                    아이디
+                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
+                                    닉네임
+                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
+                                    이메일
+                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;font-weight:bold;width:160px;"></input>
                                 </div>
                                 <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
                                     한 페이지 당 데이터 수
@@ -592,6 +589,8 @@
                                             class="fas fa-search fa-sm text-white-50"></i>조회</a>
                                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                             class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
+                                    <a href="#" onclick="registUserPopup();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
+                                            class="fas fa-user fa- text-white-50"></i>회원 추가</a>
                                 </div>
                             </div>
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>
