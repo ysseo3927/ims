@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>서울지하철 이오나이저 모니터링 시스템 | 로그인</title>
+    <title>이오나이저 모니터링 시스템 | 로그인</title>
 
     <!-- Custom fonts for this template-->
     <link href="/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

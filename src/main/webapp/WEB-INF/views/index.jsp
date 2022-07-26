@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>이오나이저 모니터링 시스템 | 대시보드</title>
 
     <!-- Custom fonts for this template-->
     <link href="/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -1458,9 +1458,10 @@
             type: 'bar',
             data: {
                 datasets: [{
-                    type: 'bar',
+                    type: 'line',
                     label: '노선',
                     backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
+                    borderColor: 'rgb(255, 95, 129)',
                     data: [235,270,210,118,140,250,150,50,190,250,200,140,230]
                 }],
                 labels: ["05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
