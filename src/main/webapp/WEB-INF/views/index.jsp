@@ -155,6 +155,8 @@
     </style>
     <script>
 
+        var curDateTime;
+
         /* 상단 우측 시계 */
         function showClock() {
             var currentDate=new Date();
@@ -181,6 +183,7 @@
                 seconds = "0" + currentDate.getSeconds();
             }
             var msg = currentDate.getFullYear() + "-" + month + "-" + date + " " +  hours + ":" + minutes + ":" + seconds;
+            curDateTime = currentDate.getFullYear() + "" + month + "" + date + "" +  hours + "" + minutes + "" + seconds;
 
             divClock.innerText=msg;
 
@@ -504,19 +507,19 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <div id="content_area" class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-1">
-                        <h1 class="h4 mb-0" style="color:black;">대기질 실시간 모니터링 현황</h1>
-                        <div class="form-check form-switch form-switch-md">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-1" style="width:100%">
+                        <div style="float:left;"><h1 class="h4 mb-0" style="color:black;">대기질 실시간 모니터링 현황</h1></div>
+                        <div style="padding-left:0px;float:right;display:inline-block;" class="form-check form-switch form-switch-md">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
                             <label class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신 ON/OFF 토글</label>
-                        </div>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                 class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 스크린샷 저장</a>
+                            <a id="screenshot" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 스크린샷 저장</a>
+                        </div>
                     </div>
                     <hr>
                     <!-- 네비게이션 시작 -->
@@ -575,7 +578,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">전체 노선 평균 통합 공기질 지수</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">전 노선 평균 통합 공기질 지수</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1"
@@ -597,8 +600,8 @@
                                         <div class="card-body">
                                             <div class="chart-area">
                                                 <!-- <canvas id="all-line-now-inter-iaq-chart" style="width:250px;height:250px; -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></canvas>-->
-                                                <div style="text-align:center">
-                                                    <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="280px"; height="50px"; >
+                                                <div style="text-align:center;margin-bottom:10px;">
+                                                    <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="100%"; height="45px"; >
                                                 </div>
                                                 <div class="top-chart-1"></div>
                                             </div>
@@ -633,7 +636,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area">
-                                                <canvas id="top-chart-2" style="width:450px;height:250px;"></canvas>
+                                                <canvas id="top-chart-2" style="width:100%;height:100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -645,7 +648,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">시간대별 전체 노선 평균 통합 공기질 지수</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">시간대별 전 노선 평균 통합 공기질 지수</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink3"
@@ -666,7 +669,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area">
-                                                <canvas id="top-chart-3" style="width:600px;height:250px"></canvas>
+                                                <canvas id="top-chart-3" style="width:100%;height:100%"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -747,7 +750,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="middle-chart-1" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="middle-chart-1" style="width:100%;height:100%"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -759,7 +762,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">미세먼지 농도 (GP10 / ㎍/㎥) </h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">미세먼지 농도 (㎍/㎥) </h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink5"
@@ -780,7 +783,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="middle-chart-2" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="middle-chart-2" style="width:100%;height:100%"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -792,7 +795,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">초미세먼지 농도 (GP2.5 / ㎍/㎥)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">초미세먼지 농도 (㎍/㎥)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink6"
@@ -813,7 +816,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="middle-chart-3" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="middle-chart-3" style="width:100%;height:100%"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -826,7 +829,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">극초미세먼지 농도 (GP1.0 / ㎍/㎥)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">극초미세먼지 농도 (㎍/㎥)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink7"
@@ -847,7 +850,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="middle-chart-4" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="middle-chart-4" style="width:100%;height:100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -885,7 +888,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="bottom-chart-1" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="bottom-chart-1" style="width:100%;height:100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -918,7 +921,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="bottom-chart-2" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="bottom-chart-2" style="width:100%;height:100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -951,7 +954,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="bottom-chart-3" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="bottom-chart-3" style="width:100%;height:100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -985,7 +988,7 @@
                                         <!-- Card Body -->
                                         <div class="card-body">
                                             <div class="chart-area" style="height:200px";>
-                                                <canvas id="bottom-chart-4" style="width:330px;height:200px;"></canvas>
+                                                <canvas id="bottom-chart-4" style="width:100%;height:100%;"></canvas>
                                             </div>
                                         </div>
                                     </div>
@@ -1102,6 +1105,9 @@
     <!-- d3 차트 게이지 -->
     <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
 
+    <!-- 이미지 캡쳐 플러그인 -->
+    <script type="text/javascript" src="/resources/js/html2canvas.js"></script>
+
     <script>
 
         function goLogin(){
@@ -1174,6 +1180,37 @@
         }
     </script>
 
+    <script language="Javascript">
+        $(function(){
+
+            $('#screenshot').click(function() {
+
+
+                let scrollHeight = Math.max(
+                    document.body.scrollHeight, document.documentElement.scrollHeight,
+                    document.body.offsetHeight, document.documentElement.offsetHeight,
+                    document.body.clientHeight, document.documentElement.clientHeight
+                );
+
+                //$('#content_area').attr('style', "height:"+(scrollHeight+500)+"px;");
+
+                html2canvas($("#content_area")[0]).then((canvas) => {
+
+                    var image = canvas.toDataURL();
+                    var link = document.createElement("a");
+                    link.download = curDateTime+"screenshot.png";
+                    link.href = image;
+                    document.body.appendChild(link);
+                    link.click();
+
+                });
+
+                //$('#content_area').attr('style', "height:100%;");
+
+            });
+        });
+    </script>
+
     <script>
 
 
@@ -1181,7 +1218,7 @@
         // D3.js Gauge Chart //
         ---------------------*/
         // Data which need to be fetched
-        var name = "350";
+        var name = "";  //350 수치 보여졌던 부분
         var value = 200;    // My Desired Value To Show
         var gaugeMaxValue = 300;
 
@@ -1413,20 +1450,17 @@
         new Chart(document.getElementById("top-chart-2"), {
             type: 'bar',
             data: {
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"],
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"],
                 datasets: [
                     {
-                        label: "노선",
-                        backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                        data: [235,270,210,118,140,250,150,50,190,250,220]
+                        backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                        data: [235,270,210,118,140,250,150,50]
                     }
                 ]
             },
             options: {
                 legend: {
-                    display: true,
-                    position: "bottom",
-                    align: "center"
+                    display: false
                 },
                 title: {
                     display: false,
@@ -1441,7 +1475,7 @@
                         backgroundColor: 'white',
                         borderColor:'black',
                         borderWidth:1,
-                        borderRadius:5,
+                        borderRadius:1,
                         font: {
                             weight: 'bold',
                             lineHeight: 1.0
@@ -1449,6 +1483,9 @@
                         padding :{
                             bottom : '0'
                         }
+                    },
+                    legend: {
+                        display: false
                     }
                 }
             }
@@ -1460,15 +1497,16 @@
                 datasets: [{
                     type: 'line',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
+                    barThickness: 5,
+                    backgroundColor: ["#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4","#0052A4"],
                     borderColor: 'rgb(255, 95, 129)',
-                    data: [235,270,210,118,140,250,150,50,190,250,200,140,230]
+                    data: [255,235,270,210,118,140,250,150,50,190,250,200,140,230,180,200,210,190,230,185,210]
                 }],
-                labels: ["05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"]
+                labels: ["04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00","18:00","19:00","20:00","21:00","22:00","23:00","24:00"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1483,15 +1521,26 @@
                         align:'start',
                         color: 'black',
                         backgroundColor: 'white',
-                        borderColor:'black',
+                        borderColor:'#0052A4',
                         borderWidth:1,
-                        borderRadius:5,
+                        borderRadius:1,
                         font: {
                             weight: 'bold',
                             lineHeight: 1.0
                         },
                         padding :{
                             bottom : '0'
+                        }
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
                         }
                     }
                 }
@@ -1505,14 +1554,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1524,6 +1573,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1536,14 +1596,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1555,6 +1615,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1567,14 +1638,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1586,6 +1657,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1598,14 +1680,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1617,6 +1699,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1629,14 +1722,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1648,6 +1741,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1660,14 +1764,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1679,6 +1783,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1691,14 +1806,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1710,6 +1825,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }
@@ -1723,14 +1849,14 @@
                 datasets: [{
                     type: 'bar',
                     label: '노선',
-                    backgroundColor: ["#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb","#5278cb"],
-                    data: [235,270,210,118,140,250,150,50,190,250,220]
+                    backgroundColor: ["#0052A4","#009D3E","#EF7C1C","#00A5DE","#996CAC","#CD7C2F","#747F00","#EA545D"],
+                    data: [235,270,210,118,140,250,150,50]
                 }],
-                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선", "9호선", "신림선", "우이신설선"]
+                labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
             options: {
                 legend: {
-                    display: true,
+                    display: false,
                     position: "bottom",
                     align: "center"
                 },
@@ -1742,6 +1868,17 @@
                 plugins: {
                     datalabels: {
                         color: 'white'
+                    },
+                    legend: {
+                        display: false
+                    }
+                },
+                scales : {
+                    xAxis: {
+                        ticks:{
+                            autoSkip:false,
+                            fontSize : 14
+                        }
                     }
                 }
             }

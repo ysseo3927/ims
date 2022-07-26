@@ -157,44 +157,77 @@
 
     </script>
 
-    <!-- datatables -->
-    <script>
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                "language": {
-                    "decimal":        "",
-                    "emptyTable":     "조회된 데이터가 없습니다",
-                    "info":           "_END_ 페이지 중 _START_ 페이지 (총 _TOTAL_ 개 데이터)",
-                    "infoEmpty":      "0 페이지 중 0 페이지 (총 0 개 데이터)",
-                    "infoFiltered":   "(filtered from _MAX_ total entries)",
-                    "infoPostFix":    "",
-                    "thousands":      ",",
-                    "lengthMenu":     "_MENU_ 개씩 보기",
-                    "loadingRecords": "조회중...",
-                    "processing":     "",
-                    "search":         "검색어:",
-                    "zeroRecords":    "조회된 데이터가 없습니다",
-                    "paginate": {
-                        "first":      "첫 페이지",
-                        "last":       "마지막 페이지",
-                        "next":       "다음 페이지",
-                        "previous":   "이전 페이지"
-                    },
-                    "aria": {
-                        "sortAscending":  ": activate to sort column ascending",
-                        "sortDescending": ": activate to sort column descending"
-                    }
-                },
-                columnDefs: [
-                    {
-                        targets: -1,
-                        className: 'dt-body-right'
-                    }
-                ]
-            });
-        });
-    </script>
+    <!-- ag grid -->
+    <script src="/resources/vendor/ag-grid/ag-grid-community.min.js"></script>
 
+    <script>
+        const columnDefs = [
+            { field: "No", sortable: false, colSpan: params => params.data.No === "전 노선 실시간 평균 값" ? 8 : (params.data.No === "계" ? 2 : 0), cellClass: "grid-cell-centered-and-bold"},
+            { field: "노선명" , sortable: true},
+            { field: "편성수" , sortable: true},
+            { field: "객차수" , sortable: true},
+            { field: "ION_M수" , sortable: true},
+            { field: "ION_S수" , sortable: true},
+            { field: "시스템_ON_OFF" , sortable: true},
+            { field: "ION_ON_OFF" , sortable: true},
+            { field: "공기질" , sortable: true},
+            { field: "미세먼지" , sortable: true},
+            { field: "초미세먼지" , sortable: true},
+            { field: "극초미세먼지" , sortable: true},
+            { field: "TVOC" , sortable: true},
+            { field: "이산화탄소" , sortable: true},
+            { field: "온도" , sortable: true},
+            { field: "습도" , sortable: true},
+            { field: "비고" , sortable: false}
+        ];
+
+        // specify the data
+        const rowData = [
+            { No: "1", 노선명: "1호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "2", 노선명: "2호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "3", 노선명: "3호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "4", 노선명: "4호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "5", 노선명: "5호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "6", 노선명: "6호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "7", 노선명: "7호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "8", 노선명: "8호선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "9", 노선명: "신림선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+            { No: "10", 노선명: "우이신설선", 편성수: "16", 객차수:"100", ION_M수: "200", ION_S수: "1400", 시스템_ON_OFF:"150/50", ION_ON_OFF:"140/10", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""},
+        ];
+
+        // let the grid know which columns and what data to use
+        const gridOptions = {
+            columnDefs: columnDefs,
+            rowData: rowData,
+            debounceVerticalScrollbar: true,
+            defaultColDef: {
+                resizable: true,
+            },
+            sortable: true,
+            pagination: true,
+            paginationPageSize: 100
+            //paginationAutoPageSize: true
+        };
+
+        // setup the grid after the page has finished loading
+        document.addEventListener('DOMContentLoaded', () => {
+            const gridDiv = document.querySelector('#myGrid');
+            new agGrid.Grid(gridDiv, gridOptions);
+
+
+            const allColumnIds = [];
+            gridOptions.columnApi.getColumns().forEach((column) => {
+                allColumnIds.push(column.getId());
+            });
+
+            gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
+
+            gridOptions.api.setPinnedTopRowData([{ No: "전 노선 실시간 평균 값", 노선명: "", 편성수: "", 객차수:"", ION_M수: "", ION_S수: "", 시스템_ON_OFF:"", ION_ON_OFF:"", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""}]);
+            gridOptions.api.setPinnedBottomRowData([{ No: "계", 노선명: "", 편성수: "555", 객차수:"3700", ION_M수: "7400", ION_S수: "51800", 시스템_ON_OFF:"", ION_ON_OFF:"", 공기질:"168.47", 미세먼지:"23", 초미세먼지:"8", 극초미세먼지:"6", TVOC:"3.46", 이산화탄소:"1530.16", 온도:"22.16", 습도:"31.97", 비고:""}]);
+
+        });
+
+    </script>
 
 </head>
 
@@ -534,7 +567,35 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="account">
-                        계정 설정입니다.
+                        <div class="table-responsive" style="overflow-x:visible">
+                            <!-- 테이블 위치 -->
+                            <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
+                                <div style="padding:15px;">
+                                    IMEI　
+                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
+                                    LTE#
+                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
+                                    일시
+                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                    ~
+                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                </div>
+                                <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
+                                    한 페이지 당 데이터 수
+                                    <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                        <option value="10">10</option>
+                                        <option value="100" selected>100</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                    </select>
+                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
+                                            class="fas fa-search fa-sm text-white-50"></i>조회</a>
+                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                            class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
+                                </div>
+                            </div>
+                            <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="system">
                         시스템 설정입니다.
