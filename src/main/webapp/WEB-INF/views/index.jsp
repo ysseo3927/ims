@@ -519,9 +519,9 @@
                             <label class="form-check-label" style="color:#5D5D5D;font-weight:bold">집계 평균 시간 : </label>
 
                             <label class="form-check-label" style="padding-left:0px;color:#5D5D5D;font-weight:bold" for="avg1hour">1시간</label>
-                            <input class="" type="radio" id="avg1hour" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" checked>
+                            <input class="" type="radio" id="avg1hour" value="01" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" checked>
                             <label class="form-check-label" style="color:#5D5D5D;padding-left:0px;font-weight:bold" for="avg24hour">24시간</label>
-                            <input class="" type="radio" id="avg24hour" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" >
+                            <input class="" type="radio" id="avg24hour" value="24" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" >
 
                             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
@@ -1190,6 +1190,60 @@
 
     <script language="Javascript">
         $(function(){
+            alert("* 현재 5초 주기 / 가상 데이터로 대시보드 테스트 중입니다");
+        //실시간 데이터 갱신
+
+            var sendData = {"refreshYn":"Y","avgCalcTime":"01"};
+
+            var timer = setInterval(
+                function () {
+                $.ajax({
+                    url: '/index/data/refresh',
+                    method: 'POST',
+                    async: true,
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'text',
+                    success: function (result) {
+                        var obj = JSON.parse(result);
+                        callback(obj);
+                    },
+                    error: function (error) {
+                        alert("데이터 갱신 중 오류가 발생했습니다 : " + error);
+                    }
+                });
+            }, 5000);
+
+            $('#flexSwitchCheckChecked').click(function() {
+                let toggle = document.getElementById("flexSwitchCheckChecked").checked;
+
+                if(!toggle){
+                    // 반복 중단
+                    clearInterval(timer);
+                    toggle = false;
+                }else{
+                    // 반복 재개(재시작)
+                    timer = setInterval(
+                        function () {
+                            $.ajax({
+                                url: '/index/data/refresh',
+                                method: 'POST',
+                                async: true,
+                                data: JSON.stringify(sendData),
+                                contentType: 'application/json; charset=UTF-8',
+                                dataType: 'text',
+                                success: function (result) {
+                                    var obj = JSON.parse(result);
+                                    callback(obj);
+                                },
+                                error: function (error) {
+                                    alert("데이터 갱신 중 오류가 발생했습니다 : " + error);
+                                }
+                            });
+                        }, 5000);
+                }
+            });
+
 
             $('#screenshot').click(function() {
 
@@ -1217,6 +1271,228 @@
 
             });
         });
+
+
+        function callback(obj){
+
+            //전 노선 평균 통합 공기질 지수
+            var dashboardDataAvgIaqAllLine = obj.dashboardData.dashboardDataAvgIaqAllLine;
+
+            //노선별 평균 통합 공기질 지수
+            var dashboardDataLineAvgIaqArray = new Array(7);
+            dashboardDataLineAvgIaqArray[0] = obj.dashboardData.dashboardDataLineAvgIaqDto.line1;
+            dashboardDataLineAvgIaqArray[1] = obj.dashboardData.dashboardDataLineAvgIaqDto.line2;
+            dashboardDataLineAvgIaqArray[2] = obj.dashboardData.dashboardDataLineAvgIaqDto.line3;
+            dashboardDataLineAvgIaqArray[3] = obj.dashboardData.dashboardDataLineAvgIaqDto.line4;
+            dashboardDataLineAvgIaqArray[4] = obj.dashboardData.dashboardDataLineAvgIaqDto.line5;
+            dashboardDataLineAvgIaqArray[5] = obj.dashboardData.dashboardDataLineAvgIaqDto.line6;
+            dashboardDataLineAvgIaqArray[6] = obj.dashboardData.dashboardDataLineAvgIaqDto.line7;
+            dashboardDataLineAvgIaqArray[7] = obj.dashboardData.dashboardDataLineAvgIaqDto.line8;
+
+            const topChart2Dataset = topChart2.data.datasets;
+            for (let idx = 0; idx < topChart2Dataset.length; idx++) {
+                const data = topChart2Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataLineAvgIaqArray[jdx];
+                }
+            }
+
+            //시간대별 전 노선 평균 통합 공기질 지수
+            var dashboardDataTimeAvgIaqArray = new Array(21);
+            dashboardDataTimeAvgIaqArray[0] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour4;
+            dashboardDataTimeAvgIaqArray[1] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour5;
+            dashboardDataTimeAvgIaqArray[2] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour6;
+            dashboardDataTimeAvgIaqArray[3] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour7;
+            dashboardDataTimeAvgIaqArray[4] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour8;
+            dashboardDataTimeAvgIaqArray[5] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour9;
+            dashboardDataTimeAvgIaqArray[6] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour10;
+            dashboardDataTimeAvgIaqArray[7] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour11;
+            dashboardDataTimeAvgIaqArray[8] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour12;
+            dashboardDataTimeAvgIaqArray[9] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour13;
+            dashboardDataTimeAvgIaqArray[10] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour14;
+            dashboardDataTimeAvgIaqArray[11] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour15;
+            dashboardDataTimeAvgIaqArray[12] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour16;
+            dashboardDataTimeAvgIaqArray[13] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour17;
+            dashboardDataTimeAvgIaqArray[14] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour18;
+            dashboardDataTimeAvgIaqArray[15] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour19;
+            dashboardDataTimeAvgIaqArray[16] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour20;
+            dashboardDataTimeAvgIaqArray[17] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour21;
+            dashboardDataTimeAvgIaqArray[18] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour22;
+            dashboardDataTimeAvgIaqArray[19] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour23;
+            dashboardDataTimeAvgIaqArray[20] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour24;
+
+            const topChart3Dataset = topChart3.data.datasets;
+            for (let idx = 0; idx < topChart3Dataset.length; idx++) {
+                const data = topChart3Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataTimeAvgIaqArray[jdx];
+                }
+            }
+
+            //통합 공기질 지수
+            var dashboardDataAvgIaqArray = new Array(7);
+            dashboardDataAvgIaqArray[0] = obj.dashboardData.dashboardDataAvgIaqDto.line1;
+            dashboardDataAvgIaqArray[1] = obj.dashboardData.dashboardDataAvgIaqDto.line2;
+            dashboardDataAvgIaqArray[2] = obj.dashboardData.dashboardDataAvgIaqDto.line3;
+            dashboardDataAvgIaqArray[3] = obj.dashboardData.dashboardDataAvgIaqDto.line4;
+            dashboardDataAvgIaqArray[4] = obj.dashboardData.dashboardDataAvgIaqDto.line5;
+            dashboardDataAvgIaqArray[5] = obj.dashboardData.dashboardDataAvgIaqDto.line6;
+            dashboardDataAvgIaqArray[6] = obj.dashboardData.dashboardDataAvgIaqDto.line7;
+            dashboardDataAvgIaqArray[7] = obj.dashboardData.dashboardDataAvgIaqDto.line8;
+
+            const topChart4Dataset = topChart4.data.datasets;
+            for (let idx = 0; idx < topChart4Dataset.length; idx++) {
+                const data = topChart4Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgIaqArray[jdx];
+                }
+            }
+
+            //미세먼지 농도
+            var dashboardDataAvgGp10Array = new Array(7);
+            dashboardDataAvgGp10Array[0] = obj.dashboardData.dashboardDataAvgGp10Dto.line1;
+            dashboardDataAvgGp10Array[1] = obj.dashboardData.dashboardDataAvgGp10Dto.line2;
+            dashboardDataAvgGp10Array[2] = obj.dashboardData.dashboardDataAvgGp10Dto.line3;
+            dashboardDataAvgGp10Array[3] = obj.dashboardData.dashboardDataAvgGp10Dto.line4;
+            dashboardDataAvgGp10Array[4] = obj.dashboardData.dashboardDataAvgGp10Dto.line5;
+            dashboardDataAvgGp10Array[5] = obj.dashboardData.dashboardDataAvgGp10Dto.line6;
+            dashboardDataAvgGp10Array[6] = obj.dashboardData.dashboardDataAvgGp10Dto.line7;
+            dashboardDataAvgGp10Array[7] = obj.dashboardData.dashboardDataAvgGp10Dto.line8;
+
+            const topChart5Dataset = topChart5.data.datasets;
+            for (let idx = 0; idx < topChart5Dataset.length; idx++) {
+                const data = topChart5Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgGp10Array[jdx];
+                }
+            }
+
+            //초미세먼지 농도
+            var dashboardDataAvgGp1_0Array = new Array(7);
+            dashboardDataAvgGp1_0Array[0] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line1;
+            dashboardDataAvgGp1_0Array[1] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line2;
+            dashboardDataAvgGp1_0Array[2] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line3;
+            dashboardDataAvgGp1_0Array[3] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line4;
+            dashboardDataAvgGp1_0Array[4] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line5;
+            dashboardDataAvgGp1_0Array[5] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line6;
+            dashboardDataAvgGp1_0Array[6] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line7;
+            dashboardDataAvgGp1_0Array[7] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line8;
+
+            const topChart6Dataset = topChart6.data.datasets;
+            for (let idx = 0; idx < topChart6Dataset.length; idx++) {
+                const data = topChart6Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgGp1_0Array[jdx];
+                }
+            }
+
+
+            //극초미세먼지 농도
+            var dashboardDataAvgGp2_5Array = new Array(7);
+            dashboardDataAvgGp2_5Array[0] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line1;
+            dashboardDataAvgGp2_5Array[1] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line2;
+            dashboardDataAvgGp2_5Array[2] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line3;
+            dashboardDataAvgGp2_5Array[3] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line4;
+            dashboardDataAvgGp2_5Array[4] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line5;
+            dashboardDataAvgGp2_5Array[5] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line6;
+            dashboardDataAvgGp2_5Array[6] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line7;
+            dashboardDataAvgGp2_5Array[7] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line8;
+
+            const topChart7Dataset = topChart7.data.datasets;
+            for (let idx = 0; idx < topChart7Dataset.length; idx++) {
+                const data = topChart7Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgGp2_5Array[jdx];
+                }
+            }
+
+            //TVOC
+            var dashboardDataAvgVocArray = new Array(7);
+            dashboardDataAvgVocArray[0] = obj.dashboardData.dashboardDataAvgVocDto.line1;
+            dashboardDataAvgVocArray[1] = obj.dashboardData.dashboardDataAvgVocDto.line2;
+            dashboardDataAvgVocArray[2] = obj.dashboardData.dashboardDataAvgVocDto.line3;
+            dashboardDataAvgVocArray[3] = obj.dashboardData.dashboardDataAvgVocDto.line4;
+            dashboardDataAvgVocArray[4] = obj.dashboardData.dashboardDataAvgVocDto.line5;
+            dashboardDataAvgVocArray[5] = obj.dashboardData.dashboardDataAvgVocDto.line6;
+            dashboardDataAvgVocArray[6] = obj.dashboardData.dashboardDataAvgVocDto.line7;
+            dashboardDataAvgVocArray[7] = obj.dashboardData.dashboardDataAvgVocDto.line8;
+
+            const topChart8Dataset = topChart8.data.datasets;
+            for (let idx = 0; idx < topChart8Dataset.length; idx++) {
+                const data = topChart8Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgVocArray[jdx];
+                }
+            }
+
+            //이산화탄소
+            var dashboardDataAvgCo2Array = new Array(7);
+            dashboardDataAvgCo2Array[0] = obj.dashboardData.dashboardDataAvgCo2Dto.line1;
+            dashboardDataAvgCo2Array[1] = obj.dashboardData.dashboardDataAvgCo2Dto.line2;
+            dashboardDataAvgCo2Array[2] = obj.dashboardData.dashboardDataAvgCo2Dto.line3;
+            dashboardDataAvgCo2Array[3] = obj.dashboardData.dashboardDataAvgCo2Dto.line4;
+            dashboardDataAvgCo2Array[4] = obj.dashboardData.dashboardDataAvgCo2Dto.line5;
+            dashboardDataAvgCo2Array[5] = obj.dashboardData.dashboardDataAvgCo2Dto.line6;
+            dashboardDataAvgCo2Array[6] = obj.dashboardData.dashboardDataAvgCo2Dto.line7;
+            dashboardDataAvgCo2Array[7] = obj.dashboardData.dashboardDataAvgCo2Dto.line8;
+
+            const topChart9Dataset = topChart9.data.datasets;
+            for (let idx = 0; idx < topChart9Dataset.length; idx++) {
+                const data = topChart9Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgCo2Array[jdx];
+                }
+            }
+
+            //온도
+            var dashboardDataAvgTempArray = new Array(7);
+            dashboardDataAvgTempArray[0] = obj.dashboardData.dashboardDataAvgTempDto.line1;
+            dashboardDataAvgTempArray[1] = obj.dashboardData.dashboardDataAvgTempDto.line2;
+            dashboardDataAvgTempArray[2] = obj.dashboardData.dashboardDataAvgTempDto.line3;
+            dashboardDataAvgTempArray[3] = obj.dashboardData.dashboardDataAvgTempDto.line4;
+            dashboardDataAvgTempArray[4] = obj.dashboardData.dashboardDataAvgTempDto.line5;
+            dashboardDataAvgTempArray[5] = obj.dashboardData.dashboardDataAvgTempDto.line6;
+            dashboardDataAvgTempArray[6] = obj.dashboardData.dashboardDataAvgTempDto.line7;
+            dashboardDataAvgTempArray[7] = obj.dashboardData.dashboardDataAvgTempDto.line8;
+
+            const topChart10Dataset = topChart10.data.datasets;
+            for (let idx = 0; idx < topChart10Dataset.length; idx++) {
+                const data = topChart10Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgTempArray[jdx];
+                }
+            }
+
+
+            //습도
+            var dashboardDataAvgHumiArray = new Array(7);
+            dashboardDataAvgHumiArray[0] = obj.dashboardData.dashboardDataAvgHumiDto.line1;
+            dashboardDataAvgHumiArray[1] = obj.dashboardData.dashboardDataAvgHumiDto.line2;
+            dashboardDataAvgHumiArray[2] = obj.dashboardData.dashboardDataAvgHumiDto.line3;
+            dashboardDataAvgHumiArray[3] = obj.dashboardData.dashboardDataAvgHumiDto.line4;
+            dashboardDataAvgHumiArray[4] = obj.dashboardData.dashboardDataAvgHumiDto.line5;
+            dashboardDataAvgHumiArray[5] = obj.dashboardData.dashboardDataAvgHumiDto.line6;
+            dashboardDataAvgHumiArray[6] = obj.dashboardData.dashboardDataAvgHumiDto.line7;
+            dashboardDataAvgHumiArray[7] = obj.dashboardData.dashboardDataAvgHumiDto.line8;
+
+            const topChart11Dataset = topChart11.data.datasets;
+            for (let idx = 0; idx < topChart11Dataset.length; idx++) {
+                const data = topChart11Dataset[idx].data;
+                for (let jdx = 0; jdx < data.length; jdx++) {
+                    data[jdx] = dashboardDataAvgHumiArray[jdx];
+                }
+            }
+            topChart2.update();
+            topChart3.update();
+            topChart4.update();
+            topChart5.update();
+            topChart6.update();
+            topChart7.update();
+            topChart8.update();
+            topChart9.update();
+            topChart10.update();
+            topChart11.update();
+        }
     </script>
 
     <script>
@@ -1455,7 +1731,7 @@
 
         Chart.register(ChartDataLabels);
 
-        new Chart(document.getElementById("top-chart-2"), {
+        var topChart2 = new Chart(document.getElementById("top-chart-2"), {
             type: 'bar',
             data: {
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"],
@@ -1500,7 +1776,7 @@
             }
         });
 
-        new Chart(document.getElementById("top-chart-3"), {
+        var topChart3 = new Chart(document.getElementById("top-chart-3"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1558,7 +1834,7 @@
         });
 
 
-        new Chart(document.getElementById("middle-chart-1"), {
+        var topChart4 = new Chart(document.getElementById("middle-chart-1"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1600,7 +1876,7 @@
         });
 
 
-        new Chart(document.getElementById("middle-chart-2"), {
+        var topChart5 = new Chart(document.getElementById("middle-chart-2"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1642,7 +1918,7 @@
         });
 
 
-        new Chart(document.getElementById("middle-chart-3"), {
+        var topChart6 = new Chart(document.getElementById("middle-chart-3"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1684,7 +1960,7 @@
         });
 
 
-        new Chart(document.getElementById("middle-chart-4"), {
+        var topChart7 = new Chart(document.getElementById("middle-chart-4"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1726,7 +2002,7 @@
         });
 
 
-        new Chart(document.getElementById("bottom-chart-1"), {
+        var topChart8 = new Chart(document.getElementById("bottom-chart-1"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1768,7 +2044,7 @@
         });
 
 
-        new Chart(document.getElementById("bottom-chart-2"), {
+        var topChart9 = new Chart(document.getElementById("bottom-chart-2"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1810,7 +2086,7 @@
         });
 
 
-        new Chart(document.getElementById("bottom-chart-3"), {
+        var topChart10 = new Chart(document.getElementById("bottom-chart-3"), {
             type: 'bar',
             data: {
                 datasets: [{
@@ -1853,7 +2129,7 @@
 
 
 
-        new Chart(document.getElementById("bottom-chart-4"), {
+        var topChart11 = new Chart(document.getElementById("bottom-chart-4"), {
             type: 'bar',
             data: {
                 datasets: [{
