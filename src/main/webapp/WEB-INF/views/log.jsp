@@ -277,10 +277,29 @@
         }
 
         function viewChart(){
-              var url = "/임시팝업";
-              var name = "그래프";
-              var option = "width = 900, height = 600, top = 300, left = 500, location = no"
-              window.open(url, name, option);
+
+            var availWidth = screen.availWidth  // 모니터 화면의 작업 표시줄을 제외한 너비
+            var availHeight =  screen.availHeight // 모니터 화면의 작업 표시줄을 제외한 높이
+
+            var popupWidth = 1700;
+            var popupHeight = 800;
+            var popupX = (window.screen.width / 2) - (popupWidth / 2);
+            var popupY= (window.screen.height / 2) - (popupHeight / 2);
+
+            var url = "/log_pop_graph";
+            var name = "그래프";
+              var option = "width = "+popupWidth+", height = "+popupHeight+", top = "+popupY+", left = "+popupX+", location = no"
+              //window.open(url, name, option);
+
+            var pop_title = "popupOpener" ;
+
+            window.open("", pop_title, option) ;
+
+            var frmData = document.frmData;
+            frmData.target = pop_title;
+            frmData.action = "graph";
+
+            frmData.submit() ;
         }
 
     </script>
@@ -295,6 +314,7 @@
     if (request.getProtocol().equals("HTTP/1.1"))
         response.setHeader("Cache-Control", "no-cache");
 %>
+
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -483,57 +503,59 @@
                         <div class="table-responsive" style="overflow-x:visible">
                             <!-- 테이블 위치 -->
                             <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
-                                <div style="padding:15px;">
-                                    IMEI　
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
-                                    LTE#
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
-                                    <!-- 일시
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                    ~
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                    -->
-                                    노선명
-                                    <select type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
-                                        <option value="ALL" selected>전체</option>
-                                        <option value="1">1호선</option>
-                                        <option value="2">2호선</option>
-                                        <option value="3">3호선</option>
-                                        <option value="4">4호선</option>
-                                        <option value="5">5호선</option>
-                                        <option value="6">6호선</option>
-                                        <option value="7">7호선</option>
-                                        <option value="8">8호선</option>
-                                    </select>
-                                    차량번호
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                    객차번호
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                </div>
-                                <div style="padding-left:3px;padding-right:15px;padding-bottom:15px;">
-                                    　ION 상태
-                                    <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOn" checked></input>
-                                    <label for="ionStatusOn">ON</label>
-                                    <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOff"></input>
-                                    <label for="ionStatusOff" style="margin-right:15px;">OFF</label>
-                                    한 페이지 당 데이터 수
-                                    <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
-                                        <option value="10">10</option>
-                                        <option value="100" selected>100</option>
-                                        <option value="500">500</option>
-                                        <option value="1000">1000</option>
-                                    </select>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
-                                            class="fas fa-search fa-sm text-white-50"></i>조회</a>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                            class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
-                                    <a id="controlView" href="#" onclick="addBottomGridArea()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                            class="fas fa-sm text-white-50"></i>+화면 확장</a>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                                            class="fas fa-download fa-sm text-white-50"></i> CSV파일 다운로드</a>
-                                    <a href="#" onclick="viewChart();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
-                                            class="fas fa-sm fa-file text-white-50"></i> 그래프 보기</a>
-                                </div>
+                                <form name="frmData" id="frmData" method="post">
+                                        <div style="padding:15px;">
+                                            IMEI　
+                                            <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
+                                            LTE#
+                                            <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
+                                            <!-- 일시
+                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                            ~
+                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                            -->
+                                            노선명
+                                            <select type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                                <option value="ALL" selected>전체</option>
+                                                <option value="1">1호선</option>
+                                                <option value="2">2호선</option>
+                                                <option value="3">3호선</option>
+                                                <option value="4">4호선</option>
+                                                <option value="5">5호선</option>
+                                                <option value="6">6호선</option>
+                                                <option value="7">7호선</option>
+                                                <option value="8">8호선</option>
+                                            </select>
+                                            차량번호
+                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                            객차번호
+                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                        </div>
+                                        <div style="padding-left:3px;padding-right:15px;padding-bottom:15px;">
+                                            　ION 상태
+                                            <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOn" checked></input>
+                                            <label for="ionStatusOn">ON</label>
+                                            <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOff"></input>
+                                            <label for="ionStatusOff" style="margin-right:15px;">OFF</label>
+                                            한 페이지 당 데이터 수
+                                            <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                                <option value="10">10</option>
+                                                <option value="100" selected>100</option>
+                                                <option value="500">500</option>
+                                                <option value="1000">1000</option>
+                                            </select>
+                                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
+                                                    class="fas fa-search fa-sm text-white-50"></i>조회</a>
+                                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                    class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
+                                            <a id="controlView" href="#" onclick="addBottomGridArea()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                                    class="fas fa-sm text-white-50"></i>+화면 확장</a>
+                                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+                                                    class="fas fa-download fa-sm text-white-50"></i> CSV파일 다운로드</a>
+                                            <a href="#" onclick="viewChart();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
+                                                    class="fas fa-sm fa-file text-white-50"></i> 그래프 조회</a>
+                                        </div>
+                                </form>
                             </div>
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>
                         </div>

@@ -222,18 +222,6 @@
             { No: "20", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""}
         ];
 
-        // let the grid know which columns and what data to use
-
-
-
-        screen.width        // 화면(모니터 해상도)의 너비
-        screen.availWidth  // 모니터 화면의 작업 표시줄을 제외한 너비
-
-        screen.height      // 화면(모니터 해상도)의 높이
-        screen.availHeight // 모니터 화면의 작업 표시줄을 제외한 높이
-
-        //alert(screen.width);
-
         const gridOptions = {
             columnDefs: columnDefs,
             rowData: rowData,
@@ -243,7 +231,7 @@
             },
             sortable: true,
             pagination: true,
-            paginationPageSize: 100,
+            paginationPageSize: 100
             //rowHeight: 20
             //paginationAutoPageSize: true
         };
@@ -267,6 +255,38 @@
 
     </script>
     <script>
+        $(function(){
+
+            var scrollContainer = document.getElementsByClassName("ag-body-horizontal-scroll-container");
+            scrollContainer.item(0).id = "scrollContainer";
+
+            var clientWidth = scrollContainer.item(0).clientWidth;
+
+            $("#scrollGrid").width($("#myGrid").width());
+            $("#scrollGridInner").width(clientWidth);
+
+            var xScrollViewport = document.getElementsByClassName("ag-body-horizontal-scroll-viewport");
+            xScrollViewport.item(0).id = "xScrollViewport";
+
+            $("#scrollContainer").css("z-index","-1");
+            $("#xScrollViewport").css("z-index","-2");
+
+            $("#scrollGrid").scroll(function () {
+
+                $("#xScrollViewport").scrollTop($("#scrollGrid").scrollTop());
+                $("#xScrollViewport").scrollLeft($("#scrollGrid").scrollLeft());
+            });
+
+            $("#xScrollViewport").scroll(function () {
+
+                $("#scrollGrid").scrollTop($("#xScrollViewport").scrollTop());
+                $("#scrollGrid").scrollLeft($("#xScrollViewport").scrollLeft());
+            });
+        });
+
+
+    </script>
+    <script>
         function onPageSizeChanged() {
             var value = document.getElementById('page-size').value;
             gridOptions.api.paginationSetPageSize(Number(value));
@@ -281,6 +301,15 @@
             $("body").toggleClass("sidebar-toggled");
             $(".sidebar").toggleClass("toggled");
             $("#controlView").text("+화면 확장");
+
+            //스크롤 너비 재정의
+            var scrollContainer = document.getElementsByClassName("ag-body-horizontal-scroll-container");
+            scrollContainer.item(0).id = "scrollContainer";
+
+            var clientWidth = scrollContainer.item(0).clientWidth;
+
+            $("#scrollGrid").width($("#myGrid").width());
+            $("#scrollGridInner").width(clientWidth);
 
             var div = document.getElementById('sideDiscription');
             div.style.visibility = "";
@@ -299,6 +328,15 @@
                 $("#myGrid").css("height","780px");
                 $('.sidebar .collapse').collapse('hide');
                 $("#controlView").text("- 화면 축소");
+
+                //스크롤 너비 재정의
+                var scrollContainer = document.getElementsByClassName("ag-body-horizontal-scroll-container");
+                scrollContainer.item(0).id = "scrollContainer";
+
+                var clientWidth = scrollContainer.item(0).clientWidth;
+
+                $("#scrollGrid").width($("#myGrid").width());
+                $("#scrollGridInner").width(clientWidth);
 
                 var div = document.getElementById('sideDiscription');
                 div.style.visibility = "hidden";
@@ -646,6 +684,9 @@
                                     <a id="controlView" href="#" onclick="addBottomGridArea()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                             class="fas fa-sm text-white-50"></i>+ 화면 확장</a>
                                 </div>
+                            </div>
+                            <div id="scrollGrid" style="height:17px;overflow-x:scroll" class="ag-theme-alpine">
+                                <div id="scrollGridInner" style="height:17px;"></div>
                             </div>
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>
                         </div>

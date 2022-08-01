@@ -22,4 +22,14 @@ public class LogController {
         return "log";
     }
 
+    @PostMapping("/graph")
+    public String getGraphPopup(Model model, HttpServletRequest servletRequest, HttpSession httpSession) {
+        ImsMember member = (ImsMember)httpSession.getAttribute("member");
+
+        if(member == null){
+            return "login";
+        }
+
+        return "graph";
+    }
 }

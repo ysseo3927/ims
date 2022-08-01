@@ -511,7 +511,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-1" style="width:100%">
-                        <div style="float:left;"><h1 class="h4 mb-0" style="color:black;">대기질 실시간 모니터링 현황</h1></div>
+                        <div style="float:left;"><h1 class="h4 mb-0" style="color:black;">실시간 대기질 모니터링 현황</h1></div>
                         <div style="padding-left:0px;float:right;display:inline-block;" class="form-check form-switch form-switch-md">
                             <label style="margin-right:40px;color:#5D5D5D;font-weight:bold" class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신 : </label>
                             <input style="margin-right:40px;" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
