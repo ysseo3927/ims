@@ -48,7 +48,7 @@ public class MainController {
 
         if("Y".equals(refreshYn)){
             if("01".equals(avgCalcTime)){
-                System.out.println("1시간단위평균");
+
                 double dashboardDataAvgIaqAllLine = mainService.genIaq();
 
                 dashboardDataDto = DashboardDataDto.builder()

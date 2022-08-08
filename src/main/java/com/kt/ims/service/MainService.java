@@ -26,7 +26,7 @@ public class MainService {
     }
 
     public double genCo2(){
-        return (double)Math.round(((Math.random() *( 70000 - 30000 + 1)) + 30000) * 100) / 100.0;
+        return (double)Math.round(((Math.random() *( 700 - 300 + 1)) + 300) * 100) / 100.0;
     }
 
     public double genTemp(){

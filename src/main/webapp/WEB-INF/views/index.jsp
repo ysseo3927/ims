@@ -523,7 +523,7 @@
                             <label class="form-check-label" style="color:#5D5D5D;padding-left:0px;font-weight:bold" for="avg24hour">24시간</label>
                             <input class="" type="radio" id="avg24hour" value="24" name="avgRadio" style="width:20px;height:20px;vertical-align:middle;margin-bottom:1px;" >
 
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <a id="csvdata" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 데이터 저장</a>
                             <a id="screenshot" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                             <i class="fas fa-download fa-sm text-white-50"></i> 대기질 현황 스크린샷 저장</a>
@@ -611,7 +611,7 @@
                                                 <div style="text-align:center;margin-bottom:10px;">
                                                     <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="100%"; height="45px"; >
                                                 </div>
-                                                <div class="top-chart-1"></div>
+                                                <div id = "topChart1" class="top-chart-1"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -1189,9 +1189,20 @@
     </script>
 
     <script language="Javascript">
+
+        //CSV 다운로드를 위한 전역변수
+        var dashboardDataAvgIaqArray;   //평균 통합 공기질 지수
+        var dashboardDataAvgGp10Array;  //미세먼지 농도
+        var dashboardDataAvgGp1_0Array;  //초미세먼지 농도
+        var dashboardDataAvgGp2_5Array;  //극초미세먼지 농도
+        var dashboardDataAvgVocArray; //TVOC
+        var dashboardDataAvgCo2Array; //이산화탄소
+        var dashboardDataAvgTempArray; //온도
+        var dashboardDataAvgHumiArray; //습도
+
         $(function(){
-            alert("* 현재 5초 주기 / 가상 데이터로 대시보드 테스트 중입니다");
         //실시간 데이터 갱신
+            initData();
 
             var sendData = {"refreshYn":"Y","avgCalcTime":"01"};
 
@@ -1234,6 +1245,7 @@
                                 dataType: 'text',
                                 success: function (result) {
                                     var obj = JSON.parse(result);
+                                    global_data_set = obj;
                                     callback(obj);
                                 },
                                 error: function (error) {
@@ -1260,7 +1272,7 @@
 
                     var image = canvas.toDataURL();
                     var link = document.createElement("a");
-                    link.download = curDateTime+"screenshot.png";
+                    link.download = curDateTime+"_screenshot.png";
                     link.href = image;
                     document.body.appendChild(link);
                     link.click();
@@ -1270,8 +1282,138 @@
                 //$('#content_area').attr('style', "height:100%;");
 
             });
+
+            $('#csvdata').click(function() {
+
+                let filename = curDateTime+"_data.csv";
+                getCSV(filename);
+
+            });
         });
 
+        function initData(){
+
+            sendData = {"refreshYn":"Y","avgCalcTime":"01"};
+
+            $.ajax({
+                url: '/index/data/refresh',
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(sendData),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'text',
+                success: function (result) {
+                    var obj = JSON.parse(result);
+                    callback(obj);
+                },
+                error: function (error) {
+                    alert("데이터 갱신 중 오류가 발생했습니다 : " + error);
+                }
+            });
+        }
+        function getCSV(filename) {
+            var csv = [];
+            var row = [];
+
+            //1열에는 컬럼명
+            row.push(
+                "노선명",
+                "통합 공기질 지수",
+                "미세먼지 농도",
+                "초미세먼지 농도",
+                "극초미세먼지 농도",
+                "TVOC",
+                "이산화탄소",
+                "온도",
+                "습도"
+            );
+
+            csv.push(row.join(","));
+/*
+            var dashboardDataAvgIaqArray;   //평균 통합 공기질 지수
+            var dashboardDataAvgGp10Array;  //미세먼지 농도
+            var dashboardDataAvgGp1_0Array;  //초미세먼지 농도
+            var dashboardDataAvgGp2_5Array;  //극초미세먼지 농도
+            var dashboardDataAvgVocArray; //TVOC
+            var dashboardDataAvgCo2Array; //이산화탄소
+            var dashboardDataAvgTempArray; //온도
+            var dashboardDataAvgHumiArray; //습도
+*/
+
+            var iaqAllAvg = 0;
+            var gp10AllAvg = 0;
+            var gp1_0AllAvg = 0;
+            var gp2_5AllAvg = 0;
+            var vocAllAvg = 0;
+            var co2AllAvg = 0;
+            var tempAllAvg = 0;
+            var humiAllAvg = 0;
+
+            for(var i=0; i<8; i++){
+                row = [];
+                row.push((i+1)+"호선",
+                    dashboardDataAvgIaqArray[i],
+                    dashboardDataAvgGp10Array[i],
+                    dashboardDataAvgGp1_0Array[i],
+                    dashboardDataAvgGp2_5Array[i],
+                    dashboardDataAvgVocArray[i],
+                    dashboardDataAvgCo2Array[i],
+                    dashboardDataAvgTempArray[i],
+                    dashboardDataAvgHumiArray[i]);
+
+                    iaqAllAvg += dashboardDataAvgIaqArray[i];
+                    gp10AllAvg += dashboardDataAvgGp10Array[i];
+                    gp1_0AllAvg += dashboardDataAvgGp1_0Array[i];
+                    gp2_5AllAvg += dashboardDataAvgGp2_5Array[i];
+                    vocAllAvg += dashboardDataAvgVocArray[i];
+                    co2AllAvg += dashboardDataAvgCo2Array[i];
+                    tempAllAvg += dashboardDataAvgTempArray[i];
+                    humiAllAvg += dashboardDataAvgHumiArray[i];
+
+                csv.push(row.join(","));
+            }
+
+            var iaqAllAvg = Math.ceil((iaqAllAvg / 8) * 100) / 100 ;
+            var gp10AllAvg = Math.ceil((gp10AllAvg / 8) * 100) / 100 ;
+            var gp1_0AllAvg = Math.ceil((gp1_0AllAvg / 8) * 100) / 100 ;
+            var gp2_5AllAvg = Math.ceil((gp2_5AllAvg / 8) * 100) / 100 ;
+            var vocAllAvg = Math.ceil((vocAllAvg / 8) * 100) / 100 ;
+            var co2AllAvg = Math.ceil((co2AllAvg / 8) * 100) / 100 ;
+            var tempAllAvg = Math.ceil((tempAllAvg / 8) * 100) / 100 ;
+            var humiAllAvg = Math.ceil((humiAllAvg / 8) * 100) / 100 ;
+
+            row = [];
+            row.push("전 노선 평균",
+                iaqAllAvg,
+                gp10AllAvg,
+                gp1_0AllAvg,
+                gp2_5AllAvg,
+                vocAllAvg,
+                co2AllAvg,
+                tempAllAvg,
+                humiAllAvg
+            );
+
+            csv.push(row.join(","));
+            downloadCSV(csv.join("\n"), filename);
+        }
+
+        function downloadCSV(csv, filename) {
+            var csvFile;
+            var downloadLink;
+
+            //한글 처리를 해주기 위해 BOM 추가하기
+            const BOM = "\uFEFF";
+            csv = BOM + csv;
+
+            csvFile = new Blob([csv], { type: "text/csv" });
+            downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        }
 
         function callback(obj){
 
@@ -1330,7 +1472,7 @@
             }
 
             //통합 공기질 지수
-            var dashboardDataAvgIaqArray = new Array(7);
+            dashboardDataAvgIaqArray = new Array(7);
             dashboardDataAvgIaqArray[0] = obj.dashboardData.dashboardDataAvgIaqDto.line1;
             dashboardDataAvgIaqArray[1] = obj.dashboardData.dashboardDataAvgIaqDto.line2;
             dashboardDataAvgIaqArray[2] = obj.dashboardData.dashboardDataAvgIaqDto.line3;
@@ -1349,7 +1491,7 @@
             }
 
             //미세먼지 농도
-            var dashboardDataAvgGp10Array = new Array(7);
+            dashboardDataAvgGp10Array = new Array(7);
             dashboardDataAvgGp10Array[0] = obj.dashboardData.dashboardDataAvgGp10Dto.line1;
             dashboardDataAvgGp10Array[1] = obj.dashboardData.dashboardDataAvgGp10Dto.line2;
             dashboardDataAvgGp10Array[2] = obj.dashboardData.dashboardDataAvgGp10Dto.line3;
@@ -1368,7 +1510,7 @@
             }
 
             //초미세먼지 농도
-            var dashboardDataAvgGp1_0Array = new Array(7);
+            dashboardDataAvgGp1_0Array = new Array(7);
             dashboardDataAvgGp1_0Array[0] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line1;
             dashboardDataAvgGp1_0Array[1] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line2;
             dashboardDataAvgGp1_0Array[2] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line3;
@@ -1388,7 +1530,7 @@
 
 
             //극초미세먼지 농도
-            var dashboardDataAvgGp2_5Array = new Array(7);
+            dashboardDataAvgGp2_5Array = new Array(7);
             dashboardDataAvgGp2_5Array[0] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line1;
             dashboardDataAvgGp2_5Array[1] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line2;
             dashboardDataAvgGp2_5Array[2] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line3;
@@ -1407,7 +1549,7 @@
             }
 
             //TVOC
-            var dashboardDataAvgVocArray = new Array(7);
+            dashboardDataAvgVocArray = new Array(7);
             dashboardDataAvgVocArray[0] = obj.dashboardData.dashboardDataAvgVocDto.line1;
             dashboardDataAvgVocArray[1] = obj.dashboardData.dashboardDataAvgVocDto.line2;
             dashboardDataAvgVocArray[2] = obj.dashboardData.dashboardDataAvgVocDto.line3;
@@ -1426,7 +1568,7 @@
             }
 
             //이산화탄소
-            var dashboardDataAvgCo2Array = new Array(7);
+            dashboardDataAvgCo2Array = new Array(7);
             dashboardDataAvgCo2Array[0] = obj.dashboardData.dashboardDataAvgCo2Dto.line1;
             dashboardDataAvgCo2Array[1] = obj.dashboardData.dashboardDataAvgCo2Dto.line2;
             dashboardDataAvgCo2Array[2] = obj.dashboardData.dashboardDataAvgCo2Dto.line3;
@@ -1445,7 +1587,7 @@
             }
 
             //온도
-            var dashboardDataAvgTempArray = new Array(7);
+            dashboardDataAvgTempArray = new Array(7);
             dashboardDataAvgTempArray[0] = obj.dashboardData.dashboardDataAvgTempDto.line1;
             dashboardDataAvgTempArray[1] = obj.dashboardData.dashboardDataAvgTempDto.line2;
             dashboardDataAvgTempArray[2] = obj.dashboardData.dashboardDataAvgTempDto.line3;
@@ -1465,7 +1607,7 @@
 
 
             //습도
-            var dashboardDataAvgHumiArray = new Array(7);
+            dashboardDataAvgHumiArray = new Array(7);
             dashboardDataAvgHumiArray[0] = obj.dashboardData.dashboardDataAvgHumiDto.line1;
             dashboardDataAvgHumiArray[1] = obj.dashboardData.dashboardDataAvgHumiDto.line2;
             dashboardDataAvgHumiArray[2] = obj.dashboardData.dashboardDataAvgHumiDto.line3;
@@ -1482,6 +1624,16 @@
                     data[jdx] = dashboardDataAvgHumiArray[jdx];
                 }
             }
+
+            value = dashboardDataAvgIaqAllLine;
+            $("#topChart1").html("");
+
+            gaugeMaxValue = 300;
+
+            // Data of calculation
+            percentValue = value / gaugeMaxValue;
+
+            niddleRefresh();
             topChart2.update();
             topChart3.update();
             topChart4.update();
@@ -1509,226 +1661,230 @@
         // Data of calculation
         var percentValue = value / gaugeMaxValue;
         var needleClient;
-        (function () {
-            var barWidth, chart, chartInset, degToRad, repaintGauge, height, margin, numSections, padRad, percToDeg, percToRad, percent, radius, sectionIndx, svg, totalPercent, width, recalcPointerPos;
 
-            percent = percentValue;
+        function niddleRefresh() {
 
-            numSections = 1;
-            sectionPerc = 1 / numSections / 2;
-            padRad = 0.025;
-            chartInset = 10;
+            (function () {
+                var barWidth, chart, chartInset, degToRad, repaintGauge, height, margin, numSections, padRad, percToDeg,
+                    percToRad, percent, radius, sectionIndx, svg, totalPercent, width, recalcPointerPos;
 
-            // Orientation of Gauge:
-            totalPercent = .75;
+                percent = percentValue;
 
-            el = d3.select('.top-chart-1');
+                numSections = 1;
+                sectionPerc = 1 / numSections / 2;
+                padRad = 0.025;
+                chartInset = 10;
 
-            margin = {
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20
-            };
+                // Orientation of Gauge:
+                totalPercent = .75;
 
-            width = el[0][0].offsetWidth - margin.left - margin.right;
-            height = width;
-            radius = Math.min(width, height) / 2;
-            barWidth = 20 * width / 300;
+                el = d3.select('.top-chart-1');
 
-            // Utility methods
-            percToDeg = function (perc) {
-                return perc * 360;
-            };
-
-            percToRad = function (perc) {
-                return degToRad(percToDeg(perc));
-            };
-
-            degToRad = function (deg) {
-                return deg * Math.PI / 180;
-            };
-
-            // Create SVG element
-            svg = el.append('svg').attr('width', width + margin.left + margin.right).attr('height', height / 1.5 + margin.top + margin.bottom);		// height/1.5 To Remove Extra Bottom Space
-
-            // Add layer for the panel
-            chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
-
-            chart.append('path').attr('class', "arc chart-first");
-            chart.append('path').attr('class', "arc chart-second");
-            chart.append('path').attr('class', "arc chart-third");
-            chart.append('path').attr('class', "arc chart-forth");
-
-            arc4 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
-            arc3 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
-            arc2 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
-            arc1 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
-
-            repaintGauge = function () {
-                perc = 0.5;
-                var next_start = totalPercent;
-                arcStartRad = percToRad(next_start);
-                arcEndRad = arcStartRad + percToRad(perc / 4);
-                next_start += perc / 4;
-
-                arc1.startAngle(arcStartRad).endAngle(arcEndRad);
-
-                arcStartRad = percToRad(next_start);
-                arcEndRad = arcStartRad + percToRad(perc / 4);
-                next_start += perc / 4;
-
-                arc2.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
-
-                arcStartRad = percToRad(next_start);
-                arcEndRad = arcStartRad + percToRad(perc / 4);
-                next_start += perc / 4;
-
-                arc3.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
-
-                arcStartRad = percToRad(next_start);
-                arcEndRad = arcStartRad + percToRad(perc / 4);
-
-                arc4.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
-
-                chart.select(".chart-first").attr('d', arc1);
-                chart.select(".chart-second").attr('d', arc2);
-                chart.select(".chart-third").attr('d', arc3);
-                chart.select(".chart-forth").attr('d', arc4);
-            }
-
-            var Needle = (function () {
-
-                //Helper function that returns the `d` value for moving the needle
-                var recalcPointerPos = function (perc) {
-                    var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
-                    thetaRad = percToRad(perc / 2);
-                    centerX = 0;
-                    centerY = 0;
-                    topX = centerX - this.len * Math.cos(thetaRad);
-                    topY = centerY - this.len * Math.sin(thetaRad);
-                    leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
-                    leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
-                    rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
-                    rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
-                    return "M " + leftX + " " + leftY + " L " + topX + " " + topY + " L " + rightX + " " + rightY;
+                margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 20,
+                    left: 20
                 };
 
-                function Needle(el) {
-                    this.el = el;
-                    this.len = width / 2.5;
-                    this.radius = this.len / 20;
+                width = el[0][0].offsetWidth - margin.left - margin.right;
+                height = width;
+                radius = Math.min(width, height) / 2;
+                barWidth = 20 * width / 300;
+
+                // Utility methods
+                percToDeg = function (perc) {
+                    return perc * 360;
+                };
+
+                percToRad = function (perc) {
+                    return degToRad(percToDeg(perc));
+                };
+
+                degToRad = function (deg) {
+                    return deg * Math.PI / 180;
+                };
+
+                // Create SVG element
+                svg = el.append('svg').attr('width', width + margin.left + margin.right).attr('height', height / 1.5 + margin.top + margin.bottom);		// height/1.5 To Remove Extra Bottom Space
+
+                // Add layer for the panel
+                chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
+
+                chart.append('path').attr('class', "arc chart-first");
+                chart.append('path').attr('class', "arc chart-second");
+                chart.append('path').attr('class', "arc chart-third");
+                chart.append('path').attr('class', "arc chart-forth");
+
+                arc4 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+                arc3 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+                arc2 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+                arc1 = d3.svg.arc().outerRadius(radius - chartInset).innerRadius(radius - chartInset - barWidth)
+
+                repaintGauge = function () {
+                    perc = 0.5;
+                    var next_start = totalPercent;
+                    arcStartRad = percToRad(next_start);
+                    arcEndRad = arcStartRad + percToRad(perc / 4);
+                    next_start += perc / 4;
+
+                    arc1.startAngle(arcStartRad).endAngle(arcEndRad);
+
+                    arcStartRad = percToRad(next_start);
+                    arcEndRad = arcStartRad + percToRad(perc / 4);
+                    next_start += perc / 4;
+
+                    arc2.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
+
+                    arcStartRad = percToRad(next_start);
+                    arcEndRad = arcStartRad + percToRad(perc / 4);
+                    next_start += perc / 4;
+
+                    arc3.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
+
+                    arcStartRad = percToRad(next_start);
+                    arcEndRad = arcStartRad + percToRad(perc / 4);
+
+                    arc4.startAngle(arcStartRad + padRad).endAngle(arcEndRad);
+
+                    chart.select(".chart-first").attr('d', arc1);
+                    chart.select(".chart-second").attr('d', arc2);
+                    chart.select(".chart-third").attr('d', arc3);
+                    chart.select(".chart-forth").attr('d', arc4);
                 }
 
-                Needle.prototype.render = function () {
-                    this.el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
-                    return this.el.append('path').attr('class', 'needle').attr('id', 'client-needle').attr('d', recalcPointerPos.call(this, 0));
-                };
+                var Needle = (function () {
 
-                Needle.prototype.moveTo = function (perc) {
-                    var self,
-                        oldValue = this.perc || 0;
-                    this.perc = perc;
-                    self = this;
+                    //Helper function that returns the `d` value for moving the needle
+                    var recalcPointerPos = function (perc) {
+                        var centerX, centerY, leftX, leftY, rightX, rightY, thetaRad, topX, topY;
+                        thetaRad = percToRad(perc / 2);
+                        centerX = 0;
+                        centerY = 0;
+                        topX = centerX - this.len * Math.cos(thetaRad);
+                        topY = centerY - this.len * Math.sin(thetaRad);
+                        leftX = centerX - this.radius * Math.cos(thetaRad - Math.PI / 2);
+                        leftY = centerY - this.radius * Math.sin(thetaRad - Math.PI / 2);
+                        rightX = centerX - this.radius * Math.cos(thetaRad + Math.PI / 2);
+                        rightY = centerY - this.radius * Math.sin(thetaRad + Math.PI / 2);
+                        return "M " + leftX + " " + leftY + " L " + topX + " " + topY + " L " + rightX + " " + rightY;
+                    };
 
-                    // Reset pointer position
-                    this.el.transition().delay(100).ease('quad').duration(180).select('.needle').tween('reset-progress', function () {
-                        return function (percentOfPercent) {
-                            var progress = (1 - percentOfPercent) * oldValue;
-                            repaintGauge(progress);
-                            return d3.select(this).attr('d', recalcPointerPos.call(self, progress));
-                        };
-                    });
+                    function Needle(el) {
+                        this.el = el;
+                        this.len = width / 2.5;
+                        this.radius = this.len / 20;
+                    }
 
-                    this.el.transition().delay(100).ease('bounce').duration(1200).select('.needle').tween('progress', function () {
-                        return function (percentOfPercent) {
-                            var progress = percentOfPercent * perc;
+                    Needle.prototype.render = function () {
+                        this.el.append('circle').attr('class', 'needle-center').attr('cx', 0).attr('cy', 0).attr('r', this.radius);
+                        return this.el.append('path').attr('class', 'needle').attr('id', 'client-needle').attr('d', recalcPointerPos.call(this, 0));
+                    };
 
-                            repaintGauge(progress);
-                            return d3.select(this).attr('d', recalcPointerPos.call(self, progress));
-                        };
-                    });
+                    Needle.prototype.moveTo = function (perc) {
+                        var self,
+                            oldValue = this.perc || 0;
+                        this.perc = perc;
+                        self = this;
 
-                };
+                        // Reset pointer position
+                        this.el.transition().delay(100).ease('quad').duration(180).select('.needle').tween('reset-progress', function () {
+                            return function (percentOfPercent) {
+                                var progress = (1 - percentOfPercent) * oldValue;
+                                repaintGauge(progress);
+                                return d3.select(this).attr('d', recalcPointerPos.call(self, progress));
+                            };
+                        });
 
-                return Needle;
+                        this.el.transition().delay(100).ease('bounce').duration(1200).select('.needle').tween('progress', function () {
+                            return function (percentOfPercent) {
+                                var progress = percentOfPercent * perc;
 
-            })();
+                                repaintGauge(progress);
+                                return d3.select(this).attr('d', recalcPointerPos.call(self, progress));
+                            };
+                        });
 
-            var dataset = [{
-                metric: name,
-                value: value
-            }]
+                    };
 
-            var texts = svg.selectAll("text")
-                .data(dataset)
-                .enter();
+                    return Needle;
 
-            texts.append("text")
-                .text(function () {
-                    return dataset[0].metric;
-                })
-                .attr('id', "Name")
-                .attr('text-align', "center")
-                .attr('transform', "translate(145, " + ((height + margin.top) / 1.6) + ")")
-                .attr("font-family", "'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕'")
-                //.attr("font-weight", "bold")
-                .attr("font-size", 25)
-                .style("fill", "#000000");
+                })();
 
+                var dataset = [{
+                    metric: name,
+                    value: value
+                }]
 
-            var trX = 180 - 210 * Math.cos(percToRad(percent / 2));
-            var trY = 195 - 210 * Math.sin(percToRad(percent / 2));
-            // (180, 195) are the coordinates of the center of the gauge.
+                var texts = svg.selectAll("text")
+                    .data(dataset)
+                    .enter();
 
-            displayValue = function () {
                 texts.append("text")
                     .text(function () {
-                        return dataset[0].value;
+                        return dataset[0].metric;
                     })
-                    .attr('id', "Value")
-                    .attr('transform', "translate(" + trX + ", " + trY + ")")
-                    .attr("font-size", 18)
-                    .style("fill", '#000000');
-            }
-
-            texts.append("text")
-                .text(function () {
-                    return 0;
-                })
-                .attr('id', 'scale0')
-                .attr('transform', "translate(" + ((width + margin.left) / 100) + ", " + ((height + margin.top) / 2) + ")")
-                .attr("font-size", 15)
-                .style("fill", "#000000");
-
-            texts.append("text")
-                .text(function () {
-                    return gaugeMaxValue / 2;
-                })
-                .attr('id', 'scale10')
-                .attr('transform', "translate(" + ((width + margin.left) / 2.15) + ", " + ((height + margin.top) / 30) + ")")
-                .attr("font-size", 15)
-                .style("fill", "#000000");
+                    .attr('id', "Name")
+                    .attr('text-align', "center")
+                    .attr('transform', "translate(145, " + ((height + margin.top) / 1.6) + ")")
+                    .attr("font-family", "'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕'")
+                    //.attr("font-weight", "bold")
+                    .attr("font-size", 25)
+                    .style("fill", "#000000");
 
 
-            texts.append("text")
-                .text(function () {
-                    return gaugeMaxValue;
-                })
-                .attr('id', 'scale20')
-                .attr('transform', "translate(" + ((width + margin.left) / 1.03) + ", " + ((height + margin.top) / 2) + ")")
-                .attr("font-size", 15)
-                .style("fill", "#000000");
+                var trX = 180 - 210 * Math.cos(percToRad(percent / 2));
+                var trY = 195 - 210 * Math.sin(percToRad(percent / 2));
+                // (180, 195) are the coordinates of the center of the gauge.
+
+                displayValue = function () {
+                    texts.append("text")
+                        .text(function () {
+                            return dataset[0].value;
+                        })
+                        .attr('id', "Value")
+                        .attr('transform', "translate(" + trX + ", " + trY + ")")
+                        .attr("font-size", 18)
+                        .style("fill", '#000000');
+                }
+
+                texts.append("text")
+                    .text(function () {
+                        return 0;
+                    })
+                    .attr('id', 'scale0')
+                    .attr('transform', "translate(" + ((width + margin.left) / 100) + ", " + ((height + margin.top) / 2) + ")")
+                    .attr("font-size", 15)
+                    .style("fill", "#000000");
+
+                texts.append("text")
+                    .text(function () {
+                        return gaugeMaxValue / 2;
+                    })
+                    .attr('id', 'scale10')
+                    .attr('transform', "translate(" + ((width + margin.left) / 2.15) + ", " + ((height + margin.top) / 30) + ")")
+                    .attr("font-size", 15)
+                    .style("fill", "#000000");
 
 
-            needle = new Needle(chart);
-            needle.render();
-            needle.moveTo(percent);
+                texts.append("text")
+                    .text(function () {
+                        return gaugeMaxValue;
+                    })
+                    .attr('id', 'scale20')
+                    .attr('transform', "translate(" + ((width + margin.left) / 1.03) + ", " + ((height + margin.top) / 2) + ")")
+                    .attr("font-size", 15)
+                    .style("fill", "#000000");
 
-            setTimeout(displayValue, 1350);
 
-        })();
+                needle = new Needle(chart);
+                needle.render();
+                needle.moveTo(percent);
 
+                setTimeout(displayValue, 1350);
+
+            })();
+        }
         Chart.register(ChartDataLabels);
 
         var topChart2 = new Chart(document.getElementById("top-chart-2"), {
@@ -1739,7 +1895,7 @@
                     {
                         backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
 
-                        data: [235,270,210,118,140,250,150,50]
+                        data: [0,0,0,0,0,0,0,0]
                     }
                 ]
             },
@@ -1786,7 +1942,7 @@
                     backgroundColor: 'rgb(0,82,164,0.3)',
                     fill: true,
                     borderColor: '#0052A4',
-                    data: [255,235,270,210,118,140,250,150,120,190,250,200,140,230,180,200,210,190,230,185,210]
+                    data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                 }],
                 labels: ["04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00","18:00","19:00","20:00","21:00","22:00","23:00","24:00"]
             },
@@ -1841,7 +1997,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -1883,7 +2039,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -1925,7 +2081,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -1967,7 +2123,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -2009,7 +2165,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -2051,7 +2207,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -2093,7 +2249,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
@@ -2136,7 +2292,7 @@
                     type: 'bar',
                     label: '노선',
                     backgroundColor: ["rgb(0,82,164,0.9)","rgb(0,157,62,0.9)","rgb(239,124,28,0.9)","rgb(0,165,222,0.9)","rgb(153,108,172,0.9)","rgb(205,124,47,0.9)","rgb(116,127,0,0.9)","rgb(234,84,93 ,0.9)"],
-                    data: [235,270,210,118,140,250,150,50]
+                    data: [0,0,0,0,0,0,0,0]
                 }],
                 labels: ["1호선", "2호선", "3호선", "4호선", "5호선", "6호선", "7호선", "8호선"]
             },
