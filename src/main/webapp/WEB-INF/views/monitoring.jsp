@@ -257,6 +257,62 @@
     <script>
         $(function(){
 
+            initData();
+
+            var timer = setInterval(
+                function () {
+                    var sendData = {"imei":""};
+                    $.ajax({
+                        url: '/monitoring/data/refresh',
+                        method: 'POST',
+                        async: true,
+                        contentType: 'application/json; charset=UTF-8',
+                        data: JSON.stringify(sendData),
+                        dataType: 'text',
+                        success: function (result) {
+                            var obj = JSON.parse(result);
+                            callback(obj);
+                        },
+                        error: function (error) {
+                            alert("데이터 조회 중 오류가 발생했습니다 : " + error);
+                        }
+                    });
+                }, 5000);
+
+
+            $('#flexSwitchCheckChecked').click(function() {
+                let toggle = document.getElementById("flexSwitchCheckChecked").checked;
+
+                if(!toggle){
+                    // 반복 중단
+                    clearInterval(timer);
+                    toggle = false;
+                }else{
+                    // 반복 재개(재시작)
+                    var sendData = {"imei":""};
+
+                    timer = setInterval(
+                        function () {
+                            $.ajax({
+                                url: '/monitoring/data/refresh',
+                                method: 'POST',
+                                async: true,
+                                data: JSON.stringify(sendData),
+                                contentType: 'application/json; charset=UTF-8',
+                                dataType: 'text',
+                                success: function (result) {
+                                    var obj = JSON.parse(result);
+                                    global_data_set = obj;
+                                    callback(obj);
+                                },
+                                error: function (error) {
+                                    alert("데이터 갱신 중 오류가 발생했습니다 : " + error);
+                                }
+                            });
+                        }, 5000);
+                }
+            });
+
             var scrollContainer = document.getElementsByClassName("ag-body-horizontal-scroll-container");
             scrollContainer.item(0).id = "scrollContainer";
 
@@ -282,11 +338,14 @@
                 $("#scrollGrid").scrollTop($("#xScrollViewport").scrollTop());
                 $("#scrollGrid").scrollLeft($("#xScrollViewport").scrollLeft());
             });
+
+
         });
 
 
     </script>
     <script>
+
         function onPageSizeChanged() {
             var value = document.getElementById('page-size').value;
             gridOptions.api.paginationSetPageSize(Number(value));
@@ -349,6 +408,73 @@
 
             $('#myGrid').focus();
 
+        }
+
+        function initData(){
+
+            var sendData = {"imei":""}
+
+            $.ajax({
+                url: '/monitoring/data/refresh',
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(sendData),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'text',
+                success: function (result) {
+                    var obj = JSON.parse(result);
+                    callback(obj);
+                },
+                error: function (error) {
+                    alert("데이터 조회 중 오류가 발생했습니다 : " + error);
+                }
+            });
+        }
+
+        function searchData(){
+
+            var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val()};
+
+            $.ajax({
+                url: '/monitoring/data/search',
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(sendData),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'text',
+                success: function (result) {
+                    var obj = JSON.parse(result);
+                    callback(obj);
+                },
+                error: function (error) {
+                    alert("데이터 조회 중 오류가 발생했습니다 : " + error);
+                }
+            });
+        }
+
+        function callback(obj){
+
+            var arrData = [];
+
+            for(var i=0; i < obj.data.length; i++){
+                var rowData =
+                    { No:i+1,노선명: obj.data[i].line, 차량번호: obj.data[i].car, 객차번호: obj.data[i].pscar,IMEI:obj.data[i].imei,
+                        LTE:obj.data[i].lte, ION_M수:obj.data[i].ionm, ION_S수:obj.data[i].ions, 시스템상태:obj.data[i].systemStatus,
+                        ION상태:obj.data[i].ionStatus, 공기질:obj.data[i].iaq, 미세먼지:obj.data[i].gp10, 초미세먼지:obj.data[i].gp2_5, 극초미세먼지:obj.data[i].gp1_0,
+                        TVOC:obj.data[i].tvoc, 이산화탄소:obj.data[i].co2, 온도:obj.data[i].temp, 습도:obj.data[i].humi, 비고:''};
+
+                arrData.push(rowData);
+            }
+
+            gridOptions.api.setRowData(arrData );
+
+        }
+
+        function initCondition(){
+            $('#imei').val("");
+            $('#lte').val("");
+            $('#carNum').val("");
+            $('#pscarNum').val("");
         }
 
     </script>
@@ -454,6 +580,7 @@
             form.submit();
 
         }
+
 
     </script>
 
@@ -661,15 +788,15 @@
                             <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
                                 <div style="padding:15px;">
                                     IMEI　
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
+                                    <input id="imei" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" type="number" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
                                     LTE#
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
+                                    <input id="lte" onKeyup="this.value=this.value.replace(/[^-\-0-9]/g,'');" type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
                                 </div>
                                 <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
                                     차량번호
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                    <input id="carNum" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" type="number" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                     객차번호
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                    <input id="pscarNum" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" type="number" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                     한 페이지 당 데이터 수
                                     <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
                                         <option value="10">10</option>
@@ -677,9 +804,9 @@
                                         <option value="500">500</option>
                                         <option value="1000">1000</option>
                                     </select>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
+                                    <a id="searchLink" href="#" onclick="searchData()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
                                             class="fas fa-search fa-sm text-white-50"></i>조회</a>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    <a id="conditionInit" href="#" onclick="initCondition()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                             class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
                                     <a id="controlView" href="#" onclick="addBottomGridArea()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                             class="fas fa-sm text-white-50"></i>+ 화면 확장</a>
