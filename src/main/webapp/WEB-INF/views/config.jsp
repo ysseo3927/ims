@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>이오나이저 모니터링 시스템 | 계정 관리</title>
 
     <!-- Custom fonts for this template-->
     <link href="/resources/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -228,7 +228,7 @@
         });
 
     </script>
-
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
 
 <body id="page-top" onload="showClock();">
@@ -309,7 +309,7 @@
             <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>설정</span>
+                <span>계정 관리</span>
             </a>
         </li>
 
@@ -522,6 +522,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
+                            <!--
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
@@ -535,9 +536,10 @@
                                 Activity Log
                             </a>
                             <div class="dropdown-divider"></div>
+                            -->
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                로그아웃
                             </a>
                         </div>
                     </li>
@@ -552,21 +554,17 @@
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h4 mb-0" style="color:#000">설정</h1>
+                <h1 class="h4 mb-0" style="color:#000">계정 관리</h1>
                 <hr>
 
 
                 <!-- 관리자 설정 페이지 컨텐츠 삽입 부분 -->
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" aria-current="page" href="#account">계정 설정</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#system">시스템 설정</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="account">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">시스템 사용자 계정 목록</h6>
+                    </div>
+                    <div class="card-body">
+
                         <div class="table-responsive" style="overflow-x:visible">
                             <!-- 테이블 위치 -->
                             <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
@@ -597,11 +595,7 @@
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="system">
-                        시스템 설정입니다.
-                    </div>
                 </div>
-                <!-- 관리자 설정 페이지 컨텐츠 삽입 완료 -->
             </div>
             <!-- /.container-fluid -->
 

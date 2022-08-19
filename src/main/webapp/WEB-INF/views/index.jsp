@@ -191,6 +191,7 @@
         }
 
     </script>
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
 
 <body id="page-top" onload="showClock();">
@@ -268,7 +269,7 @@
                 <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>설정</span>
+                    <span>계정 관리</span>
                 </a>
             </li>
             </c:if>
@@ -481,6 +482,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
+                                <!--
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
@@ -494,9 +496,10 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                -->
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
+                                    로그아웃
                                 </a>
                             </div>
                         </li>
@@ -609,7 +612,7 @@
                                             <div class="chart-area">
                                                 <!-- <canvas id="all-line-now-inter-iaq-chart" style="width:250px;height:250px; -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;"></canvas>-->
                                                 <div style="text-align:center;margin-bottom:10px;">
-                                                    <img class="rounded-circle" src="/resources/img/clean-score-discription.jpg"  width="100%"; height="45px"; >
+                                                    <img src="/resources/img/clean-score-discription.png"  width="80%"; height="80%"; >
                                                 </div>
                                                 <div id = "topChart1" class="top-chart-1"></div>
                                             </div>
@@ -770,7 +773,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">미세먼지 농도 (㎍/㎥) </h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">미세먼지 농도 (PM10 ; ug/m3)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink5"
@@ -803,7 +806,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">초미세먼지 농도 (㎍/㎥)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">초미세먼지 농도 (PM2.5 ; ug/m3)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink6"
@@ -837,7 +840,7 @@
                                         <!-- Card Header - Dropdown -->
                                         <div
                                                 class="card-header d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">극초미세먼지 농도 (㎍/㎥)</h6>
+                                            <h6 class="m-0 font-weight-bold" style="color:#51545c">극초미세먼지 농도 (PM1.0 ; ug/m3)</h6>
                                             <div class="dropdown no-arrow">
 
                                                 <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink7"
@@ -1189,6 +1192,8 @@
     </script>
 
     <script language="Javascript">
+        //미터기 표현을 위한 전역변수
+        var dashboardDataAvgIaqAllLine = 0;
 
         //CSV 다운로드를 위한 전역변수
         var dashboardDataAvgIaqArray;   //평균 통합 공기질 지수
@@ -1204,10 +1209,13 @@
         //실시간 데이터 갱신
             initData();
 
-            var sendData = {"refreshYn":"Y","avgCalcTime":"01"};
-
             var timer = setInterval(
                 function () {
+
+                var avgRadioArray = document.getElementsByName("avgRadio");
+                var avgCalcTime = avgRadioArray[0].checked == false ? "24" : "01";
+                var sendData = {"refreshYn":"Y","avgCalcTime":avgCalcTime};
+
                 $.ajax({
                     url: '/index/data/refresh',
                     method: 'POST',
@@ -1234,8 +1242,13 @@
                     toggle = false;
                 }else{
                     // 반복 재개(재시작)
+
                     timer = setInterval(
                         function () {
+                            avgRadioArray = document.getElementsByName("avgRadio");
+                            avgCalcTime = avgRadioArray[0].checked == false ? "24" : "01";
+                            sendData = {"refreshYn":"Y","avgCalcTime":avgCalcTime};
+
                             $.ajax({
                                 url: '/index/data/refresh',
                                 method: 'POST',
@@ -1418,18 +1431,19 @@
         function callback(obj){
 
             //전 노선 평균 통합 공기질 지수
-            var dashboardDataAvgIaqAllLine = obj.dashboardData.dashboardDataAvgIaqAllLine;
+            dashboardDataAvgIaqAllLine = obj.mainDataDto.lineAllAvgIaq;
 
             //노선별 평균 통합 공기질 지수
             var dashboardDataLineAvgIaqArray = new Array(7);
-            dashboardDataLineAvgIaqArray[0] = obj.dashboardData.dashboardDataLineAvgIaqDto.line1;
-            dashboardDataLineAvgIaqArray[1] = obj.dashboardData.dashboardDataLineAvgIaqDto.line2;
-            dashboardDataLineAvgIaqArray[2] = obj.dashboardData.dashboardDataLineAvgIaqDto.line3;
-            dashboardDataLineAvgIaqArray[3] = obj.dashboardData.dashboardDataLineAvgIaqDto.line4;
-            dashboardDataLineAvgIaqArray[4] = obj.dashboardData.dashboardDataLineAvgIaqDto.line5;
-            dashboardDataLineAvgIaqArray[5] = obj.dashboardData.dashboardDataLineAvgIaqDto.line6;
-            dashboardDataLineAvgIaqArray[6] = obj.dashboardData.dashboardDataLineAvgIaqDto.line7;
-            dashboardDataLineAvgIaqArray[7] = obj.dashboardData.dashboardDataLineAvgIaqDto.line8;
+
+            dashboardDataLineAvgIaqArray[0] = obj.mainDataDto.line1AvgIaq;
+            dashboardDataLineAvgIaqArray[1] = obj.mainDataDto.line2AvgIaq;
+            dashboardDataLineAvgIaqArray[2] = obj.mainDataDto.line3AvgIaq;
+            dashboardDataLineAvgIaqArray[3] = obj.mainDataDto.line4AvgIaq;
+            dashboardDataLineAvgIaqArray[4] = obj.mainDataDto.line5AvgIaq;
+            dashboardDataLineAvgIaqArray[5] = obj.mainDataDto.line6AvgIaq;
+            dashboardDataLineAvgIaqArray[6] = obj.mainDataDto.line7AvgIaq;
+            dashboardDataLineAvgIaqArray[7] = obj.mainDataDto.line8AvgIaq;
 
             const topChart2Dataset = topChart2.data.datasets;
             for (let idx = 0; idx < topChart2Dataset.length; idx++) {
@@ -1440,28 +1454,27 @@
             }
 
             //시간대별 전 노선 평균 통합 공기질 지수
-            var dashboardDataTimeAvgIaqArray = new Array(21);
-            dashboardDataTimeAvgIaqArray[0] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour4;
-            dashboardDataTimeAvgIaqArray[1] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour5;
-            dashboardDataTimeAvgIaqArray[2] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour6;
-            dashboardDataTimeAvgIaqArray[3] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour7;
-            dashboardDataTimeAvgIaqArray[4] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour8;
-            dashboardDataTimeAvgIaqArray[5] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour9;
-            dashboardDataTimeAvgIaqArray[6] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour10;
-            dashboardDataTimeAvgIaqArray[7] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour11;
-            dashboardDataTimeAvgIaqArray[8] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour12;
-            dashboardDataTimeAvgIaqArray[9] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour13;
-            dashboardDataTimeAvgIaqArray[10] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour14;
-            dashboardDataTimeAvgIaqArray[11] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour15;
-            dashboardDataTimeAvgIaqArray[12] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour16;
-            dashboardDataTimeAvgIaqArray[13] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour17;
-            dashboardDataTimeAvgIaqArray[14] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour18;
-            dashboardDataTimeAvgIaqArray[15] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour19;
-            dashboardDataTimeAvgIaqArray[16] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour20;
-            dashboardDataTimeAvgIaqArray[17] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour21;
-            dashboardDataTimeAvgIaqArray[18] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour22;
-            dashboardDataTimeAvgIaqArray[19] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour23;
-            dashboardDataTimeAvgIaqArray[20] = obj.dashboardData.dashboardDataTimeAvgIaqDto.hour24;
+            var dashboardDataTimeAvgIaqArray = new Array(20);
+            dashboardDataTimeAvgIaqArray[0] = obj.mainDataDto.time04AvgIaq;
+            dashboardDataTimeAvgIaqArray[1] = obj.mainDataDto.time05AvgIaq;
+            dashboardDataTimeAvgIaqArray[2] = obj.mainDataDto.time06AvgIaq;
+            dashboardDataTimeAvgIaqArray[3] = obj.mainDataDto.time07AvgIaq;
+            dashboardDataTimeAvgIaqArray[4] = obj.mainDataDto.time08AvgIaq;
+            dashboardDataTimeAvgIaqArray[5] = obj.mainDataDto.time09AvgIaq;
+            dashboardDataTimeAvgIaqArray[6] = obj.mainDataDto.time10AvgIaq;
+            dashboardDataTimeAvgIaqArray[7] = obj.mainDataDto.time11AvgIaq;
+            dashboardDataTimeAvgIaqArray[8] = obj.mainDataDto.time12AvgIaq;
+            dashboardDataTimeAvgIaqArray[9] = obj.mainDataDto.time13AvgIaq;
+            dashboardDataTimeAvgIaqArray[10] = obj.mainDataDto.time14AvgIaq;
+            dashboardDataTimeAvgIaqArray[11] = obj.mainDataDto.time15AvgIaq;
+            dashboardDataTimeAvgIaqArray[12] = obj.mainDataDto.time16AvgIaq;
+            dashboardDataTimeAvgIaqArray[13] = obj.mainDataDto.time17AvgIaq;
+            dashboardDataTimeAvgIaqArray[14] = obj.mainDataDto.time18AvgIaq;
+            dashboardDataTimeAvgIaqArray[15] = obj.mainDataDto.time19AvgIaq;
+            dashboardDataTimeAvgIaqArray[16] = obj.mainDataDto.time20AvgIaq;
+            dashboardDataTimeAvgIaqArray[17] = obj.mainDataDto.time21AvgIaq;
+            dashboardDataTimeAvgIaqArray[18] = obj.mainDataDto.time22AvgIaq;
+            dashboardDataTimeAvgIaqArray[19] = obj.mainDataDto.time23AvgIaq;
 
             const topChart3Dataset = topChart3.data.datasets;
             for (let idx = 0; idx < topChart3Dataset.length; idx++) {
@@ -1473,14 +1486,14 @@
 
             //통합 공기질 지수
             dashboardDataAvgIaqArray = new Array(7);
-            dashboardDataAvgIaqArray[0] = obj.dashboardData.dashboardDataAvgIaqDto.line1;
-            dashboardDataAvgIaqArray[1] = obj.dashboardData.dashboardDataAvgIaqDto.line2;
-            dashboardDataAvgIaqArray[2] = obj.dashboardData.dashboardDataAvgIaqDto.line3;
-            dashboardDataAvgIaqArray[3] = obj.dashboardData.dashboardDataAvgIaqDto.line4;
-            dashboardDataAvgIaqArray[4] = obj.dashboardData.dashboardDataAvgIaqDto.line5;
-            dashboardDataAvgIaqArray[5] = obj.dashboardData.dashboardDataAvgIaqDto.line6;
-            dashboardDataAvgIaqArray[6] = obj.dashboardData.dashboardDataAvgIaqDto.line7;
-            dashboardDataAvgIaqArray[7] = obj.dashboardData.dashboardDataAvgIaqDto.line8;
+            dashboardDataAvgIaqArray[0] = obj.mainDataDto.line1AvgIaq;
+            dashboardDataAvgIaqArray[1] = obj.mainDataDto.line2AvgIaq;
+            dashboardDataAvgIaqArray[2] = obj.mainDataDto.line3AvgIaq;
+            dashboardDataAvgIaqArray[3] = obj.mainDataDto.line4AvgIaq;
+            dashboardDataAvgIaqArray[4] = obj.mainDataDto.line5AvgIaq;
+            dashboardDataAvgIaqArray[5] = obj.mainDataDto.line6AvgIaq;
+            dashboardDataAvgIaqArray[6] = obj.mainDataDto.line7AvgIaq;
+            dashboardDataAvgIaqArray[7] = obj.mainDataDto.line8AvgIaq;
 
             const topChart4Dataset = topChart4.data.datasets;
             for (let idx = 0; idx < topChart4Dataset.length; idx++) {
@@ -1492,14 +1505,14 @@
 
             //미세먼지 농도
             dashboardDataAvgGp10Array = new Array(7);
-            dashboardDataAvgGp10Array[0] = obj.dashboardData.dashboardDataAvgGp10Dto.line1;
-            dashboardDataAvgGp10Array[1] = obj.dashboardData.dashboardDataAvgGp10Dto.line2;
-            dashboardDataAvgGp10Array[2] = obj.dashboardData.dashboardDataAvgGp10Dto.line3;
-            dashboardDataAvgGp10Array[3] = obj.dashboardData.dashboardDataAvgGp10Dto.line4;
-            dashboardDataAvgGp10Array[4] = obj.dashboardData.dashboardDataAvgGp10Dto.line5;
-            dashboardDataAvgGp10Array[5] = obj.dashboardData.dashboardDataAvgGp10Dto.line6;
-            dashboardDataAvgGp10Array[6] = obj.dashboardData.dashboardDataAvgGp10Dto.line7;
-            dashboardDataAvgGp10Array[7] = obj.dashboardData.dashboardDataAvgGp10Dto.line8;
+            dashboardDataAvgGp10Array[0] = obj.mainDataDto.line1AvgGp10;
+            dashboardDataAvgGp10Array[1] = obj.mainDataDto.line2AvgGp10;
+            dashboardDataAvgGp10Array[2] = obj.mainDataDto.line3AvgGp10;
+            dashboardDataAvgGp10Array[3] = obj.mainDataDto.line4AvgGp10;
+            dashboardDataAvgGp10Array[4] = obj.mainDataDto.line5AvgGp10;
+            dashboardDataAvgGp10Array[5] = obj.mainDataDto.line6AvgGp10;
+            dashboardDataAvgGp10Array[6] = obj.mainDataDto.line7AvgGp10;
+            dashboardDataAvgGp10Array[7] = obj.mainDataDto.line8AvgGp10;
 
             const topChart5Dataset = topChart5.data.datasets;
             for (let idx = 0; idx < topChart5Dataset.length; idx++) {
@@ -1511,14 +1524,14 @@
 
             //초미세먼지 농도
             dashboardDataAvgGp1_0Array = new Array(7);
-            dashboardDataAvgGp1_0Array[0] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line1;
-            dashboardDataAvgGp1_0Array[1] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line2;
-            dashboardDataAvgGp1_0Array[2] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line3;
-            dashboardDataAvgGp1_0Array[3] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line4;
-            dashboardDataAvgGp1_0Array[4] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line5;
-            dashboardDataAvgGp1_0Array[5] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line6;
-            dashboardDataAvgGp1_0Array[6] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line7;
-            dashboardDataAvgGp1_0Array[7] = obj.dashboardData.dashboardDataAvgGp1_0Dto.line8;
+            dashboardDataAvgGp1_0Array[0] = obj.mainDataDto.line1AvgGp1_0;
+            dashboardDataAvgGp1_0Array[1] = obj.mainDataDto.line2AvgGp1_0;
+            dashboardDataAvgGp1_0Array[2] = obj.mainDataDto.line3AvgGp1_0;
+            dashboardDataAvgGp1_0Array[3] = obj.mainDataDto.line4AvgGp1_0;
+            dashboardDataAvgGp1_0Array[4] = obj.mainDataDto.line5AvgGp1_0;
+            dashboardDataAvgGp1_0Array[5] = obj.mainDataDto.line6AvgGp1_0;
+            dashboardDataAvgGp1_0Array[6] = obj.mainDataDto.line7AvgGp1_0;
+            dashboardDataAvgGp1_0Array[7] = obj.mainDataDto.line8AvgGp1_0;
 
             const topChart6Dataset = topChart6.data.datasets;
             for (let idx = 0; idx < topChart6Dataset.length; idx++) {
@@ -1531,14 +1544,14 @@
 
             //극초미세먼지 농도
             dashboardDataAvgGp2_5Array = new Array(7);
-            dashboardDataAvgGp2_5Array[0] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line1;
-            dashboardDataAvgGp2_5Array[1] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line2;
-            dashboardDataAvgGp2_5Array[2] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line3;
-            dashboardDataAvgGp2_5Array[3] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line4;
-            dashboardDataAvgGp2_5Array[4] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line5;
-            dashboardDataAvgGp2_5Array[5] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line6;
-            dashboardDataAvgGp2_5Array[6] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line7;
-            dashboardDataAvgGp2_5Array[7] = obj.dashboardData.dashboardDataAvgGp2_5Dto.line8;
+            dashboardDataAvgGp2_5Array[0] = obj.mainDataDto.line1AvgGp2_5;
+            dashboardDataAvgGp2_5Array[1] = obj.mainDataDto.line2AvgGp2_5;
+            dashboardDataAvgGp2_5Array[2] = obj.mainDataDto.line3AvgGp2_5;
+            dashboardDataAvgGp2_5Array[3] = obj.mainDataDto.line4AvgGp2_5;
+            dashboardDataAvgGp2_5Array[4] = obj.mainDataDto.line5AvgGp2_5;
+            dashboardDataAvgGp2_5Array[5] = obj.mainDataDto.line6AvgGp2_5;
+            dashboardDataAvgGp2_5Array[6] = obj.mainDataDto.line7AvgGp2_5;
+            dashboardDataAvgGp2_5Array[7] = obj.mainDataDto.line8AvgGp2_5;
 
             const topChart7Dataset = topChart7.data.datasets;
             for (let idx = 0; idx < topChart7Dataset.length; idx++) {
@@ -1550,14 +1563,14 @@
 
             //TVOC
             dashboardDataAvgVocArray = new Array(7);
-            dashboardDataAvgVocArray[0] = obj.dashboardData.dashboardDataAvgVocDto.line1;
-            dashboardDataAvgVocArray[1] = obj.dashboardData.dashboardDataAvgVocDto.line2;
-            dashboardDataAvgVocArray[2] = obj.dashboardData.dashboardDataAvgVocDto.line3;
-            dashboardDataAvgVocArray[3] = obj.dashboardData.dashboardDataAvgVocDto.line4;
-            dashboardDataAvgVocArray[4] = obj.dashboardData.dashboardDataAvgVocDto.line5;
-            dashboardDataAvgVocArray[5] = obj.dashboardData.dashboardDataAvgVocDto.line6;
-            dashboardDataAvgVocArray[6] = obj.dashboardData.dashboardDataAvgVocDto.line7;
-            dashboardDataAvgVocArray[7] = obj.dashboardData.dashboardDataAvgVocDto.line8;
+            dashboardDataAvgVocArray[0] = obj.mainDataDto.line1AvgTvoc;
+            dashboardDataAvgVocArray[1] = obj.mainDataDto.line2AvgTvoc;
+            dashboardDataAvgVocArray[2] = obj.mainDataDto.line3AvgTvoc;
+            dashboardDataAvgVocArray[3] = obj.mainDataDto.line4AvgTvoc;
+            dashboardDataAvgVocArray[4] = obj.mainDataDto.line5AvgTvoc;
+            dashboardDataAvgVocArray[5] = obj.mainDataDto.line6AvgTvoc;
+            dashboardDataAvgVocArray[6] = obj.mainDataDto.line7AvgTvoc;
+            dashboardDataAvgVocArray[7] = obj.mainDataDto.line8AvgTvoc;
 
             const topChart8Dataset = topChart8.data.datasets;
             for (let idx = 0; idx < topChart8Dataset.length; idx++) {
@@ -1569,14 +1582,14 @@
 
             //이산화탄소
             dashboardDataAvgCo2Array = new Array(7);
-            dashboardDataAvgCo2Array[0] = obj.dashboardData.dashboardDataAvgCo2Dto.line1;
-            dashboardDataAvgCo2Array[1] = obj.dashboardData.dashboardDataAvgCo2Dto.line2;
-            dashboardDataAvgCo2Array[2] = obj.dashboardData.dashboardDataAvgCo2Dto.line3;
-            dashboardDataAvgCo2Array[3] = obj.dashboardData.dashboardDataAvgCo2Dto.line4;
-            dashboardDataAvgCo2Array[4] = obj.dashboardData.dashboardDataAvgCo2Dto.line5;
-            dashboardDataAvgCo2Array[5] = obj.dashboardData.dashboardDataAvgCo2Dto.line6;
-            dashboardDataAvgCo2Array[6] = obj.dashboardData.dashboardDataAvgCo2Dto.line7;
-            dashboardDataAvgCo2Array[7] = obj.dashboardData.dashboardDataAvgCo2Dto.line8;
+            dashboardDataAvgCo2Array[0] = obj.mainDataDto.line1AvgCo2;
+            dashboardDataAvgCo2Array[1] = obj.mainDataDto.line2AvgCo2;
+            dashboardDataAvgCo2Array[2] = obj.mainDataDto.line3AvgCo2;
+            dashboardDataAvgCo2Array[3] = obj.mainDataDto.line4AvgCo2;
+            dashboardDataAvgCo2Array[4] = obj.mainDataDto.line5AvgCo2;
+            dashboardDataAvgCo2Array[5] = obj.mainDataDto.line6AvgCo2;
+            dashboardDataAvgCo2Array[6] = obj.mainDataDto.line7AvgCo2;
+            dashboardDataAvgCo2Array[7] = obj.mainDataDto.line8AvgCo2;
 
             const topChart9Dataset = topChart9.data.datasets;
             for (let idx = 0; idx < topChart9Dataset.length; idx++) {
@@ -1588,14 +1601,14 @@
 
             //온도
             dashboardDataAvgTempArray = new Array(7);
-            dashboardDataAvgTempArray[0] = obj.dashboardData.dashboardDataAvgTempDto.line1;
-            dashboardDataAvgTempArray[1] = obj.dashboardData.dashboardDataAvgTempDto.line2;
-            dashboardDataAvgTempArray[2] = obj.dashboardData.dashboardDataAvgTempDto.line3;
-            dashboardDataAvgTempArray[3] = obj.dashboardData.dashboardDataAvgTempDto.line4;
-            dashboardDataAvgTempArray[4] = obj.dashboardData.dashboardDataAvgTempDto.line5;
-            dashboardDataAvgTempArray[5] = obj.dashboardData.dashboardDataAvgTempDto.line6;
-            dashboardDataAvgTempArray[6] = obj.dashboardData.dashboardDataAvgTempDto.line7;
-            dashboardDataAvgTempArray[7] = obj.dashboardData.dashboardDataAvgTempDto.line8;
+            dashboardDataAvgTempArray[0] = obj.mainDataDto.line1AvgTemp;
+            dashboardDataAvgTempArray[1] = obj.mainDataDto.line2AvgTemp;
+            dashboardDataAvgTempArray[2] = obj.mainDataDto.line3AvgTemp;
+            dashboardDataAvgTempArray[3] = obj.mainDataDto.line4AvgTemp;
+            dashboardDataAvgTempArray[4] = obj.mainDataDto.line5AvgTemp;
+            dashboardDataAvgTempArray[5] = obj.mainDataDto.line6AvgTemp;
+            dashboardDataAvgTempArray[6] = obj.mainDataDto.line7AvgTemp;
+            dashboardDataAvgTempArray[7] = obj.mainDataDto.line8AvgTemp;
 
             const topChart10Dataset = topChart10.data.datasets;
             for (let idx = 0; idx < topChart10Dataset.length; idx++) {
@@ -1608,14 +1621,14 @@
 
             //습도
             dashboardDataAvgHumiArray = new Array(7);
-            dashboardDataAvgHumiArray[0] = obj.dashboardData.dashboardDataAvgHumiDto.line1;
-            dashboardDataAvgHumiArray[1] = obj.dashboardData.dashboardDataAvgHumiDto.line2;
-            dashboardDataAvgHumiArray[2] = obj.dashboardData.dashboardDataAvgHumiDto.line3;
-            dashboardDataAvgHumiArray[3] = obj.dashboardData.dashboardDataAvgHumiDto.line4;
-            dashboardDataAvgHumiArray[4] = obj.dashboardData.dashboardDataAvgHumiDto.line5;
-            dashboardDataAvgHumiArray[5] = obj.dashboardData.dashboardDataAvgHumiDto.line6;
-            dashboardDataAvgHumiArray[6] = obj.dashboardData.dashboardDataAvgHumiDto.line7;
-            dashboardDataAvgHumiArray[7] = obj.dashboardData.dashboardDataAvgHumiDto.line8;
+            dashboardDataAvgHumiArray[0] = obj.mainDataDto.line1AvgHumi;
+            dashboardDataAvgHumiArray[1] = obj.mainDataDto.line2AvgHumi;
+            dashboardDataAvgHumiArray[2] = obj.mainDataDto.line3AvgHumi;
+            dashboardDataAvgHumiArray[3] = obj.mainDataDto.line4AvgHumi;
+            dashboardDataAvgHumiArray[4] = obj.mainDataDto.line5AvgHumi;
+            dashboardDataAvgHumiArray[5] = obj.mainDataDto.line6AvgHumi;
+            dashboardDataAvgHumiArray[6] = obj.mainDataDto.line7AvgHumi;
+            dashboardDataAvgHumiArray[7] = obj.mainDataDto.line8AvgHumi;
 
             const topChart11Dataset = topChart11.data.datasets;
             for (let idx = 0; idx < topChart11Dataset.length; idx++) {
@@ -1649,20 +1662,26 @@
 
     <script>
 
-
-        /*---------------------
-        // D3.js Gauge Chart //
-        ---------------------*/
-        // Data which need to be fetched
-        var name = "";  //350 수치 보여졌던 부분
+        var name = dashboardDataAvgIaqAllLine;  //350 수치 보여졌던 부분
         var value = 200;    // My Desired Value To Show
         var gaugeMaxValue = 300;
 
         // Data of calculation
         var percentValue = value / gaugeMaxValue;
         var needleClient;
+        /*---------------------
+        // D3.js Gauge Chart //
+        ---------------------*/
+        // Data which need to be fetched
+
 
         function niddleRefresh() {
+
+            var name = dashboardDataAvgIaqAllLine;  //350 수치 보여졌던 부분
+
+            // Data of calculation
+            var percentValue = value / gaugeMaxValue;
+            var needleClient;
 
             (function () {
                 var barWidth, chart, chartInset, degToRad, repaintGauge, height, margin, numSections, padRad, percToDeg,
@@ -1706,7 +1725,7 @@
                 };
 
                 // Create SVG element
-                svg = el.append('svg').attr('width', width + margin.left + margin.right).attr('height', height / 1.5 + margin.top + margin.bottom);		// height/1.5 To Remove Extra Bottom Space
+                svg = el.append('svg').attr('width', width + margin.left + margin.right).attr('height', height / 1.5 + margin.top + margin.bottom).attr("vertical-align","middle");		// height/1.5 To Remove Extra Bottom Space
 
                 // Add layer for the panel
                 chart = svg.append('g').attr('transform', "translate(" + ((width + margin.left) / 2) + ", " + ((height + margin.top) / 2) + ")");
@@ -1826,7 +1845,7 @@
                     })
                     .attr('id', "Name")
                     .attr('text-align', "center")
-                    .attr('transform', "translate(145, " + ((height + margin.top) / 1.6) + ")")
+                    .attr('transform', "translate(135, " + ((height + margin.top- 18) / 1.6) + ")")
                     .attr("font-family", "'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕'")
                     //.attr("font-weight", "bold")
                     .attr("font-size", 25)
@@ -1844,7 +1863,7 @@
                         })
                         .attr('id', "Value")
                         .attr('transform', "translate(" + trX + ", " + trY + ")")
-                        .attr("font-size", 18)
+                        .attr("font-size", 0)
                         .style("fill", '#000000');
                 }
 
@@ -1942,9 +1961,9 @@
                     backgroundColor: 'rgb(0,82,164,0.3)',
                     fill: true,
                     borderColor: '#0052A4',
-                    data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                    data: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
                 }],
-                labels: ["04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00","18:00","19:00","20:00","21:00","22:00","23:00","24:00"]
+                labels: ["04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00","18:00","19:00","20:00","21:00","22:00","23:00"]
             },
             options: {
                 legend: {

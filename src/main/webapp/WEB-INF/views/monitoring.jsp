@@ -160,6 +160,22 @@
             width: calc(2rem + 0.75rem);
             border-radius: 3rem;
         }
+
+        .outline{
+            position: relative;
+            width: 100%;
+            height: 2px;
+            border: 2px solid #ffffff;
+        }
+
+        .outline span{
+            position: absolute;
+            background: #3e3eea;
+        }
+
+        .outline span:nth-child(1) {left: 0; top: 0; width: 0; height: 2px; transition: width 1s, background-color 1.5s; }
+
+
     </style>
 
     <!-- Bootstrap core JavaScript-->
@@ -176,13 +192,15 @@
     <script src="/resources/vendor/ag-grid/ag-grid-community.min.js"></script>
 
     <script>
+        var exp = /평균 값/;
+
         const columnDefs = [
-            { field: "No", sortable: false, colSpan: params => params.data.No === "전 노선 실시간 평균 값" ? 10 : 0, cellClass: "grid-cell-centered-and-bold"},
+            { field: "No", sortable: false, colSpan: params => (params.data.No.toString()).search(exp) > 0 ? 10 : 0, cellClass: "grid-cell-centered-and-bold"},
             { field: "노선명" , sortable: true},
             { field: "차량번호" , sortable: true},
             { field: "객차번호" , sortable: true},
-            { field: "IMEI" , sortable: true},
-            { field: "LTE" , sortable: true},
+            { field: "IMEI" , sortable: true, minWidth: 200},
+            { field: "LTE" , sortable: true, minWidth: 180},
             { field: "ION_M수" , sortable: true},
             { field: "ION_S수" , sortable: true},
             { field: "시스템상태" , sortable: true},
@@ -200,27 +218,10 @@
 
         // specify the data
         const rowData = [
-            { No: "1", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "2", 노선명: "2호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "3", 노선명: "3호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "4", 노선명: "4호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "5", 노선명: "5호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "6", 노선명: "6호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "7", 노선명: "7호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "8", 노선명: "8호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "9", 노선명: "9호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "10", 노선명: "신림선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "11", 노선명: "우이신설선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "12", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "13", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "14", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "15", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "16", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "17", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "18", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "19", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""},
-            { No: "20", 노선명: "1호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""}
+
         ];
+
+        const allColumnIds = [];
 
         const gridOptions = {
             columnDefs: columnDefs,
@@ -231,10 +232,96 @@
             },
             sortable: true,
             pagination: true,
-            paginationPageSize: 100
+            paginationPageSize: 100,
             //rowHeight: 20
             //paginationAutoPageSize: true
+            onGridReady: (params) => {
+                var cols = params.columnApi.getColumns();
+                cols.forEach(function (col) {
+                    var colDef = col.getColDef();
+                    //alert(col.getId());
+                    allColumnIds.push(col.getId());
+                });
+                //gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
+
+            }, onCellClicked : event => cellClicked(event)
         };
+
+        const cellClicked = (event) => {
+            var focusedCellName = gridOptions.api.getFocusedCell().column.colId;    //선택한 컬럼명
+            var selectedRowJsonData = event.node.data;
+            var selectedCellValue = "";
+            var textStr = "";
+            if(focusedCellName == "노선명"){
+                selectedCellValue = selectedRowJsonData["노선명"];
+                textStr = selectedCellValue + " 차량의 실시간 평균 값";
+            }else if(focusedCellName == "차량번호"){
+                selectedCellValue = selectedRowJsonData["차량번호"];
+                textStr = selectedCellValue + " 차량의 실시간 평균 값";
+            }else if(focusedCellName == "객차번호"){
+                selectedCellValue = selectedRowJsonData["객차번호"];
+                textStr = selectedCellValue + " 차량의 실시간 평균 값";
+            }else{
+                textStr = "전 노선 실시간 평균 값";
+            }
+
+            //평균 다시 산출
+            var arrData = [];
+
+            var onIaqTotal = 0;
+            var onGp10Total = 0;
+            var onGp1_0Total = 0;
+            var onGp2_5Total = 0;
+            var onTvocTotal = 0;
+            var onCo2Total = 0;
+            var onTempTotal = 0;
+            var onHumiTotal = 0;
+
+            var onCnt = 0;
+
+            var obj = RECENT_DATA;
+
+            for(var i=0; i < obj.data.length; i++){
+                var rowData =
+                    { No:obj.data[i].no,노선명: obj.data[i].ima_line+"호선", 차량번호: obj.data[i].ima_car, 객차번호: obj.data[i].ima_ps_car,IMEI:obj.data[i].ima_imei,
+                        LTE:obj.data[i].ima_lte_s, ION_M수:obj.data[i].ima_ion_m, ION_S수:obj.data[i].ima_ion_s, 시스템상태:obj.data[i].imd_system_status,
+                        ION상태:obj.data[i].ima_ion_status, 공기질:obj.data[i].imd_iaq, 미세먼지:obj.data[i].imd_gp10, 초미세먼지:obj.data[i].imd_gp1_0, 극초미세먼지:obj.data[i].imd_gp2_5,
+                        TVOC:obj.data[i].imd_voc, 이산화탄소:obj.data[i].imd_co2, 온도:obj.data[i].imd_temp, 습도:obj.data[i].imd_humi, 비고:''};
+
+                arrData.push(rowData);
+
+                if(obj.data[i].imd_system_status == 'ON'){     //ON이 되어야 함
+                    if((focusedCellName == "노선명" && selectedCellValue == obj.data[i].ima_line+"호선") ||
+                        (focusedCellName == "차량번호" && selectedCellValue == obj.data[i].ima_car) ||
+                        (focusedCellName == "객차번호" && selectedCellValue == obj.data[i].ima_ps_car) ||
+                        (focusedCellName != "노선명" && focusedCellName != "차량번호" && focusedCellName != "객차번호")){
+                        onCnt++;
+                        onIaqTotal += parseFloat(obj.data[i].imd_iaq);
+                        onGp10Total += parseFloat(obj.data[i].imd_gp10);
+                        onGp1_0Total += parseFloat(obj.data[i].imd_gp1_0);
+                        onGp2_5Total += parseFloat(obj.data[i].imd_gp2_5);
+                        onTvocTotal += parseFloat(obj.data[i].imd_voc);
+                        onCo2Total += parseFloat(obj.data[i].imd_co2);
+                        onTempTotal += parseFloat(obj.data[i].imd_temp);
+                        onHumiTotal += parseFloat(obj.data[i].imd_humi);
+
+                    }
+
+                }
+            }
+
+            var onIaqAvg = (onIaqTotal / onCnt).toFixed(2); if(onCnt == 0){onIaqAvg = 0;}
+            var onGp10Avg = (onGp10Total / onCnt).toFixed(2);  if(onCnt == 0){onGp10Avg = 0;}
+            var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);  if(onCnt == 0){onGp1_0Avg = 0;}
+            var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);  if(onCnt == 0){onGp2_5Avg = 0;}
+            var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);  if(onCnt == 0){onTvocAvg = 0;}
+            var onCo2Avg = (onCo2Total / onCnt).toFixed(2);  if(onCnt == 0){onCo2Avg = 0;}
+            var onTempAvg = (onTempTotal / onCnt).toFixed(2);  if(onCnt == 0){onTempAvg = 0;}
+            var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);  if(onCnt == 0){onHumiAvg = 0;}
+
+            gridOptions.api.setPinnedTopRowData([{ No: textStr, 노선명: "", 차량번호: "", 객차번호:"", IMEI: "", LTE: "", ION_M수:"", ION_S수:"", 시스템상태:"", ION상태:"", 공기질:onIaqAvg, 미세먼지:onGp10Avg, 초미세먼지:onGp1_0Avg, 극초미세먼지:onGp2_5Avg, TVOC:onTvocAvg, 이산화탄소:onCo2Avg, 온도:onTempAvg, 습도:onHumiAvg,비고:""}]);
+
+        }
 
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', () => {
@@ -249,8 +336,6 @@
 
             gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
 
-            gridOptions.api.setPinnedTopRowData([{ No: "전 노선 실시간 평균 값", 노선명: "9호선", 차량번호: "311000", 객차번호:"3500", IMEI: "358645070008321", LTE: "012-2999-0971", ION_M수:"1", ION_S수:"7", 시스템상태:"ON", ION상태:"OFF", 공기질:"150.0", 미세먼지:"253.8", 초미세먼지:"9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.28",비고:""}]);
-
         });
 
     </script>
@@ -261,9 +346,9 @@
 
             var timer = setInterval(
                 function () {
-                    var sendData = {"imei":""};
+                    var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val(),"line":$('#line').val()};
                     $.ajax({
-                        url: '/monitoring/data/refresh',
+                        url: '/monitoring/data/search',
                         method: 'POST',
                         async: true,
                         contentType: 'application/json; charset=UTF-8',
@@ -289,12 +374,12 @@
                     toggle = false;
                 }else{
                     // 반복 재개(재시작)
-                    var sendData = {"imei":""};
+                    var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val(),"line":$('#line').val()};
 
                     timer = setInterval(
                         function () {
                             $.ajax({
-                                url: '/monitoring/data/refresh',
+                                url: '/monitoring/data/search',
                                 method: 'POST',
                                 async: true,
                                 data: JSON.stringify(sendData),
@@ -345,6 +430,7 @@
 
     </script>
     <script>
+        var RECENT_DATA = null;
 
         function onPageSizeChanged() {
             var value = document.getElementById('page-size').value;
@@ -412,10 +498,10 @@
 
         function initData(){
 
-            var sendData = {"imei":""}
+            var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val(),"line":$('#line').val()};
 
             $.ajax({
-                url: '/monitoring/data/refresh',
+                url: '/monitoring/data/search',
                 method: 'POST',
                 async: true,
                 data: JSON.stringify(sendData),
@@ -423,7 +509,7 @@
                 dataType: 'text',
                 success: function (result) {
                     var obj = JSON.parse(result);
-                    callback(obj);
+                    return initCallback(obj);
                 },
                 error: function (error) {
                     alert("데이터 조회 중 오류가 발생했습니다 : " + error);
@@ -433,7 +519,7 @@
 
         function searchData(){
 
-            var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val()};
+            var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val(),"line":$('#line').val()};
 
             $.ajax({
                 url: '/monitoring/data/search',
@@ -453,20 +539,129 @@
         }
 
         function callback(obj){
+            RECENT_DATA = obj;
 
             var arrData = [];
 
+            var onIaqTotal = 0;
+            var onGp10Total = 0;
+            var onGp1_0Total = 0;
+            var onGp2_5Total = 0;
+            var onTvocTotal = 0;
+            var onCo2Total = 0;
+            var onTempTotal = 0;
+            var onHumiTotal = 0;
+
+            var onCnt = 0;
+
             for(var i=0; i < obj.data.length; i++){
                 var rowData =
-                    { No:i+1,노선명: obj.data[i].line, 차량번호: obj.data[i].car, 객차번호: obj.data[i].pscar,IMEI:obj.data[i].imei,
-                        LTE:obj.data[i].lte, ION_M수:obj.data[i].ionm, ION_S수:obj.data[i].ions, 시스템상태:obj.data[i].systemStatus,
-                        ION상태:obj.data[i].ionStatus, 공기질:obj.data[i].iaq, 미세먼지:obj.data[i].gp10, 초미세먼지:obj.data[i].gp2_5, 극초미세먼지:obj.data[i].gp1_0,
-                        TVOC:obj.data[i].tvoc, 이산화탄소:obj.data[i].co2, 온도:obj.data[i].temp, 습도:obj.data[i].humi, 비고:''};
+                    { No:obj.data[i].no,노선명: obj.data[i].ima_line+"호선", 차량번호: obj.data[i].ima_car, 객차번호: obj.data[i].ima_ps_car,IMEI:obj.data[i].ima_imei,
+                        LTE:obj.data[i].ima_lte_s, ION_M수:obj.data[i].ima_ion_m, ION_S수:obj.data[i].ima_ion_s, 시스템상태:obj.data[i].imd_system_status,
+                        ION상태:obj.data[i].ima_ion_status, 공기질:obj.data[i].imd_iaq, 미세먼지:obj.data[i].imd_gp10, 초미세먼지:obj.data[i].imd_gp1_0, 극초미세먼지:obj.data[i].imd_gp2_5,
+                        TVOC:obj.data[i].imd_voc, 이산화탄소:obj.data[i].imd_co2, 온도:obj.data[i].imd_temp, 습도:obj.data[i].imd_humi, 비고:''};
 
                 arrData.push(rowData);
+
+
+                if(obj.data[i].imd_system_status == 'ON'){     //ON이 되어야 함
+                    onCnt++;
+                    onIaqTotal += parseFloat(obj.data[i].imd_iaq);
+                    onGp10Total += parseFloat(obj.data[i].imd_gp10);
+                    onGp1_0Total += parseFloat(obj.data[i].imd_gp1_0);
+                    onGp2_5Total += parseFloat(obj.data[i].imd_gp2_5);
+                    onTvocTotal += parseFloat(obj.data[i].imd_voc);
+                    onCo2Total += parseFloat(obj.data[i].imd_co2);
+                    onTempTotal += parseFloat(obj.data[i].imd_temp);
+                    onHumiTotal += parseFloat(obj.data[i].imd_humi);
+                }
             }
 
+            $("#refresh_span").css("width","100%");
+            $("#refresh_span").css("background","white");
+
+            var end = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend';
+            $("#refresh_span").one(end, function(){
+                $("#refresh_span").remove();
+                $("#outline_div").html("<span id='refresh_span'></span>")
+            });
+
+
+            var onIaqAvg = (onIaqTotal / onCnt).toFixed(2);
+            var onGp10Avg = (onGp10Total / onCnt).toFixed(2);
+            var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);
+            var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);
+            var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);
+            var onCo2Avg = (onCo2Total / onCnt).toFixed(2);
+            var onTempAvg = (onTempTotal / onCnt).toFixed(2);
+            var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);
+
             gridOptions.api.setRowData(arrData );
+            gridOptions.api.setPinnedTopRowData([{ No: "전 노선 실시간 평균 값", 노선명: "", 차량번호: "", 객차번호:"", IMEI: "", LTE: "", ION_M수:"", ION_S수:"", 시스템상태:"", ION상태:"", 공기질:onIaqAvg, 미세먼지:onGp10Avg, 초미세먼지:onGp1_0Avg, 극초미세먼지:onGp2_5Avg, TVOC:onTvocAvg, 이산화탄소:onCo2Avg, 온도:onTempAvg, 습도:onHumiAvg,비고:""}]);
+
+
+        }
+
+
+        function initCallback(obj){
+            RECENT_DATA = obj;
+
+            var arrData = [];
+            var onIaqTotal = 0;
+            var onGp10Total = 0;
+            var onGp1_0Total = 0;
+            var onGp2_5Total = 0;
+            var onTvocTotal = 0;
+            var onCo2Total = 0;
+            var onTempTotal = 0;
+            var onHumiTotal = 0;
+
+            var onCnt = 0;
+
+            for(var i=0; i < obj.data.length; i++){
+                var rowData =
+                    { No:obj.data[i].no,노선명: obj.data[i].ima_line+"호선", 차량번호: obj.data[i].ima_car, 객차번호: obj.data[i].ima_ps_car,IMEI:obj.data[i].ima_imei,
+                        LTE:obj.data[i].ima_lte_s, ION_M수:obj.data[i].ima_ion_m, ION_S수:obj.data[i].ima_ion_s, 시스템상태:obj.data[i].imd_system_status,
+                        ION상태:obj.data[i].ima_ion_status, 공기질:obj.data[i].imd_iaq, 미세먼지:obj.data[i].imd_gp10, 초미세먼지:obj.data[i].imd_gp1_0, 극초미세먼지:obj.data[i].imd_gp2_5,
+                        TVOC:obj.data[i].imd_voc, 이산화탄소:obj.data[i].imd_co2, 온도:obj.data[i].imd_temp, 습도:obj.data[i].imd_humi, 비고:''};
+
+                arrData.push(rowData);
+
+                if(obj.data[i].imd_system_status == 'ON'){     //ON이 되어야 함
+                    onCnt++;
+                    onIaqTotal += parseFloat(obj.data[i].imd_iaq);
+                    onGp10Total += parseFloat(obj.data[i].imd_gp10);
+                    onGp1_0Total += parseFloat(obj.data[i].imd_gp1_0);
+                    onGp2_5Total += parseFloat(obj.data[i].imd_gp2_5);
+                    onTvocTotal += parseFloat(obj.data[i].imd_voc);
+                    onCo2Total += parseFloat(obj.data[i].imd_co2);
+                    onTempTotal += parseFloat(obj.data[i].imd_temp);
+                    onHumiTotal += parseFloat(obj.data[i].imd_humi);
+                }
+            }
+
+            var onIaqAvg = (onIaqTotal / onCnt).toFixed(2);
+            var onGp10Avg = (onGp10Total / onCnt).toFixed(2);
+            var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);
+            var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);
+            var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);
+            var onCo2Avg = (onCo2Total / onCnt).toFixed(2);
+            var onTempAvg = (onTempTotal / onCnt).toFixed(2);
+            var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);
+
+            $("#refresh_span").css("width","100%");
+            $("#refresh_span").css("background","white");
+
+            var end = 'transitionend webkitTransitionEnd oTransitionEnd otransitionend';
+            $("#refresh_span").one(end, function(){
+                $("#refresh_span").remove();
+                $("#outline_div").html("<span id='refresh_span'></span>")
+            });
+
+            gridOptions.api.setRowData(arrData );
+
+
+            gridOptions.api.setPinnedTopRowData([{ No: "전 노선 실시간 평균 값", 노선명: "", 차량번호: "", 객차번호:"", IMEI: "", LTE: "", ION_M수:"", ION_S수:"", 시스템상태:"", ION상태:"", 공기질:onIaqAvg, 미세먼지:onGp10Avg, 초미세먼지:onGp1_0Avg, 극초미세먼지:onGp2_5Avg, TVOC:onTvocAvg, 이산화탄소:onCo2Avg, 온도:onTempAvg, 습도:onHumiAvg,비고:""}]);
 
         }
 
@@ -475,6 +670,7 @@
             $('#lte').val("");
             $('#carNum').val("");
             $('#pscarNum').val("");
+            $('#line').val("");
         }
 
     </script>
@@ -583,7 +779,7 @@
 
 
     </script>
-
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
 
 <body id="page-top" onload="showClock();">
@@ -664,7 +860,7 @@
             <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-cog"></i>
-                <span>설정</span>
+                <span>계정 관리</span>
             </a>
         </li>
         </c:if>
@@ -740,6 +936,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
+                            <!--
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
@@ -753,9 +950,10 @@
                                 Activity Log
                             </a>
                             <div class="dropdown-divider"></div>
+                            -->
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                로그아웃
                             </a>
                         </div>
                     </li>
@@ -778,19 +976,31 @@
                     <div class="card-header py-3">
                         <div style="float:left"><h6 class="m-0 font-weight-bold text-primary">단말 수신 데이터 현황</h6></div>
                          <div style="padding-left:0px;float:right;display:inline-block" class="form-check form-switch form-switch-md">
-                            <label style="margin-right:40px;color:#5D5D5D;font-weight:bold" class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신(30초)　</label>
+                            <label style="margin-right:40px;color:#5D5D5D;font-weight:bold" class="form-check-label" for="flexSwitchCheckChecked">실시간 데이터 갱신　</label><!-- 30초로 설정 -->
                             <input style="margin-right:40px;" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" style="overflow-x:visible">
                             <!-- 테이블 위치 -->
-                            <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
+                            <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:1px;color:#2f3037">
                                 <div style="padding:15px;">
                                     IMEI　
                                     <input id="imei" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" type="number" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
                                     LTE#
                                     <input id="lte" onKeyup="this.value=this.value.replace(/[^-\-0-9]/g,'');" type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
+                                    노선
+                                    <select id="line" name="line" type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                        <option value="" selected>전체</option>
+                                        <option value="1">1호선</option>
+                                        <option value="2">2호선</option>
+                                        <option value="3">3호선</option>
+                                        <option value="4">4호선</option>
+                                        <option value="5">5호선</option>
+                                        <option value="6">6호선</option>
+                                        <option value="7">7호선</option>
+                                        <option value="8">8호선</option>
+                                    </select>
                                 </div>
                                 <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
                                     차량번호
@@ -800,9 +1010,10 @@
                                     한 페이지 당 데이터 수
                                     <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
                                         <option value="10">10</option>
-                                        <option value="100" selected>100</option>
+                                        <option value="100">100</option>
                                         <option value="500">500</option>
                                         <option value="1000">1000</option>
+                                        <option value="10000" selected>10000</option>
                                     </select>
                                     <a id="searchLink" href="#" onclick="searchData()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
                                             class="fas fa-search fa-sm text-white-50"></i>조회</a>
@@ -812,8 +1023,11 @@
                                             class="fas fa-sm text-white-50"></i>+ 화면 확장</a>
                                 </div>
                             </div>
+                            <div id="outline_div" class="outline">
+                                <span id="refresh_span"></span>
+                            </div>
                             <div id="scrollGrid" style="height:17px;overflow-x:scroll" class="ag-theme-alpine">
-                                <div id="scrollGridInner" style="height:17px;"></div>
+                                <div id="scrollGridInner" style="height:17px;" ></div>
                             </div>
                             <div id="myGrid" style="height: 580px; width:100%;" class="ag-theme-alpine"></div>
                         </div>

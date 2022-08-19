@@ -1,11 +1,22 @@
 package com.kt.ims.service;
 
+import com.kt.ims.repository.ImsDataRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class MonitoringService {
 
+    @Autowired
+    ImsDataRepository imsDataRepository;
 
+    public List<HashMap<String, Object>> getMonitoringDatas(String imei, String lte, String line, String carNum, String pscarNum){
+        List<HashMap<String, Object>> monitoringDatas = imsDataRepository.findMonitoringDatas(imei, lte, line, carNum, pscarNum);
+        return monitoringDatas;
+    }
     public double genIaq(){
         return (double)Math.round(((Math.random() *( 300 - 50 + 1)) + 50) * 100) / 100.0;
     }

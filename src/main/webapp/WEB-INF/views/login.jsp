@@ -21,7 +21,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
 
 <body class="bg-gradient-primary">
@@ -59,17 +59,21 @@
                                             <input type="password" class="form-control form-control-user"
                                                 id="password" placeholder="비밀번호">
                                         </div>
+
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <!--
                                                 <label class="custom-control-label" for="customCheck">아이디 기억하기</label>
+                                                                                         -->
                                             </div>
-
                                         </div>
+
+                                        <hr>
                                         <a onclick="login()" class="btn btn-primary btn-user btn-block">
                                             로그인
                                         </a>
-                                        <hr>
+
                                         <!--
                                         <a href="index.jsp" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google
@@ -79,12 +83,14 @@
                                         </a>
                                         -->
                                     </form>
+                                    <!--
                                     <div class="text-center">
-                                        <a class="small" href="register.html">비밀번호를 잊으셨나요?</a>
+                                       <a class="small" href="register.html">비밀번호를 잊으셨나요?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">회원가입</a>
+                                         <a class="small" href="forgot-password.html">회원가입</a>
                                     </div>
+                                     -->
                                 </div>
                             </div>
                         </div>

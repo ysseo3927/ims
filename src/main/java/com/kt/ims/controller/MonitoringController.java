@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,19 +41,75 @@ public class MonitoringController {
     @PostMapping("/monitoring/data/search")
     public Map<String,Object> dataSearch(@RequestBody Map<String,String> map, HttpServletRequest servletRequest) {
 
-        String imei = (String)map.get("imei");
-        String lte = (String)map.get("lte");
-        String carNum = (String)map.get("carNum");
-        String pscarNum = (String)map.get("pscarNum");
+        String imei = (String)map.get("imei");          //IMEI
+        String lte = (String)map.get("lte");            //LTE#
+        String line = (String)map.get("line");          //노선
+        String carNum = (String)map.get("carNum");      //차량번호
+        String pscarNum = (String)map.get("pscarNum");  //객차번호
 
         System.out.println(imei);
         System.out.println(lte);
+        System.out.println(line);
         System.out.println(carNum);
         System.out.println(pscarNum);
 
         Map<String,Object> result = new HashMap<>();
 
-        result.put("data",null);
+        List<HashMap<String,Object>> monitoringDatas = monitoringService.getMonitoringDatas(imei, lte, line, carNum, pscarNum);
+
+        List<MonitoringDataDto> monitoringDataDtos = new ArrayList<>();
+        int no = 0;
+
+        for(HashMap<String,Object> monitoringData : monitoringDatas){
+            no++;
+            Integer imaId = (int)monitoringData.get("ima_id");
+            String imaImei = (String)monitoringData.get("ima_imei");
+            String imaLine = (String)monitoringData.get("ima_line");
+            String imaCar = (String)monitoringData.get("ima_car");
+            String imaPscar = (String)monitoringData.get("ima_ps_car");
+            String imaLteS = (String)monitoringData.get("ima_lte_s");
+            Integer imaIonM = (Integer)monitoringData.get("ima_ion_m");
+            Integer imaIonS = (Integer)monitoringData.get("ima_ion_s");
+            String imaIonStatus = (String)monitoringData.get("ima_ion_status");
+            BigInteger recentId = (BigInteger)monitoringData.get("recent_id");
+            String imdIaq = (String)monitoringData.get("imd_iaq");
+            String imdGp10 = (String)monitoringData.get("imd_gp10");
+            String imdGp1_0 = (String)monitoringData.get("imd_gp1_0");
+            String imdGp2_5 = (String)monitoringData.get("imd_gp2_5");
+            String imdVoc = (String)monitoringData.get("imd_voc");
+            String imdCo2 = (String)monitoringData.get("imd_co2");
+            String imdTemp = (String)monitoringData.get("imd_temp");
+            String imdHumi = (String)monitoringData.get("imd_humi");
+            String imdSystemStatus = (String)monitoringData.get("imd_system_status");
+            String imdRegdate = (String)monitoringData.get("imd_regdate");
+
+            MonitoringDataDto monitoringDataDto = MonitoringDataDto.builder()
+                    .no(no)
+                    .ima_imei(imaImei)
+                    .ima_line(imaLine)
+                    .ima_car(imaCar)
+                    .ima_ps_car(imaPscar)
+                    .ima_lte_s(imaLteS)
+                    .ima_ion_m(imaIonM)
+                    .ima_ion_s(imaIonS)
+                    .ima_ion_status(imaIonStatus)
+                    .recent_id(recentId.intValue())
+                    .imd_iaq(imdIaq)
+                    .imd_gp10(imdGp10)
+                    .imd_gp1_0(imdGp1_0)
+                    .imd_gp2_5(imdGp2_5)
+                    .imd_voc(imdVoc)
+                    .imd_co2(imdCo2)
+                    .imd_temp(imdTemp)
+                    .imd_humi(imdHumi)
+                    .imd_system_status(imdSystemStatus)
+                    .imd_regdate(imdRegdate)
+                    .build();
+
+            monitoringDataDtos.add(monitoringDataDto);
+        }
+
+        result.put("data",monitoringDataDtos);
 
         return result;
     }
@@ -62,29 +119,6 @@ public class MonitoringController {
 
         List<MonitoringDataDto > list = new ArrayList<>();
 
-        for(int i=0; i < 100; i++){
-            MonitoringDataDto monitoringDataDto = MonitoringDataDto.builder()
-                    .no(i+"")
-                    .line(monitoringService.genLine())
-                    .car(monitoringService.genCar())
-                    .pscar(monitoringService.genPscar())
-                    .imei(monitoringService.genImei())
-                    .lte(monitoringService.genLte())
-                    .ionm(monitoringService.getIonm())
-                    .ions(monitoringService.getIons())
-                    .systemStatus(monitoringService.genSystemStatus())
-                    .ionStatus(monitoringService.genIonStatus())
-                    .iaq(monitoringService.genIaq()+"")
-                    .gp10(monitoringService.genGp10()+"")
-                    .gp2_5(monitoringService.genGp2_5()+"")
-                    .gp1_0(monitoringService.genGp1_0()+"")
-                    .tvoc(monitoringService.genTvoc()+"")
-                    .co2(monitoringService.genCo2()+"")
-                    .temp(monitoringService.genTemp()+"")
-                    .humi(monitoringService.genHumi()+"")
-                    .build();
-            list.add(monitoringDataDto);
-        }
         Map<String,Object> result = new HashMap<>();
 
         result.put("data",list);

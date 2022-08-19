@@ -22,6 +22,9 @@
     <!-- Custom styles for this template-->
     <link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- datetimepicker -->
+    <link rel="stylesheet" type="text/css" href="/resources/css/jquery.datetimepicker.min.css"/>
+
     <style>
         .grid-cell-centered-and-bold {
             text-align: center;
@@ -41,10 +44,75 @@
     <!-- ag grid -->
     <script src="/resources/vendor/ag-grid/ag-grid-community.min.js"></script>
 
+    <!-- datetimepicker -->
+    <script src="/resources/js/jquery.datetimepicker.full.min.js"></script>
+
     <script>
+        var RECENT_DATA = null;
+        var TARGET_ID = [];
+
+        var RECENT_IAQ = 0;
+        var RECENT_GP10 = 0;
+        var RECENT_GP_1_0 = 0;
+        var RECENT_GP_2_5 = 0;
+        var RECENT_TVOC = 0;
+        var RECENT_CO2 = 0;
+        var RECENT_TEMP = 0;
+        var RECENT_HUMI = 0;
+
+        var SELECTED_IAQ = 0;
+        var SELECTED_GP10 = 0;
+        var SELECTED_GP_1_0 = 0;
+        var SELECTED_GP_2_5 = 0;
+        var SELECTED_TVOC = 0;
+        var SELECTED_CO2 = 0;
+        var SELECTED_TEMP = 0;
+        var SELECTED_HUMI = 0;
+
+        $(function(){
+
+            var nowDate = new Date();
+            var prevDate = nowDate.getDate() - 1;
+
+            var nowMonth = nowDate.getMonth()+1;
+            var nowDt = nowDate.getDate();
+            var nowHours = nowDate.getHours();
+            var nowMinutes = nowDate.getMinutes();
+
+            if(nowDate.getMonth()+1 < 10){
+                nowMonth = "0" + (nowDate.getMonth()+1);
+            }
+            if(nowDate.getDate() < 10){
+                nowDt = "0" + (nowDate.getDate());
+            }
+            if(nowDate.getHours() < 10){
+                nowHours = "0" + (nowDate.getHours());
+            }
+            if(nowDate.getMinutes() < 10){
+                nowMinutes = "0" + nowDate.getMinutes();
+            }
+
+            var initStartDatetime = nowDate.getFullYear() + "-" + nowMonth + "-" + nowDt + " " + "00:00";
+            var initEndDatetime = nowDate.getFullYear() + "-" + nowMonth + "-" + nowDt + " " + nowHours + ":" + nowMinutes;
+
+            $('#startDatetime').val(initStartDatetime);
+            $('#endDatetime').val(initEndDatetime);
+
+            searchData();
+        });
+    </script>
+    <script>
+
+        var exp = /평균 값/;
+
         const columnDefs = [
-            { field: "선택", headerCheckboxSelection: true,checkboxSelection:true, sortable: false, colSpan: params => params.data.선택 === "전체 평균 값" ? 3 : 0, cellClass: "grid-cell-centered-and-bold"},
-            { field: "일시" , sortable: true},
+            { field: "선택", headerCheckboxSelection: true,checkboxSelection:true, sortable: false, colSpan: params => (params.data.선택.toString()).search(exp) > 0 ? 7 : 0, cellClass: "grid-cell-centered-and-bold", maxWidth: 150},
+            { field: "일시" , sortable: true, minWidth:180},
+            { field: "IMEI" , sortable: true, minWidth:200},
+            { field: "LTE" , sortable: true, minWidth:180},
+            { field: "노선" , sortable: true},
+            { field: "차량번호" , sortable: true},
+            { field: "객차번호" , sortable: true},
             { field: "ION상태" , sortable: true},
             { field: "공기질" , sortable: true},
             { field: "미세먼지" , sortable: true},
@@ -54,42 +122,11 @@
             { field: "이산화탄소" , sortable: true},
             { field: "온도" , sortable: true},
             { field: "습도" , sortable: true},
-            { field: "비고" , sortable: false, width:338}
+            { field: "비고" , sortable: false, minWidth:350}
         ];
 
         // specify the data
-        const rowData = [
-            { 선택: "", 일시: "20220411-001315", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-001415", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-001515", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-001615", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-001715", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-001815", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-001915", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002015", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002115", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002215", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002315", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002415", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002515", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002615", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002715", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002815", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-002915", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003015", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003115", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003215", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003315", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003415", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003515", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003615", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003715", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003815", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-003915", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-004015", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-004115", ION상태: "OFF", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-            { 선택: "", 일시: "20220411-004215", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""},
-        ];
+        const rowData = [];
 
         // let the grid know which columns and what data to use
         const gridOptions = {
@@ -103,9 +140,76 @@
             pagination: true,
             paginationPageSize: 100,
             rowSelection: 'multiple',
-            suppressRowClickSelection: true
+            suppressRowClickSelection: true,
+            onSelectionChanged : event => selectionChanged(event)
             //paginationAutoPageSize: true
         };
+
+        const selectionChanged = (event) => {
+
+            var selectedRowJsonData = gridOptions.api.getSelectedRows();
+
+            if(selectedRowJsonData.length > 0){
+                for(var i=0; i<selectedRowJsonData.length; i++){
+                    TARGET_ID.push(selectedRowJsonData[i]);
+                }
+
+                //평균 다시 산출
+                var onIaqTotal = 0;
+                var onGp10Total = 0;
+                var onGp1_0Total = 0;
+                var onGp2_5Total = 0;
+                var onTvocTotal = 0;
+                var onCo2Total = 0;
+                var onTempTotal = 0;
+                var onHumiTotal = 0;
+
+                var onCnt = 0;
+
+                for(var i=0; i < selectedRowJsonData.length; i++){
+                    onCnt++;
+                    onIaqTotal += parseFloat(selectedRowJsonData[i].공기질);
+                    onGp10Total += parseFloat(selectedRowJsonData[i].미세먼지);
+                    onGp1_0Total += parseFloat(selectedRowJsonData[i].초미세먼지);
+                    onGp2_5Total += parseFloat(selectedRowJsonData[i].극초미세먼지);
+                    onTvocTotal += parseFloat(selectedRowJsonData[i].TVOC);
+                    onCo2Total += parseFloat(selectedRowJsonData[i].이산화탄소);
+                    onTempTotal += parseFloat(selectedRowJsonData[i].온도);
+                    onHumiTotal += parseFloat(selectedRowJsonData[i].습도);
+                }
+
+                var onIaqAvg = (onIaqTotal / onCnt).toFixed(2); if(onCnt == 0){onIaqAvg = 0;}
+                var onGp10Avg = (onGp10Total / onCnt).toFixed(2);  if(onCnt == 0){onGp10Avg = 0;}
+                var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);  if(onCnt == 0){onGp1_0Avg = 0;}
+                var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);  if(onCnt == 0){onGp2_5Avg = 0;}
+                var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);  if(onCnt == 0){onTvocAvg = 0;}
+                var onCo2Avg = (onCo2Total / onCnt).toFixed(2);  if(onCnt == 0){onCo2Avg = 0;}
+                var onTempAvg = (onTempTotal / onCnt).toFixed(2);  if(onCnt == 0){onTempAvg = 0;}
+                var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);  if(onCnt == 0){onHumiAvg = 0;}
+
+                SELECTED_IAQ = onIaqAvg;
+                SELECTED_GP10 = onGp10Avg;
+                SELECTED_GP_1_0 = onGp1_0Avg;
+                SELECTED_GP_2_5 = onGp2_5Avg;
+                SELECTED_TVOC = onTvocAvg;
+                SELECTED_CO2 = onCo2Avg;
+                SELECTED_TEMP = onTempAvg;
+                SELECTED_HUMI = onHumiAvg;
+
+                gridOptions.api.setPinnedTopRowData([ { 선택: "선택된 로그 평균 값", 일시: "", ION상태: "", 공기질:onIaqAvg, 미세먼지: onGp10Avg, 초미세먼지: onGp1_0Avg, 극초미세먼지:onGp2_5Avg, TVOC:onTvocAvg, 이산화탄소:onCo2Avg, 온도:onTempAvg, 습도:onHumiAvg, 비고:""}]);
+            }else{
+                SELECTED_IAQ = 0;
+                SELECTED_GP10 = 0;
+                SELECTED_GP_1_0 = 0;
+                SELECTED_GP_2_5 = 0;
+                SELECTED_TVOC = 0;
+                SELECTED_CO2 = 0;
+                SELECTED_TEMP = 0;
+                SELECTED_HUMI = 0;
+                gridOptions.api.setPinnedTopRowData([ { 선택: "전체 로그 평균 값", 일시: "", ION상태: "", 공기질:RECENT_IAQ, 미세먼지: RECENT_GP10, 초미세먼지: RECENT_GP_1_0, 극초미세먼지:RECENT_GP_2_5, TVOC:RECENT_TVOC, 이산화탄소:RECENT_CO2, 온도:RECENT_TEMP, 습도:RECENT_HUMI, 비고:""}]);
+            }
+
+        }
 
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', () => {
@@ -120,12 +224,12 @@
             allColumnIds.pop();
             gridOptions.columnApi.autoSizeColumns(allColumnIds, false);
 
-            gridOptions.api.setPinnedTopRowData([ { 선택: "전체 평균 값", 일시: "20220411-004215", ION상태: "ON", 공기질:"150.00", 미세먼지: "25.38", 초미세먼지: "9.72", 극초미세먼지:"6.25", TVOC:"3.55", 이산화탄소:"1801.32", 온도:"23.45", 습도:"33.0", 비고:""}]);
+            gridOptions.api.setPinnedTopRowData([ { 선택: "전체 로그 평균 값", 일시: "", ION상태: "", 공기질:"0", 미세먼지: "0", 초미세먼지: "0", 극초미세먼지:"0", TVOC:"0", 이산화탄소:"0", 온도:"0", 습도:"0", 비고:""}]);
 
         });
-
     </script>
     <script>
+
         function onPageSizeChanged() {
             var value = document.getElementById('page-size').value;
             gridOptions.api.paginationSetPageSize(Number(value));
@@ -175,6 +279,8 @@
     </script>
     <script>
 
+        var curDateTime;
+
         /* 상단 우측 시계 */
         function showClock() {
             var currentDate=new Date();
@@ -201,10 +307,40 @@
                 seconds = "0" + currentDate.getSeconds();
             }
             var msg = currentDate.getFullYear() + "-" + month + "-" + date + " " +  hours + ":" + minutes + ":" + seconds;
+            curDateTime = currentDate.getFullYear() + "" + month + "" + date + "" +  hours + "" + minutes + "" + seconds;
 
             divClock.innerText=msg;
 
             setTimeout(showClock,1000);
+        }
+
+        function setSearchTerm(){
+            var nowDate = new Date();
+            var prevDate = nowDate.getDate() - 1;
+
+            var nowMonth = nowDate.getMonth()+1;
+            var nowDt = nowDate.getDate();
+            var nowHours = nowDate.getHours();
+            var nowMinutes = nowDate.getMinutes();
+
+            if(nowDate.getMonth()+1 < 10){
+                nowMonth = "0" + (nowDate.getMonth()+1);
+            }
+            if(nowDate.getDate() < 10){
+                nowDt = "0" + (nowDate.getDate());
+            }
+            if(nowDate.getHours() < 10){
+                nowHours = "0" + (nowDate.getHours());
+            }
+            if(nowDate.getMinutes() < 10){
+                nowMinutes = "0" + nowDate.getMinutes();
+            }
+
+            var initStartDatetime = nowDate.getFullYear() + "-" + nowMonth + "-" + nowDt + " " + "00:00";
+            var initEndDatetime = nowDate.getFullYear() + "-" + nowMonth + "-" + nowDt + " " + nowHours + ":" + nowMinutes;
+
+            $('#startDatetime').val(initStartDatetime);
+            $('#endDatetime').val(initEndDatetime);
         }
 
         function goLogin(){
@@ -302,8 +438,204 @@
             frmData.submit() ;
         }
 
-    </script>
+        function initCondition(){
+            $('#imei').val("");
+            $('#lte').val("");
+            $('#carNum').val("");
+            $('#pscarNum').val("");
+            $('#line').val("");
+            $('#ionStatus').val("");
+            setSearchTerm();
+        }
 
+
+        function searchData(){
+            $("#searchBtn").attr("onclick", "");
+            //$("#searchBtn").attr("href", "");
+            $("#searchBtn").html("<i class='fas fa-search fa-sm text-white-50'></i>조회중..");
+            $("#searchBtn").attr("class", "d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm");
+            var sendData = {"imei":$('#imei').val(),"lte":$('#lte').val(),"carNum":$('#carNum').val(),"pscarNum":$('#pscarNum').val(),"line":$('#line').val(),"ionStatus":$('#ionStatus').val(),"startDatetime":$('#startDatetime').val(),"endDatetime":$('#endDatetime').val()};
+
+            $.ajax({
+                url: '/log/data/search',
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(sendData),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'text',
+                success: function (result) {
+                    var obj = JSON.parse(result);
+                    callback(obj);
+                },
+                error: function (error) {
+                    alert("데이터 조회 중 오류가 발생했습니다 : " + error);
+                }
+            });
+        }
+
+
+        function callback(obj){
+            RECENT_DATA = obj;
+
+            var arrData = [];
+
+            var onIaqTotal = 0;
+            var onGp10Total = 0;
+            var onGp1_0Total = 0;
+            var onGp2_5Total = 0;
+            var onTvocTotal = 0;
+            var onCo2Total = 0;
+            var onTempTotal = 0;
+            var onHumiTotal = 0;
+
+            var onCnt = 0;
+
+            for(var i=0; i < obj.data.length; i++){
+                var rowData =
+                    { 선택:obj.data[i].imd_id, 일시:obj.data[i].imd_regdate,IMEI:obj.data[i].ima_imei,LTE:obj.data[i].ima_lte_s,노선:obj.data[i].ima_line+"호선",차량번호:obj.data[i].ima_car,
+                        객차번호:obj.data[i].ima_ps_car,ION상태:obj.data[i].ima_ion_status,공기질:obj.data[i].imd_iaq,미세먼지:obj.data[i].imd_gp10,초미세먼지:obj.data[i].imd_gp1_0,
+                        극초미세먼지:obj.data[i].imd_gp2_5,TVOC:obj.data[i].imd_voc,이산화탄소:obj.data[i].imd_co2,온도:obj.data[i].imd_temp,습도:obj.data[i].imd_humi,비고:obj.data[i].imd_etc};
+
+                arrData.push(rowData);
+
+
+                //if(obj.data[i].imd_system_status == 'ON'){     //시스템 상태는 없으므로 on/off관계없이 전체의 평균
+                    onCnt++;
+                    onIaqTotal += parseFloat(obj.data[i].imd_iaq);
+                    onGp10Total += parseFloat(obj.data[i].imd_gp10);
+                    onGp1_0Total += parseFloat(obj.data[i].imd_gp1_0);
+                    onGp2_5Total += parseFloat(obj.data[i].imd_gp2_5);
+                    onTvocTotal += parseFloat(obj.data[i].imd_voc);
+                    onCo2Total += parseFloat(obj.data[i].imd_co2);
+                    onTempTotal += parseFloat(obj.data[i].imd_temp);
+                    onHumiTotal += parseFloat(obj.data[i].imd_humi);
+                //}
+            }
+
+            var onIaqAvg = (onIaqTotal / onCnt).toFixed(2);
+            var onGp10Avg = (onGp10Total / onCnt).toFixed(2);
+            var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);
+            var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);
+            var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);
+            var onCo2Avg = (onCo2Total / onCnt).toFixed(2);
+            var onTempAvg = (onTempTotal / onCnt).toFixed(2);
+            var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);
+
+            // ROW 선택 후 선택 해제 시 복원을 위해 전역변수로 값 복사
+            RECENT_IAQ = onIaqAvg;
+            RECENT_GP10 = onGp10Avg;
+            RECENT_GP_1_0 = onGp1_0Avg;
+            RECENT_GP_2_5 = onGp2_5Avg;
+            RECENT_TVOC = onTvocAvg;
+            RECENT_CO2 = onCo2Avg;
+            RECENT_TEMP = onTempAvg;
+            RECENT_HUMI = onHumiAvg;
+
+            gridOptions.api.setRowData(arrData );
+
+            gridOptions.api.setPinnedTopRowData([ { 선택: "전체 로그 평균 값", 일시: "", ION상태: "", 공기질:onIaqAvg, 미세먼지: onGp10Avg, 초미세먼지: onGp1_0Avg, 극초미세먼지:onGp2_5Avg, TVOC:onTvocAvg, 이산화탄소:onCo2Avg, 온도:onTempAvg, 습도:onHumiAvg, 비고:""}]);
+
+            $("#searchBtn").attr("onclick", "searchData()");
+            //$("#searchBtn").attr("href", "#");
+            $("#searchBtn").html("<i class='fas fa-search fa-sm text-white-50'></i>조회");
+            $("#searchBtn").attr("class", "d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm");
+        }
+
+        function dataRemove(){
+            var selectedRowJsonData = gridOptions.api.getSelectedRows();
+            //alert(selectedRowJsonData[0].선택);
+            if(selectedRowJsonData.length < 1){
+                alert("삭제할 로그를 선택해 주세요.");
+            }else{
+                if(confirm("선택된 " + selectedRowJsonData.length + "개의 로그를 삭제할까요?") == true){
+
+
+                    var imdIds = [];
+                    for(var i=0; i<selectedRowJsonData.length; i++){
+                        imdIds.push(selectedRowJsonData[i].선택);
+                    }
+                    var sendData = {"imdIds":imdIds};
+
+                    $.ajax({
+                        url: '/log/data/remove',
+                        method: 'POST',
+                        async: true,
+                        data: JSON.stringify(sendData),
+                        contentType: 'application/json; charset=UTF-8',
+                        dataType: 'text',
+                        success: function (result) {
+                            var obj = JSON.parse(result);
+                            removeCallback(obj);
+                        },
+                        error: function (error) {
+                            alert("데이터 삭제 중 오류가 발생했습니다 : " + error);
+                        }
+                    });
+
+                }
+            }
+
+
+        }
+
+        function removeCallback(obj){
+            if(obj.data == "success"){
+                alert("삭제를 완료하였습니다.\n로그 데이터를 갱신합니다.");
+                gridOptions.api.setRowData();
+                gridOptions.api.setPinnedTopRowData([ { 선택: "전체 로그 평균 값", 일시: "", ION상태: "", 공기질:0, 미세먼지: 0, 초미세먼지: 0, 극초미세먼지:0, TVOC:0, 이산화탄소:0, 온도:0, 습도:0, 비고:""}]);
+                searchData();
+            }else{
+                alert("삭제에 실패하였습니다.");
+            }
+        }
+
+        function dataDownload(){
+            var selectedRowJsonData = gridOptions.api.getSelectedRows();
+
+            if(selectedRowJsonData.length < 1){
+                alert("다운로드할 로그를 선택해 주세요.");
+            }else{
+
+                var csv = [];
+                var rowData = [];
+                var avgData = [];
+
+                //2) 컬럼명 row 추가
+                rowData.push("로그 ID", "일시", "IMEI", "LTE", "노선", "차량번호", "객차번호", "ION상태", "공기질", "미세먼지", "초미세먼지", "극초미세먼지", "TVOC", "이산화탄소", "온도","습도");
+                csv.push(rowData.join(","));
+
+                //3) 데이터 row 추가
+                for(var i=0; i<selectedRowJsonData.length; i++) {
+                    rowData = [selectedRowJsonData[i].선택, selectedRowJsonData[i].일시, "'" + selectedRowJsonData[i].IMEI, selectedRowJsonData[i].LTE, selectedRowJsonData[i].노선, selectedRowJsonData[i].차량번호, selectedRowJsonData[i].객차번호,
+                        selectedRowJsonData[i].ION상태, selectedRowJsonData[i].공기질, selectedRowJsonData[i].미세먼지, selectedRowJsonData[i].초미세먼지, selectedRowJsonData[i].극초미세먼지, selectedRowJsonData[i].TVOC, selectedRowJsonData[i].이산화탄소, selectedRowJsonData[i].온도, selectedRowJsonData[i].습도
+                    ];
+                    csv.push(rowData.join(","));
+                }
+
+                avgData.push("평균 산출 값", "-", "-", "-", "-", "-", "-", "-", SELECTED_IAQ, SELECTED_GP10, SELECTED_GP_1_0, SELECTED_GP_2_5, SELECTED_TVOC, SELECTED_CO2, SELECTED_TEMP,SELECTED_HUMI);
+                csv.push(avgData.join(","));
+
+                var filename = curDateTime+"_log_data.csv";
+                var csvFile;
+                var link
+
+                //4) 한글 깨짐 방지를 위한 코딩식별자 추가
+                const BOM = "\uFEFF";
+                csv = BOM + csv.join("\n");
+
+                //5) 다운로드 링크 생성
+                csvFile = new Blob([csv], { type: "text/csv" });
+                link = document.createElement("a");
+                link.download = filename;
+                link.href = window.URL.createObjectURL(csvFile);
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+            }
+
+        }
+    </script>
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
 
 <body id="page-top" onload="showClock();">
@@ -385,7 +717,7 @@
                 <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>설정</span>
+                    <span>계정 관리</span>
                 </a>
             </li>
         </c:if>
@@ -461,6 +793,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
+                            <!--
                             <a class="dropdown-item" href="#">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
@@ -474,9 +807,10 @@
                                 Activity Log
                             </a>
                             <div class="dropdown-divider"></div>
+                            -->
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Logout
+                                로그아웃
                             </a>
                         </div>
                     </li>
@@ -506,17 +840,12 @@
                                 <form name="frmData" id="frmData" method="post">
                                         <div style="padding:15px;">
                                             IMEI　
-                                            <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
+                                            <input id="imei" type="number" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" ></input>
                                             LTE#
-                                            <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
-                                            <!-- 일시
-                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                            ~
-                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                            -->
-                                            노선명
-                                            <select type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
-                                                <option value="ALL" selected>전체</option>
+                                            <input id="lte" type="text" onKeyup="this.value=this.value.replace(/[^-\-0-9]/g,'');" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" ></input>
+                                            노선
+                                            <select id="line" name="line" type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                                <option value="" selected>전체</option>
                                                 <option value="1">1호선</option>
                                                 <option value="2">2호선</option>
                                                 <option value="3">3호선</option>
@@ -527,33 +856,41 @@
                                                 <option value="8">8호선</option>
                                             </select>
                                             차량번호
-                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                            <input id="carNum" type="number" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                             객차번호
-                                            <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                            <input id="pscarNum" type="number" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                            ION 상태
+                                            <select id="ionStatus" type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                                <option value="" selected>전체</option>
+                                                <option value="ON">ON</option>
+                                                <option value="OFF">OFF</option>
+                                            </select>
                                         </div>
-                                        <div style="padding-left:3px;padding-right:15px;padding-bottom:15px;">
-                                            　ION 상태
-                                            <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOn" checked></input>
-                                            <label for="ionStatusOn">ON</label>
-                                            <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOff"></input>
-                                            <label for="ionStatusOff" style="margin-right:15px;">OFF</label>
+                                        <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
+                                            조회기간
+                                            <input id="startDatetime" type="text" style="width:150px;">
+                                            ~
+                                            <input id="endDatetime" type="text" style="width:150px;">
                                             한 페이지 당 데이터 수
                                             <select onchange="onPageSizeChanged()" id="page-size" style="width:100px;height:30px;border:1px solid #babfc7;">
                                                 <option value="10">10</option>
-                                                <option value="100" selected>100</option>
+                                                <option value="100">100</option>
                                                 <option value="500">500</option>
                                                 <option value="1000">1000</option>
+                                                <option value="10000" selected>10000</option>
                                             </select>
-                                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
+                                            <a href="#" onclick="searchData()" id="searchBtn" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
                                                     class="fas fa-search fa-sm text-white-50"></i>조회</a>
-                                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                            <a href="#" onclick="initCondition()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                     class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
-                                            <a id="controlView" href="#" onclick="addBottomGridArea()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                            <a id="controlView" onclick="addBottomGridArea()" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                     class="fas fa-sm text-white-50"></i>+화면 확장</a>
-                                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
-                                                    class="fas fa-download fa-sm text-white-50"></i> CSV파일 다운로드</a>
-                                            <a href="#" onclick="viewChart();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
+                                            <a href="#" onclick="viewChart();" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
                                                     class="fas fa-sm fa-file text-white-50"></i> 그래프 조회</a>
+                                            <a href="#" onclick="dataDownload();" class="d-none d-sm-inline-block btn btn-sm btn-success shadow-sm"><i
+                                                    class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
+                                            <a href="#" onclick="dataRemove();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
+                                                    class="fas fa-trash fa-sm text-white-50"></i> 삭제</a>
                                         </div>
                                 </form>
                             </div>
@@ -605,8 +942,23 @@
             </div>
         </div>
     </div>
+
 </div>
 
+<script>
+    $('#startDatetime').datetimepicker();
+    $('#endDatetime').datetimepicker();
 
+    jQuery('#startDatetime').datetimepicker({
+        datepicker:true,
+        format:'Y-m-d H:i'
+    });
+
+    jQuery('#endDatetime').datetimepicker({
+        datepicker:true,
+        format:'Y-m-d H:i'
+    });
+
+</script>
 </body>
 </html>

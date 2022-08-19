@@ -261,7 +261,7 @@
         }
 
     </script>
-
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
 
 <body id="page-top" onload="showClock();">

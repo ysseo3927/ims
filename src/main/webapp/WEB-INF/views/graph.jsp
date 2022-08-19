@@ -37,6 +37,13 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/resources/js/sb-admin-2.min.js"></script>
+    <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
+
+
+    <!-- datetimepicker -->
+    <link rel="stylesheet" type="text/css" href="/resources/css/jquery.datetimepicker.min.css"/>
+    <!-- datetimepicker -->
+    <script src="/resources/js/jquery.datetimepicker.full.min.js"></script>
 
 </head>
 
@@ -69,19 +76,12 @@
                                 <form name="frmData" id="frmData" method="post">
                                     <div style="padding:15px;">
                                         IMEI　
-                                        <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="358645070008321" disabled></input>
+                                        <input id="imei" type="number" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" ></input>
                                         LTE#
-                                        <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" value="012-2999-0971" disabled></input>
-                                        <!-- 일시
-                                        <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                        ~
-                                        <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
-                                        -->
-                                    </div>
-                                    <div style="padding-left:3px;padding-right:15px;padding-bottom:15px;margin-left:10px;">
-                                        노선명
-                                        <select type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
-                                            <option value="ALL" selected>전체</option>
+                                        <input id="lte" type="text" onKeyup="this.value=this.value.replace(/[^-\-0-9]/g,'');" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;" ></input>
+                                        노선
+                                        <select id="line" name="line" type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                            <option value="" selected>전체</option>
                                             <option value="1">1호선</option>
                                             <option value="2">2호선</option>
                                             <option value="3">3호선</option>
@@ -92,20 +92,25 @@
                                             <option value="8">8호선</option>
                                         </select>
                                         차량번호
-                                        <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                        <input id="carNum" type="number" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                         객차번호
-                                        <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
+                                        <input id="pscarNum" type="number" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" style="width:100px;height:30px;border:1px solid #babfc7;"></input>
                                         ION 상태
-                                        <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOn" checked></input>
-                                        <label for="ionStatusOn">ON</label>
-                                        <input type="radio" style="width:20px;height:20px;border:1px solid #babfc7;vertical-align:middle;margin-right:5px;" name="ionStatus" id="ionStatusOff"></input>
-                                        <label for="ionStatusOff" style="margin-right:15px;">OFF</label>
-                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                        <select id="ionStatus" type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
+                                            <option value="" selected>전체</option>
+                                            <option value="ON">ON</option>
+                                            <option value="OFF">OFF</option>
+                                        </select>
+                                    </div>
+                                    <div style="padding-left:3px;padding-right:15px;padding-bottom:15px;margin-left:10px;">
+                                        조회기간
+                                        <input id="startDatetime" type="text" style="width:150px;">
+                                        ~
+                                        <input id="endDatetime" type="text" style="width:150px;">
+                                        <a href="#" onclick="searchData()" id="searchBtn" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
                                                 class="fas fa-search fa-sm text-white-50"></i>조회</a>
-                                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                        <a href="#" onclick="initCondition()" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                                 class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
-                                        <a id="screenshot" href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                            <i class="fas fa-download fa-sm text-white-50"></i> 스크린샷 저장</a>
                                     </div>
                                 </form>
                             </div>
@@ -838,8 +843,51 @@
 
             });
         });
+
+        var nowDate = new Date();
+        var prevDate = nowDate.getDate() - 1;
+
+        var nowMonth = nowDate.getMonth()+1;
+        var nowDt = nowDate.getDate();
+        var nowHours = nowDate.getHours();
+        var nowMinutes = nowDate.getMinutes();
+
+        if(nowDate.getMonth()+1 < 10){
+            nowMonth = "0" + (nowDate.getMonth()+1);
+        }
+        if(nowDate.getDate() < 10){
+            nowDt = "0" + (nowDate.getDate());
+        }
+        if(nowDate.getHours() < 10){
+            nowHours = "0" + (nowDate.getHours());
+        }
+        if(nowDate.getMinutes() < 10){
+            nowMinutes = "0" + nowDate.getMinutes();
+        }
+
+        var initStartDatetime = nowDate.getFullYear() + "-" + nowMonth + "-" + nowDt + " " + "00:00";
+        var initEndDatetime = nowDate.getFullYear() + "-" + nowMonth + "-" + nowDt + " " + nowHours + ":" + nowMinutes;
+
+        $('#startDatetime').val(initStartDatetime);
+        $('#endDatetime').val(initEndDatetime);
+
+
     });
 </script>
+<script>
+    $('#startDatetime').datetimepicker();
+    $('#endDatetime').datetimepicker();
 
+    jQuery('#startDatetime').datetimepicker({
+        datepicker:true,
+        format:'Y-m-d H:i'
+    });
+
+    jQuery('#endDatetime').datetimepicker({
+        datepicker:true,
+        format:'Y-m-d H:i'
+    });
+
+</script>
 </body>
 </html>
