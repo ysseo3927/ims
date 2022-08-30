@@ -157,10 +157,7 @@
 
 
         function registUserPopup(){
-              var url = "/임시팝업";
-              var name = "회원등록";
-              var option = "width = 900, height = 600, top = 300, left = 500, location = no"
-              window.open(url, name, option);
+            $("#joinMemberModal").modal("show");
         }
 
     </script>
@@ -171,32 +168,38 @@
     <script>
         const columnDefs = [
             { field: "No", sortable: true},
-            { field: "아이디" , sortable: true},
-            { field: "닉네임" , sortable: true},
-            { field: "이메일" , sortable: true},
-            { field: "등록일시" , sortable: true},
-            { field: "최종방문일시" , sortable: true},
-            { field: "휴면일시" , sortable: true},
-            { field: "탈퇴일시" , sortable: true},
-            { field: "비고" , sortable: true},
-            { field: "패스워드초기화" , sortable: true},
-            { field: "회원삭제" }
+            { field: "아이디" , sortable: true, minWidth:150 },
+            { field: "닉네임" , sortable: true, minWidth:150},
+            { field: "이메일" , sortable: true, minWidth:200},
+            { field: "등록일시" , sortable: true, minWidth:200},
+            { field: "최종방문일시" , sortable: true, minWidth:200},
+            { field: "탈퇴일시" , sortable: true, minWidth:200},
+            { field: "비고" , sortable: true, minWidth:150},
+            { field: "패스워드변경" ,
+                cellRenderer : function(params){
+
+                    if(params.data.탈퇴일시 == null){
+                        return "<div style='text-align:center;vertical-align:middle;padding-top:5px;'><button onclick='changePassword("+params.data.No.toString()+")' style='height:25px;line-height:normal;border-radius:revert'>변경</button></div>"
+                    }else{
+                        return "<div style='text-align:center;vertical-align:middle;padding-top:5px;'><button style='height:25px;line-height:normal;border-radius:revert' disabled>변경</button></div>"
+                    }
+
+                }
+            },
+            { field: "회원탈퇴",
+                cellRenderer : function(params){
+                    if(params.data.아이디.toString() == 'admin' || params.data.탈퇴일시 != null){
+                        return "<div style='text-align:center;vertical-align:middle;padding-top:5px;'><button style='height:25px;line-height:normal;border-radius:revert' disabled>탈퇴</button></div>"
+                    }else{
+                        return "<div style='text-align:center;vertical-align:middle;padding-top:5px;'><button onclick='memberSignOut("+params.data.No.toString()+")' style='height:25px;line-height:normal;border-radius:revert'>탈퇴</button></div>"
+                    }
+                }
+            }
         ];
 
 
         // specify the data
-        const rowData = [
-            { No: "1", 아이디: "admin", 닉네임: "관리자", 이메일:"ims_admin@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"관리자", 패스워드초기화:"", 회원삭제:""},
-            { No: "2", 아이디: "ims-test-01", 닉네임: "일반유저01", 이메일:"ims_user01@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "3", 아이디: "ims-test-02", 닉네임: "일반유저02", 이메일:"ims_user02@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "4", 아이디: "ims-test-03", 닉네임: "일반유저03", 이메일:"ims_user03@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "5", 아이디: "ims-test-04", 닉네임: "일반유저04", 이메일:"ims_user04@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "6", 아이디: "ims-test-05", 닉네임: "일반유저05", 이메일:"ims_user05@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "7", 아이디: "ims-test-06", 닉네임: "일반유저06", 이메일:"ims_user06@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "8", 아이디: "ims-test-07", 닉네임: "일반유저07", 이메일:"ims_user07@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "9", 아이디: "ims-test-08", 닉네임: "일반유저08", 이메일:"ims_user08@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""},
-            { No: "10", 아이디: "ims-test-09", 닉네임: "일반유저09", 이메일:"ims_user09@gmail.com", 등록일시: "2022-07-26 13:00:00", 최종방문일시: "2022-07-26 13:00:00", 휴면일시:"-", 탈퇴일시:"-", 비고:"일반유저", 패스워드초기화:"", 회원삭제:""}
-        ];
+        const rowData = [];
 
         // let the grid know which columns and what data to use
         const gridOptions = {
@@ -227,6 +230,242 @@
 
         });
 
+    </script>
+    <script>
+        $(function(){
+            searchData();
+        });
+
+
+        function searchData(){
+
+            var sendData = {"memberId":$('#memberId').val(),"nickname":$('#nickname').val(),"email":$('#email').val()};
+
+            $.ajax({
+                url: '/config/member/search',
+                method: 'POST',
+                async: true,
+                data: JSON.stringify(sendData),
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'text',
+                success: function (result) {
+                    var obj = JSON.parse(result);
+                    callback(obj);
+                },
+                error: function (error) {
+                    alert("데이터 조회 중 오류가 발생했습니다 : " + error);
+                }
+            });
+        }
+
+        function callback(obj){
+
+            var onCnt = 0;
+            var arrData = [];
+
+            for(var i=0; i < obj.data.length; i++){
+                onCnt++;
+
+                var rowData =
+                    { No:obj.data[i].id, 아이디:obj.data[i].memberId, 닉네임:obj.data[i].nickname, 이메일:obj.data[i].email,
+                    등록일시:obj.data[i].joinDate, 최종방문일시:obj.data[i].visitDate, 탈퇴일시:obj.data[i].leaveDate, 비고:obj.data[i].etc};
+
+                arrData.push(rowData);
+
+            }
+
+            gridOptions.api.setRowData(arrData );
+
+        }
+
+        function initCondition(){
+            $('#memberId').val("");
+            $('#nickname').val("");
+            $('#email').val("");
+        }
+
+        function changePassword(rowId){
+
+            $("#innerChgPasswordWrap").html(
+                "<button class='btn btn-secondary' onclick='closePassword()' type='button' data-dismiss='modal'>취소</button>"+
+                "<a class='btn btn-primary' href='#' onclick='chgPassword("+rowId+")'>변경</a>"
+            )
+            $("#passwordModal").modal("show");
+
+        }
+
+        function chgPassword(rowId){
+            $("#passwordModal").modal("show");
+            if($("#newPassword1").val() == $("#newPassword2").val()){
+
+                var sendData = {"rowId":rowId,"password":$("#newPassword1").val()};
+
+                $.ajax({
+                    url: '/config/member/change/password',
+                    method: 'POST',
+                    async: true,
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'text',
+                    success: function (result) {
+                        var obj = JSON.parse(result);
+                        callbackPassword(obj);
+                    },
+                    error: function (error) {
+                        alert("패스워드 변경 중 오류가 발생했습니다 : " + error);
+                    }
+                });
+
+            }else{
+                alert("두 입력란에 패스워드를 동일하게 입력해주세요.");
+            }
+        }
+
+        function closePassword(){
+            $("#newPassword1").val("");
+            $("#newPassword2").val("");
+
+            $("#passwordModal").modal("hide");
+        }
+
+        function callbackPassword(obj){
+            if(obj.data =="success"){
+                alert("패스워드 변경이 완료되었습니다");
+                $("#newPassword1").val("");
+                $("#newPassword2").val("");
+
+                $("#passwordModal").modal("hide");
+            }
+        }
+
+        function memberSignOut(rowId){
+            if(confirm("선택한 회원을 탈퇴 처리할까요?") == true){
+
+                var sendData = {"rowId":rowId};
+
+                $.ajax({
+                    url: '/config/member/signout',
+                    method: 'POST',
+                    async: true,
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'text',
+                    success: function (result) {
+                        var obj = JSON.parse(result);
+                        callbackSignout(obj);
+                    },
+                    error: function (error) {
+                        alert("회원 탈퇴 처리 중 오류가 발생했습니다 : " + error);
+                    }
+                });
+
+            }
+        }
+
+        function callbackSignout(obj){
+            if(obj.data =="success"){
+                alert("회원 탈퇴가 완료되었습니다.");
+                searchData();
+            }
+        }
+
+        function closeJoinMember(){
+            $("#joinId").val("");
+            $("#joinPassword1").val("");
+            $("#joinPassword2").val("");
+            $("#joinNickname").val("");
+            $("#joinEmail").val("");
+            $("#passwordModal").modal("hide");
+
+        }
+
+        function joinMember(){
+
+            if($("#joinId").val() == ""){
+                alert("아이디를 입력해주세요.")
+                $("#joinId").focus();
+            }else{
+                var sendData = {"joinId":$("#joinId").val()};
+
+                $.ajax({
+                    url: '/config/member/check/overlap/id',
+                    method: 'POST',
+                    async: true,
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'text',
+                    success: function (result) {
+                        var obj = JSON.parse(result);
+                        checkIdCallback(obj);
+                    },
+                    error: function (error) {
+                        alert("아이디 중복 여부 체크 중 오류가 발생했습니다 : " + error);
+                    }
+                });
+            }
+
+        }
+
+        function checkIdCallback(obj){
+            if(obj.data == "success"){
+                //성공 시
+                if($("#joinPassword1").val() != $("#joinPassword2").val()){
+                    alert("패스워드를 두 입력란 모두 동일하게 입력해주세요.");
+                    $("#joinPassword1").focus();
+                }else if($("#joinPassword1").val() == "" || $("#joinPassword2").val() == ""){
+                    alert("패스워드를 입력해주세요.");
+                    $("#joinPassword1").focus();
+                }else if($("#joinNickname").val() == ""){
+                    alert("닉네임을 입력해주세요.");
+                    $("#joinNickname").focus();
+                }else{
+
+                    var sendData = {"joinId":$("#joinId").val(),"joinPassword1":$("#joinPassword1").val(),"joinPassword2":$("#joinPassword2").val(),"joinNickname":$("#joinNickname").val(),"joinEmail":$("#joinEmail").val()};
+
+                    $.ajax({
+                        url: '/config/member/join',
+                        method: 'POST',
+                        async: true,
+                        data: JSON.stringify(sendData),
+                        contentType: 'application/json; charset=UTF-8',
+                        dataType: 'text',
+                        success: function (result) {
+                            var obj = JSON.parse(result);
+                            registMemberCallback(obj);
+                        },
+                        error: function (error) {
+                            alert("회원 추가 중 오류가 발생했습니다 : " + error);
+                        }
+                    });
+
+                }
+
+            }else{
+                //실패 시
+                alert("이미 동일한 아이디를 사용 중인 회원이 존재합니다.\n다른 아이디로 다시 시도해주세요.");
+                $("#joinId").focus();
+            }
+        }
+
+        function registMemberCallback(obj){
+
+            if(obj.data == "success"){
+                alert("회원 추가가 완료되었습니다.");
+            }else{
+                alert("회원 추가에 실패했습니다. 관리자에게 문의하세요.");
+            }
+
+            $("#joinId").val("");
+            $("#joinPassword1").val("");
+            $("#joinPassword2").val("");
+            $("#joinEmail").val("");
+            $("#joinNickname").val("");
+
+            $("#joinMemberModal").modal("hide");
+
+            searchData();
+
+        }
     </script>
     <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
@@ -570,11 +809,11 @@
                             <div id="searchConditionDiv" style="border:1px solid #babfc7; width:100%; height:105px;margin-top:5px;margin-bottom:5px;color:#2f3037">
                                 <div style="padding:15px;">
                                     아이디
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
+                                    <input type="text" id="memberId" style="padding-left:5px;padding-top:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
                                     닉네임
-                                    <input type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
+                                    <input type="text" id="nickname" style="padding-left:5px;padding-top:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
                                     이메일
-                                    <input type="text" style="width:100px;height:30px;border:1px solid #babfc7;font-weight:bold;width:160px;"></input>
+                                    <input type="text" id="email" style="width:100px;height:30px;border:1px solid #babfc7;font-weight:bold;width:160px;"></input>
                                 </div>
                                 <div style="padding-left:15px;padding-right:15px;padding-bottom:15px;">
                                     한 페이지 당 데이터 수
@@ -584,9 +823,9 @@
                                         <option value="500">500</option>
                                         <option value="1000">1000</option>
                                     </select>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
+                                    <a href="#" onclick="searchData();" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" style="margin-left:20px;"><i
                                             class="fas fa-search fa-sm text-white-50"></i>조회</a>
-                                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                                    <a href="#" onclick="initCondition();" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                                             class="fas fa-history fa-sm text-white-50"></i> 조건 초기화</a>
                                     <a href="#" onclick="registUserPopup();" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i
                                             class="fas fa-user fa- text-white-50"></i>회원 추가</a>
@@ -619,7 +858,7 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
+    <!-- LOGOUT Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -633,7 +872,54 @@
                 <div class="modal-body">로그아웃하시겠습니까?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="login.jsp">로그아웃</a>
+                    <a class="btn btn-primary" href="/">로그아웃</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASSWORD CHANGE Modal-->
+    <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel"
+         aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="color:#0c0c0c">
+                    <h5 class="modal-title" id="passwordModalLabel">패스워드 변경</h5>
+                    <button class="close" onclick="closePassword()" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color:#0c0c0c">
+                    변경할 패스워드 입력　:　<input type="text" id="newPassword1" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input><br>
+                    변경할 패스워드 확인　:　<input type="text" id="newPassword2" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
+                </div>
+                <div id="innerChgPasswordWrap" class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- JOIN MEMBER Modal-->
+    <div class="modal fade" id="joinMemberModal" tabindex="-1" role="dialog" aria-labelledby="joinMemberModalLabel"
+         aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="color:#0c0c0c">
+                    <h5 class="modal-title" id="joinMemberModalLabel">회원 추가</h5>
+                    <button class="close" onclick="closeJoinMember()" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color:#0c0c0c">
+                    * 아이디　 　　　:　<input type="text" id="joinId" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input><br>
+                    * 패스워드 입력　:　<input type="text" id="joinPassword1" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input><br>
+                    * 패스워드 확인　:　<input type="text" id="joinPassword2" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input><br>
+                    * 닉네임　 　　　:　<input type="text" id="joinNickname" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input><br>
+                    　이메일　 　　　:　<input type="text" id="joinEmail" style="padding-left:5px;padding-top:5px;margin-bottom:5px;font-weight:bold;width:160px;height:30px;border:1px solid #babfc7;"></input>
+                </div>
+                <div id="innerJoinMemberWrap" class="modal-footer">
+                    <button class='btn btn-secondary' onclick='closeJoinMember()' type='button' data-dismiss='modal'>취소</button>
+                    <a class='btn btn-primary' href='#' onclick='joinMember()'>추가</a>
                 </div>
             </div>
         </div>
