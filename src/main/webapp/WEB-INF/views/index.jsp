@@ -266,9 +266,16 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed" href="#" onclick="goDevice()" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-cog"></i>
+                    <span>장치 관리</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-user"></i>
                     <span>계정 관리</span>
                 </a>
             </li>
@@ -296,7 +303,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-            <div id="content">
+            <div id="content" style="background-image:url('/resources/img/main-bg.gif');background-repeat:repeat;">
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-toolbar-color topbar mb-4 static-top shadow">
@@ -1185,6 +1192,17 @@
             var formData = $('form').serialize();
             form.setAttribute("method", "POST");
             form.setAttribute("action", "/config");
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
+        function goDevice(){
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/device");
             document.body.appendChild(form);
             form.submit();
 

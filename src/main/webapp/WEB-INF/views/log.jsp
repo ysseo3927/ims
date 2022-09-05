@@ -412,6 +412,16 @@
 
         }
 
+        function goDevice() {
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/device");
+            document.body.appendChild(form);
+            form.submit();
+        }
+
         function viewChart(){
 
             var availWidth = screen.availWidth  // 모니터 화면의 작업 표시줄을 제외한 너비
@@ -422,20 +432,33 @@
             var popupX = (window.screen.width / 2) - (popupWidth / 2);
             var popupY= (window.screen.height / 2) - (popupHeight / 2);
 
-            var url = "/log_pop_graph";
+            var url = "/graph";
             var name = "그래프";
               var option = "width = "+popupWidth+", height = "+popupHeight+", top = "+popupY+", left = "+popupX+", location = no"
               //window.open(url, name, option);
 
             var pop_title = "popupOpener" ;
 
-            window.open("", pop_title, option) ;
+            var popupWindow = window.open(url, pop_title, option) ;
 
+            popupWindow.document.getElementById("imei").value = $("#imei").val();
+            popupWindow.document.getElementById("lte").value = $("#lte").val();
+            popupWindow.document.getElementById("line").value = $("#line").val();
+            popupWindow.document.getElementById("carNum").value = $("#carNum").val();
+            popupWindow.document.getElementById("pscarNum").value = $("#pscarNum").val();
+            popupWindow.document.getElementById("ionStatus").value = $("#ionStatus").val();
+            popupWindow.document.getElementById("startDatetime").value = $("#startDatetime").val();
+            popupWindow.document.getElementById("endDatetime").value = $("#endDatetime").val();
+
+            //window.open("test.html","팝업 테스트","width=400, height=300, top=10, left=10");
+            /*
             var frmData = document.frmData;
             frmData.target = pop_title;
             frmData.action = "graph";
 
             frmData.submit() ;
+*/
+
         }
 
         function initCondition(){
@@ -490,16 +513,18 @@
 
             var onCnt = 0;
 
-            for(var i=0; i < obj.data.length; i++){
-                var rowData =
-                    { 선택:obj.data[i].imd_id, 일시:obj.data[i].imd_regdate,IMEI:obj.data[i].ima_imei,LTE:obj.data[i].ima_lte_s,노선:obj.data[i].ima_line+"호선",차량번호:obj.data[i].ima_car,
-                        객차번호:obj.data[i].ima_ps_car,ION상태:obj.data[i].ima_ion_status,공기질:obj.data[i].imd_iaq,미세먼지:obj.data[i].imd_gp10,초미세먼지:obj.data[i].imd_gp1_0,
-                        극초미세먼지:obj.data[i].imd_gp2_5,TVOC:obj.data[i].imd_voc,이산화탄소:obj.data[i].imd_co2,온도:obj.data[i].imd_temp,습도:obj.data[i].imd_humi,비고:obj.data[i].imd_etc};
+            if(obj.data.length > 0){
 
-                arrData.push(rowData);
+                for(var i=0; i < obj.data.length; i++){
+                    var rowData =
+                        { 선택:obj.data[i].imd_id, 일시:obj.data[i].imd_regdate,IMEI:obj.data[i].ima_imei,LTE:obj.data[i].ima_lte_s,노선:obj.data[i].ima_line+"호선",차량번호:obj.data[i].ima_car,
+                            객차번호:obj.data[i].ima_ps_car,ION상태:obj.data[i].ima_ion_status,공기질:obj.data[i].imd_iaq,미세먼지:obj.data[i].imd_gp10,초미세먼지:obj.data[i].imd_gp1_0,
+                            극초미세먼지:obj.data[i].imd_gp2_5,TVOC:obj.data[i].imd_voc,이산화탄소:obj.data[i].imd_co2,온도:obj.data[i].imd_temp,습도:obj.data[i].imd_humi,비고:obj.data[i].imd_etc};
+
+                    arrData.push(rowData);
 
 
-                //if(obj.data[i].imd_system_status == 'ON'){     //시스템 상태는 없으므로 on/off관계없이 전체의 평균
+                    //if(obj.data[i].imd_system_status == 'ON'){     //시스템 상태는 없으므로 on/off관계없이 전체의 평균
                     onCnt++;
                     onIaqTotal += parseFloat(obj.data[i].imd_iaq);
                     onGp10Total += parseFloat(obj.data[i].imd_gp10);
@@ -509,17 +534,29 @@
                     onCo2Total += parseFloat(obj.data[i].imd_co2);
                     onTempTotal += parseFloat(obj.data[i].imd_temp);
                     onHumiTotal += parseFloat(obj.data[i].imd_humi);
-                //}
+                    //}
+                }
+
+                var onIaqAvg = (onIaqTotal / onCnt).toFixed(2);
+                var onGp10Avg = (onGp10Total / onCnt).toFixed(2);
+                var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);
+                var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);
+                var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);
+                var onCo2Avg = (onCo2Total / onCnt).toFixed(2);
+                var onTempAvg = (onTempTotal / onCnt).toFixed(2);
+                var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);
+
+            }else{
+                var onIaqAvg = 0;
+                var onGp10Avg = 0;
+                var onGp1_0Avg = 0;
+                var onGp2_5Avg = 0;
+                var onTvocAvg = 0;
+                var onCo2Avg = 0;
+                var onTempAvg = 0;
+                var onHumiAvg = 0;
             }
 
-            var onIaqAvg = (onIaqTotal / onCnt).toFixed(2);
-            var onGp10Avg = (onGp10Total / onCnt).toFixed(2);
-            var onGp1_0Avg = (onGp1_0Total / onCnt).toFixed(2);
-            var onGp2_5Avg = (onGp2_5Total / onCnt).toFixed(2);
-            var onTvocAvg = (onTvocTotal / onCnt).toFixed(2);
-            var onCo2Avg = (onCo2Total / onCnt).toFixed(2);
-            var onTempAvg = (onTempTotal / onCnt).toFixed(2);
-            var onHumiAvg = (onHumiTotal / onCnt).toFixed(2);
 
             // ROW 선택 후 선택 해제 시 복원을 위해 전역변수로 값 복사
             RECENT_IAQ = onIaqAvg;
@@ -714,9 +751,16 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed" href="#" onclick="goDevice()" data-toggle="collapse" data-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-cog"></i>
+                    <span>장치 관리</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-user"></i>
                     <span>계정 관리</span>
                 </a>
             </li>
@@ -744,7 +788,7 @@
 
 
         <!-- Main Content -->
-        <div id="content">
+        <div id="content" style="background-image:url('/resources/img/main-bg.gif');background-repeat:repeat;">
             <!-- Topbar -->
             <nav id="navTopBar" class="navbar navbar-expand navbar-light bg-toolbar-color topbar mb-4 static-top shadow">
 
@@ -937,7 +981,7 @@
                 <div class="modal-body">로그아웃하시겠습니까?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="login.jsp">로그아웃</a>
+                    <a class="btn btn-primary" href="#"  onclick="goLogin()">로그아웃</a>
                 </div>
             </div>
         </div>

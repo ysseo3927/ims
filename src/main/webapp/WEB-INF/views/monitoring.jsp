@@ -777,7 +777,16 @@
 
         }
 
+        function goDevice(){
 
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/device");
+            document.body.appendChild(form);
+            form.submit();
+
+        }
     </script>
     <link rel="icon" type="image/png" sizes="192x192"  href="/resources/img/ms-icon-70x70.png">
 </head>
@@ -856,13 +865,20 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
-               aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>계정 관리</span>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="goDevice()" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>장치 관리</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fas fa-fw fa-user"></i>
+                    <span>계정 관리</span>
+                </a>
+            </li>
         </c:if>
 
         <!-- Divider -->
@@ -887,7 +903,7 @@
 
 
         <!-- Main Content -->
-        <div id="content">
+        <div id="content" style="background-image:url('/resources/img/main-bg.gif');background-repeat:repeat;">
             <!-- Topbar -->
             <nav id="navTopBar" class="navbar navbar-expand navbar-light bg-toolbar-color topbar mb-4 static-top shadow">
 
@@ -989,7 +1005,7 @@
                                     <input id="imei" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" type="number" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
                                     LTE#
                                     <input id="lte" onKeyup="this.value=this.value.replace(/[^-\-0-9]/g,'');" type="text" style="padding-left:5px;padding-top:5px;font-weight:bold;width:200px;height:30px;border:1px solid #babfc7;"></input>
-                                    노선
+                                    노선명
                                     <select id="line" name="line" type="text" style="width:100px;height:30px;border:1px solid #babfc7;">
                                         <option value="" selected>전체</option>
                                         <option value="1">1호선</option>
@@ -1072,7 +1088,7 @@
                 <div class="modal-body">로그아웃하시겠습니까?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="login.jsp">로그아웃</a>
+                    <a class="btn btn-primary" href="#" onclick="goLogin()">로그아웃</a>
                 </div>
             </div>
         </div>

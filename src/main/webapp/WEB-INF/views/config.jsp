@@ -155,6 +155,15 @@
 
         }
 
+        function goDevice() {
+
+            var form = document.createElement("form");
+            var formData = $('form').serialize();
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", "/device");
+            document.body.appendChild(form);
+            form.submit();
+        }
 
         function registUserPopup(){
             $("#joinMemberModal").modal("show");
@@ -166,6 +175,12 @@
     <script src="/resources/vendor/ag-grid/ag-grid-community.min.js"></script>
 
     <script>
+
+        function onPageSizeChanged() {
+            var value = document.getElementById('page-size').value;
+            gridOptions.api.paginationSetPageSize(Number(value));
+        }
+
         const columnDefs = [
             { field: "No", sortable: true},
             { field: "아이디" , sortable: true, minWidth:150 },
@@ -544,10 +559,17 @@
         </div>
 
         <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" onclick="goDevice()" data-toggle="collapse" data-target="#collapsePages"
+               aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>장치 관리</span>
+            </a>
+        </li>
         <li class="nav-item active">
             <a class="nav-link collapsed" href="#" onclick="goConfig()" data-toggle="collapse" data-target="#collapsePages"
                aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-cog"></i>
+                <i class="fas fa-fw fa-user"></i>
                 <span>계정 관리</span>
             </a>
         </li>
@@ -576,7 +598,7 @@
 
 
         <!-- Main Content -->
-        <div id="content">
+        <div id="content" style="background-image:url('/resources/img/main-bg.gif');background-repeat:repeat;">
             <!-- Topbar -->
             <nav class="navbar navbar-expand navbar-light bg-toolbar-color topbar mb-4 static-top shadow">
 
@@ -800,7 +822,7 @@
                 <!-- 관리자 설정 페이지 컨텐츠 삽입 부분 -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">시스템 사용자 계정 목록</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">시스템 사용자 계정 현황</h6>
                     </div>
                     <div class="card-body">
 
@@ -872,7 +894,7 @@
                 <div class="modal-body">로그아웃하시겠습니까?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="/">로그아웃</a>
+                    <a class="btn btn-primary" href="#"  onclick="goLogin()">로그아웃</a>
                 </div>
             </div>
         </div>

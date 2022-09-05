@@ -1,5 +1,6 @@
 package com.kt.ims.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,6 +52,7 @@ public class ImsAssign {
     @Column(name="ima_etc")
     private String etc;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name="ima_regdate")
     private LocalDateTime regdate;
 
