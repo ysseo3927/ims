@@ -70,7 +70,8 @@ public class ImsDataRepositoryImpl extends QuerydslRepositorySupport implements 
                 "ROUND(AVG(t.imd_iaq),2) AS iaq " +
                 "FROM ( " +
                 "SELECT imd.* FROM tb_ims_data imd " +
-                "WHERE DATE_FORMAT(imd.imd_regdate,'%Y-%m-%d') = CURDATE() " +
+                "WHERE imd.imd_regdate >= CONCAT(CURDATE(),' 00:00:00') " +
+                "AND imd.imd_regdate <= CONCAT(CURDATE(),' 23:59:59') " +
                 "AND DATE_FORMAT(imd_regdate,'%H') >= '04' " +
                 "AND DATE_FORMAT(imd_regdate,'%H') <= '23' " +
                 ") t " +
@@ -99,7 +100,7 @@ public class ImsDataRepositoryImpl extends QuerydslRepositorySupport implements 
                 "ROUND(AVG(t.imd_humi),2) AS humi " +
                 "FROM ( " +
                 "SELECT ima.ima_line, imd.* FROM tb_ims_data imd " +
-                "JOIN tb_ims_assign ima ON ima.ima_imei = imd.imd_imei " +
+                "LEFT JOIN tb_ims_assign ima ON ima.ima_imei = imd.imd_imei " +
                 "WHERE imd_regdate > DATE_ADD(NOW(), INTERVAL -" + hour + " HOUR) " +
                 ") t " +
                 "GROUP BY t.ima_line " +
